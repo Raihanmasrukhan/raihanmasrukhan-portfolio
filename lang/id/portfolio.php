@@ -41,7 +41,7 @@ return [
         'badge' => 'Pengalaman Profesional',
         'title_prefix' => 'Mentransformasi Ide Menjadi Sistem',
         'title_highlight' => 'Performa Tinggi',
-        'cta' => "Mari Berkolaborasi",
+        'cta' => 'Mari Berkolaborasi',
     ],
     'projects' => [
         'tag' => 'SHOWCASE PORTOFOLIO',

@@ -43,6 +43,15 @@ class PortfolioTest extends TestCase
         ]);
     }
 
+    public function test_visitor_can_switch_language_locale(): void
+    {
+        $responseId = $this->get('/lang/id');
+        $responseId->assertSessionHas('locale', 'id');
+
+        $responseEn = $this->get('/lang/en');
+        $responseEn->assertSessionHas('locale', 'en');
+    }
+
     public function test_admin_routes_require_authentication(): void
     {
         $this->get('/admin')->assertRedirect('/login');

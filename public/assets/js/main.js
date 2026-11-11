@@ -69,6 +69,14 @@ document.addEventListener('DOMContentLoaded', () => {
   const navOverlay = document.getElementById('nav-overlay');
   const navLinks = document.querySelectorAll('.nav-link-item a');
 
+  function getMenuLabels() {
+    const isId = (localStorage.getItem('portfolio_locale') || 'id') === 'id';
+    return {
+      close: isId ? 'TUTUP' : 'CLOSE',
+      open: 'MENU'
+    };
+  }
+
   function toggleMenu() {
     navOverlay?.classList.toggle('active');
     const isActive = navOverlay?.classList.contains('active');
@@ -77,10 +85,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     document.body.style.overflow = isActive ? 'hidden' : '';
     if (menuToggle) {
+      const labels = getMenuLabels();
       menuToggle.setAttribute('aria-expanded', isActive ? 'true' : 'false');
       menuToggle.innerHTML = isActive 
-        ? `CLOSE <span style="font-size:1.1rem;margin-left:4px;">✕</span>` 
-        : `MENU <div class="menu-icon-bars"><span></span><span></span></div>`;
+        ? `${labels.close} <span style="font-size:1.1rem;margin-left:4px;">✕</span>` 
+        : `${labels.open} <div class="menu-icon-bars"><span></span><span></span></div>`;
     }
   }
 
@@ -90,8 +99,9 @@ document.addEventListener('DOMContentLoaded', () => {
       navOverlay?.classList.remove('active');
       document.body.style.overflow = '';
       if (menuToggle) {
+        const labels = getMenuLabels();
         menuToggle.setAttribute('aria-expanded', 'false');
-        menuToggle.innerHTML = `MENU <div class="menu-icon-bars"><span></span><span></span></div>`;
+        menuToggle.innerHTML = `${labels.open} <div class="menu-icon-bars"><span></span><span></span></div>`;
       }
     });
   });
@@ -303,4 +313,121 @@ document.addEventListener('DOMContentLoaded', () => {
     e.preventDefault();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   });
+
+  // 12. Theme Switcher (Light / Dark Mode)
+  const themeToggles = [
+    document.getElementById('theme-toggle'),
+    document.getElementById('mobile-theme-toggle')
+  ].filter(Boolean);
+
+  function getPreferredTheme() {
+    const saved = localStorage.getItem('portfolio_theme');
+    if (saved === 'light' || saved === 'dark') return saved;
+    return (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) ? 'light' : 'dark';
+  }
+
+  function applyTheme(theme) {
+    document.documentElement.setAttribute('data-theme', theme);
+    document.documentElement.classList.toggle('light-mode', theme === 'light');
+    document.body.classList.toggle('light-mode', theme === 'light');
+    localStorage.setItem('portfolio_theme', theme);
+  }
+
+  const currentTheme = getPreferredTheme();
+  applyTheme(currentTheme);
+
+  themeToggles.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      const active = document.documentElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+      applyTheme(active);
+      showToast(active === 'light' ? 'Mode Terang diaktifkan' : 'Mode Gelap diaktifkan');
+    });
+  });
+
+  if (window.matchMedia) {
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+      if (!localStorage.getItem('portfolio_theme')) {
+        applyTheme(e.matches ? 'dark' : 'light');
+      }
+    });
+  }
+
+  // 13. Multi-language Translation Engine (ID / EN)
+  const i18nDictionary = window.I18N_DICTIONARY || {};
+  let currentLocale = localStorage.getItem('portfolio_locale') || window.ACTIVE_LOCALE || 'id';
+
+  function getNestedTranslation(obj, path) {
+    if (!obj || !path) return undefined;
+    return path.split('.').reduce((acc, part) => (acc && acc[part] !== undefined) ? acc[part] : undefined, obj);
+  }
+
+  function applyLocale(locale, showNotice = false) {
+    if (!i18nDictionary[locale]) return;
+    currentLocale = locale;
+    localStorage.setItem('portfolio_locale', locale);
+    document.documentElement.setAttribute('lang', locale);
+
+    // Update active button state in all language switchers
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+      const btnLang = btn.getAttribute('data-lang');
+      btn.classList.toggle('active', btnLang === locale);
+    });
+
+    const dict = i18nDictionary[locale];
+
+    // 1. Update text / html
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.getAttribute('data-i18n');
+      const translation = getNestedTranslation(dict, key);
+      if (translation !== undefined) {
+        if (translation.includes('<') && translation.includes('>')) {
+          el.innerHTML = translation;
+        } else {
+          el.textContent = translation;
+        }
+      }
+    });
+
+    // 2. Update attributes (placeholder, title, aria-label)
+    document.querySelectorAll('[data-i18n-attr]').forEach(el => {
+      const attrData = el.getAttribute('data-i18n-attr');
+      const pairs = attrData.split(',');
+      pairs.forEach(pair => {
+        const [attrName, key] = pair.split(':');
+        if (attrName && key) {
+          const translation = getNestedTranslation(dict, key.trim());
+          if (translation !== undefined) {
+            el.setAttribute(attrName.trim(), translation);
+          }
+        }
+      });
+    });
+
+    // 3. Keep Laravel session in sync in background
+    fetch('/lang/' + locale, {
+      headers: {
+        'X-Requested-With': 'XMLHttpRequest',
+        'Accept': 'application/json'
+      }
+    }).catch(() => {});
+
+    if (showNotice) {
+      showToast(locale === 'id' ? 'Bahasa Indonesia diaktifkan' : 'Switched to English');
+    }
+  }
+
+  // Bind language buttons
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      const selected = btn.getAttribute('data-lang');
+      if (selected && selected !== currentLocale) {
+        applyLocale(selected, true);
+      }
+    });
+  });
+
+  // Apply default/saved locale on load
+  applyLocale(currentLocale, false);
 });

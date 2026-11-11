@@ -17,4 +17,3 @@ class Testimonial extends Model
         'rating' => 'integer',
     ];
 }
-

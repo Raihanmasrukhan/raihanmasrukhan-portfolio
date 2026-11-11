@@ -25,6 +25,7 @@ Route::get('/lang/{locale}', function (string $locale) {
     if (request()->wantsJson()) {
         return response()->json(['locale' => $locale]);
     }
+
     return redirect()->back();
 })->name('lang.switch');
 

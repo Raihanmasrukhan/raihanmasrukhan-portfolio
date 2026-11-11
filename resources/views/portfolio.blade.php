@@ -1,10 +1,27 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="{{ $currentLocale ?? 'id' }}">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{{ $profile->full_name }} — {{ $profile->headline }}</title>
   
+  <!-- Instant Theme & Locale Initialization (prevents FOUC) -->
+  <script>
+    (function() {
+      try {
+        const savedTheme = localStorage.getItem('portfolio_theme');
+        const systemPrefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
+        const activeTheme = savedTheme ? savedTheme : (systemPrefersLight ? 'light' : 'dark');
+        document.documentElement.setAttribute('data-theme', activeTheme);
+        if (activeTheme === 'light') {
+          document.documentElement.classList.add('light-mode');
+        }
+        const savedLocale = localStorage.getItem('portfolio_locale') || '{{ $currentLocale ?? "id" }}';
+        document.documentElement.setAttribute('lang', savedLocale);
+      } catch(e) {}
+    })();
+  </script>
+
   <!-- SEO & Social Meta Tags -->
   <meta name="description" content="Portfolio of {{ $profile->full_name }}. {{ $profile->headline }}. {{ $profile->sub_headline }}">
   <meta name="keywords" content="{{ $profile->full_name }}, Software Engineer, Full-Stack Developer, Web Developer Indonesia, Laravel, React, Tailwind, SaaS, Geofencing, PWA">
@@ -73,6 +90,40 @@
       font-size: 0.85rem;
       letter-spacing: 2px;
     }
+
+    /* Light Theme Overrides for Testimonials & Components */
+    [data-theme="light"] .testimonials-section,
+    body.light-mode .testimonials-section {
+      background: linear-gradient(180deg, var(--bg-primary) 0%, rgba(241, 245, 249, 0.85) 50%, var(--bg-primary) 100%);
+    }
+    [data-theme="light"] .testimonial-card,
+    body.light-mode .testimonial-card {
+      background: #ffffff;
+      border-color: rgba(15, 23, 42, 0.08);
+      box-shadow: 0 4px 20px rgba(15, 23, 42, 0.04);
+    }
+    [data-theme="light"] .testimonial-card.is-featured,
+    body.light-mode .testimonial-card.is-featured {
+      background: linear-gradient(145deg, #ffffff 0%, #fff7ed 100%);
+      border-color: rgba(255, 85, 0, 0.45);
+      box-shadow: 0 10px 30px rgba(255, 85, 0, 0.08);
+    }
+    [data-theme="light"] .testimonial-card blockquote,
+    body.light-mode .testimonial-card blockquote {
+      color: #334155 !important;
+    }
+    [data-theme="light"] .testimonial-card .text-white,
+    body.light-mode .testimonial-card .text-white {
+      color: #0f172a !important;
+    }
+    [data-theme="light"] .testimonial-card .text-gray-400,
+    body.light-mode .testimonial-card .text-gray-400 {
+      color: #64748b !important;
+    }
+    [data-theme="light"] .testimonial-card .border-gray-800\/80,
+    body.light-mode .testimonial-card .border-gray-800\/80 {
+      border-color: rgba(15, 23, 42, 0.08) !important;
+    }
   </style>
 </head>
 <body>
@@ -98,19 +149,48 @@
         <span id="live-time">19:30:00 WIB</span>
       </div>
 
-      <div class="header-right flex items-center gap-3">
+      <div class="header-right flex items-center gap-2.5 sm:gap-3">
+        <!-- Language Switcher Pill -->
+        <div class="lang-switcher-pill" id="lang-switcher" aria-label="Pilih Bahasa / Language">
+          <button type="button" class="lang-btn active" data-lang="id" title="Bahasa Indonesia">ID</button>
+          <span class="lang-divider">/</span>
+          <button type="button" class="lang-btn" data-lang="en" title="English">EN</button>
+        </div>
+
+        <!-- Light / Dark Mode Toggle Button -->
+        <button id="theme-toggle" class="btn-theme-toggle" aria-label="Toggle light or dark mode" title="Mode Terang / Gelap">
+          <span class="theme-icon-dark" aria-hidden="true">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="5"></circle>
+              <line x1="12" y1="1" x2="12" y2="3"></line>
+              <line x1="12" y1="21" x2="12" y2="23"></line>
+              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+              <line x1="1" y1="12" x2="3" y2="12"></line>
+              <line x1="21" y1="12" x2="23" y2="12"></line>
+              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+            </svg>
+          </span>
+          <span class="theme-icon-light" aria-hidden="true">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg>
+          </span>
+        </button>
+
         @auth
-          <a href="{{ route('admin.dashboard') }}" class="text-[11px] font-mono text-[#ff5500] hover:text-white uppercase tracking-wider px-3 py-1.5 rounded-full border border-[#ff5500]/40 bg-[#ff5500]/10 transition-colors hidden sm:inline-block">
+          <a href="{{ route('admin.dashboard') }}" class="text-[11px] font-mono text-[#ff5500] hover:text-white uppercase tracking-wider px-3 py-1.5 rounded-full border border-[#ff5500]/40 bg-[#ff5500]/10 transition-colors hidden sm:inline-block" data-i18n="nav.admin_dashboard">
             Dashboard Admin ➔
           </a>
         @else
-          <a href="{{ route('login') }}" class="text-[11px] font-mono text-gray-400 hover:text-white uppercase tracking-wider px-3 py-1.5 rounded-full border border-gray-800 bg-gray-900/60 transition-colors hidden sm:inline-block">
+          <a href="{{ route('login') }}" class="text-[11px] font-mono text-gray-400 hover:text-white uppercase tracking-wider px-3 py-1.5 rounded-full border border-gray-800 bg-gray-900/60 transition-colors hidden sm:inline-block" data-i18n="nav.admin_login">
             Admin Login
           </a>
         @endauth
 
         <button class="btn-menu-toggle" id="menu-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
-          <span>MENU</span>
+          <span id="menu-btn-text">MENU</span>
           <div class="menu-icon-bars" aria-hidden="true">
             <span></span>
             <span></span>
@@ -123,21 +203,41 @@
   <!-- Fullscreen Navigation Overlay -->
   <div class="nav-overlay" id="nav-overlay" role="dialog" aria-modal="true" aria-label="Navigation Menu">
     <div class="nav-overlay-inner">
-      <div class="nav-overlay-label">NAVIGATION INDEX</div>
+      <!-- Mobile Preferences Bar -->
+      <div class="flex items-center justify-between pb-3.5 mb-3 border-b border-white/10 sm:hidden">
+        <div class="text-[11px] font-mono text-gray-400 uppercase tracking-widest">PILIHAN TAMPILAN</div>
+        <div class="flex items-center gap-2">
+          <div class="lang-switcher-pill" id="mobile-lang-switcher" aria-label="Pilih Bahasa">
+            <button type="button" class="lang-btn active" data-lang="id">ID</button>
+            <span class="lang-divider">/</span>
+            <button type="button" class="lang-btn" data-lang="en">EN</button>
+          </div>
+          <button id="mobile-theme-toggle" class="btn-theme-toggle" aria-label="Toggle theme">
+            <span class="theme-icon-dark" aria-hidden="true">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+            </span>
+            <span class="theme-icon-light" aria-hidden="true">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+            </span>
+          </button>
+        </div>
+      </div>
+
+      <div class="nav-overlay-label" data-i18n="nav.index_label">NAVIGATION INDEX</div>
       <nav class="nav-links-list">
-        <div class="nav-link-item"><a href="#about"><span class="nav-num">01</span><span class="nav-text">ABOUT ME</span><span class="nav-arrow">→</span></a></div>
-        <div class="nav-link-item"><a href="#services"><span class="nav-num">02</span><span class="nav-text">WHAT I OFFER</span><span class="nav-arrow">→</span></a></div>
-        <div class="nav-link-item"><a href="#process"><span class="nav-num">03</span><span class="nav-text">HOW I WORK</span><span class="nav-arrow">→</span></a></div>
-        <div class="nav-link-item"><a href="#experience"><span class="nav-num">04</span><span class="nav-text">EXPERIENCE</span><span class="nav-arrow">→</span></a></div>
-        <div class="nav-link-item"><a href="#projects"><span class="nav-num">05</span><span class="nav-text">SELECTED WORKS</span><span class="nav-arrow">→</span></a></div>
-        <div class="nav-link-item"><a href="#milestones"><span class="nav-num">06</span><span class="nav-text">MILESTONES</span><span class="nav-arrow">→</span></a></div>
-        <div class="nav-link-item"><a href="#stack-education"><span class="nav-num">07</span><span class="nav-text">STACK &amp; EDU</span><span class="nav-arrow">→</span></a></div>
-        <div class="nav-link-item"><a href="#testimonials"><span class="nav-num">08</span><span class="nav-text">TESTIMONIALS</span><span class="nav-arrow">→</span></a></div>
-        <div class="nav-link-item nav-link-cta"><a href="#contact"><span class="nav-num">09</span><span class="nav-text">START A PROJECT</span><span class="nav-arrow">➔</span></a></div>
+        <div class="nav-link-item"><a href="#about"><span class="nav-num">01</span><span class="nav-text" data-i18n="nav.about">ABOUT ME</span><span class="nav-arrow">→</span></a></div>
+        <div class="nav-link-item"><a href="#services"><span class="nav-num">02</span><span class="nav-text" data-i18n="nav.services">WHAT I OFFER</span><span class="nav-arrow">→</span></a></div>
+        <div class="nav-link-item"><a href="#process"><span class="nav-num">03</span><span class="nav-text" data-i18n="nav.process">HOW I WORK</span><span class="nav-arrow">→</span></a></div>
+        <div class="nav-link-item"><a href="#experience"><span class="nav-num">04</span><span class="nav-text" data-i18n="nav.experience">EXPERIENCE</span><span class="nav-arrow">→</span></a></div>
+        <div class="nav-link-item"><a href="#projects"><span class="nav-num">05</span><span class="nav-text" data-i18n="nav.projects">SELECTED WORKS</span><span class="nav-arrow">→</span></a></div>
+        <div class="nav-link-item"><a href="#milestones"><span class="nav-num">06</span><span class="nav-text" data-i18n="nav.milestones">MILESTONES</span><span class="nav-arrow">→</span></a></div>
+        <div class="nav-link-item"><a href="#stack-education"><span class="nav-num">07</span><span class="nav-text" data-i18n="nav.stack">STACK &amp; EDU</span><span class="nav-arrow">→</span></a></div>
+        <div class="nav-link-item"><a href="#testimonials"><span class="nav-num">08</span><span class="nav-text" data-i18n="nav.testimonials">TESTIMONIALS</span><span class="nav-arrow">→</span></a></div>
+        <div class="nav-link-item nav-link-cta"><a href="#contact"><span class="nav-num">09</span><span class="nav-text" data-i18n="nav.start_project">START A PROJECT</span><span class="nav-arrow">➔</span></a></div>
         @auth
-          <div class="nav-link-item nav-link-admin"><a href="{{ route('admin.dashboard') }}"><span class="nav-num">10</span><span class="nav-text">ADMIN DASHBOARD</span><span class="nav-arrow">⚙</span></a></div>
+          <div class="nav-link-item nav-link-admin"><a href="{{ route('admin.dashboard') }}"><span class="nav-num">10</span><span class="nav-text" data-i18n="nav.admin_dashboard">ADMIN DASHBOARD</span><span class="nav-arrow">⚙</span></a></div>
         @else
-          <div class="nav-link-item nav-link-admin"><a href="{{ route('login') }}"><span class="nav-num">10</span><span class="nav-text">ADMIN LOGIN</span><span class="nav-arrow">→</span></a></div>
+          <div class="nav-link-item nav-link-admin"><a href="{{ route('login') }}"><span class="nav-num">10</span><span class="nav-text" data-i18n="nav.admin_login">ADMIN LOGIN</span><span class="nav-arrow">→</span></a></div>
         @endauth
       </nav>
       <div class="nav-overlay-footer">
@@ -168,7 +268,7 @@
           <div class="hero-title-wrap">
             <div class="hero-badge-pill">
               <span class="hero-badge-dot"></span>
-              <span>{{ $profile->availability_status ?? 'Available for Projects' }}</span>
+              <span data-i18n="hero.available">{{ $profile->availability_status ?? 'Available for Projects' }}</span>
             </div>
             <h1 class="hero-name">
               <span class="hero-name-top">{{ $profile->hero_title_line1 }}</span>
@@ -186,9 +286,9 @@
               }
             @endphp
             @if(!empty($headlineStr))
-              <span class="hero-description-lead">{{ $headlineStr }}</span>
+              <span class="hero-description-lead" data-i18n="hero.headline">{{ $headlineStr }}</span>
             @endif
-            <span class="hero-description-body">{{ $cleanedBody }}</span>
+            <span class="hero-description-body" data-i18n="hero.sub_headline">{{ $cleanedBody }}</span>
           </div>
 
           <div class="hero-actions">
@@ -217,7 +317,7 @@
             </div>
 
             <a href="#contact" class="btn-primary-orange">
-              <span>START A PROJECT</span>
+              <span data-i18n="hero.start_project_cta">START A PROJECT</span>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
             </a>
           </div>
@@ -232,7 +332,7 @@
           <!-- Floating Services Pill -->
           @if(is_array($profile->hero_specialties) && count($profile->hero_specialties) > 0)
             <div class="hero-services-pill">
-              <div class="services-tag-header">Specialties</div>
+              <div class="services-tag-header" data-i18n="hero.specialties_title">Specialties</div>
               <ul class="services-tag-list">
                 @foreach($profile->hero_specialties as $specialty)
                   <li>{{ $specialty }}</li>
@@ -249,10 +349,10 @@
       <div class="container">
         <div class="about-grid reveal">
           <div class="about-meta">
-            <span>[ ABOUT ME ]</span>
+            <span data-i18n="about.tag">[ ABOUT ME ]</span>
           </div>
           <div>
-            <div class="about-statement">
+            <div class="about-statement" data-i18n="about.statement">
               {!! $profile->about_statement !!}
             </div>
           </div>
@@ -265,7 +365,7 @@
               <img src="{{ asset($miniProject->image) }}" alt="{{ $miniProject->title }} Preview" loading="lazy">
               <div class="gallery-card-badge">
                 <span>{{ $miniProject->badge ?? $miniProject->category }}</span>
-                <span class="pill">VIEW ➔</span>
+                <span class="pill" data-i18n="about.view_btn">VIEW ➔</span>
               </div>
             </div>
           @endforeach
@@ -279,11 +379,11 @@
         <div class="services-top-bar reveal">
           <div>
             <div class="section-counter">02 <span>/ 05</span></div>
-            <h2 class="section-title-large">WHAT I OFFER</h2>
+            <h2 class="section-title-large" data-i18n="services.title">WHAT I OFFER</h2>
           </div>
           <div>
             <a href="#contact" class="btn-view-all">
-              <span>DISCUSS A PROJECT</span>
+              <span data-i18n="services.cta">DISCUSS A PROJECT</span>
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
             </a>
           </div>
@@ -315,10 +415,10 @@
       <div class="container">
         <div class="process-header reveal">
           <div>
-            <div class="section-tag">WORK PROCESS</div>
-            <h2 class="section-title-large">HOW I WORK</h2>
+            <div class="section-tag" data-i18n="process.tag">WORK PROCESS</div>
+            <h2 class="section-title-large" data-i18n="process.title">HOW I WORK</h2>
           </div>
-          <p class="process-subtitle">
+          <p class="process-subtitle" data-i18n="process.subtitle">
             A simple, disciplined engineering process designed to turn complex business ideas into high-impact digital products, from concept to production.
           </p>
         </div>
@@ -341,9 +441,9 @@
     <section class="experience-section" id="experience">
       <div class="container">
         <div class="experience-header-wrap reveal">
-          <div class="experience-badge">My Experience</div>
+          <div class="experience-badge" data-i18n="experience.badge">My Experience</div>
           <h2 class="experience-title">
-            Turning Ideas into <span class="highlight-orange">High-Performance</span> Systems
+            <span data-i18n="experience.title_prefix">Turning Ideas into</span> <span class="highlight-orange" data-i18n="experience.title_highlight">High-Performance</span> <span data-i18n="experience.title_suffix">Systems</span>
           </h2>
         </div>
 
@@ -375,7 +475,7 @@
 
           <div class="experience-cta-wrap">
             <a href="#contact" class="btn-floating-cta">
-              <span>Let's Work Together</span>
+              <span data-i18n="experience.cta">Let's Work Together</span>
               <span class="btn-circle-icon">➔</span>
             </a>
           </div>
@@ -388,15 +488,15 @@
       <div class="container">
         <div class="projects-top reveal">
           <div>
-            <div class="section-tag">PORTFOLIO SHOWCASE</div>
-            <h2 class="section-title-large">SELECTED WORKS</h2>
+            <div class="section-tag" data-i18n="projects.tag">PORTFOLIO SHOWCASE</div>
+            <h2 class="section-title-large" data-i18n="projects.title">SELECTED WORKS</h2>
           </div>
 
           <div class="filter-buttons">
-            <button class="filter-btn active" data-filter="all">All Projects</button>
-            <button class="filter-btn" data-filter="saas">SaaS Platforms</button>
-            <button class="filter-btn" data-filter="enterprise">Management Systems</button>
-            <button class="filter-btn" data-filter="landing">Landing & CMS</button>
+            <button class="filter-btn active" data-filter="all" data-i18n="projects.filter_all">All Projects</button>
+            <button class="filter-btn" data-filter="saas" data-i18n="projects.filter_saas">SaaS Platforms</button>
+            <button class="filter-btn" data-filter="enterprise" data-i18n="projects.filter_enterprise">Management Systems</button>
+            <button class="filter-btn" data-filter="landing" data-i18n="projects.filter_landing">Landing & CMS</button>
           </div>
         </div>
 
@@ -420,7 +520,7 @@
                 @endif
                 <div class="project-actions">
                   <button class="btn-project-detail" data-project-trigger="{{ $project->slug }}">
-                    <span>Explore Case Study</span>
+                    <span data-i18n="projects.explore">Explore Case Study</span>
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
                   </button>
                 </div>
@@ -436,16 +536,16 @@
       <div class="container">
         <div class="milestones-header reveal">
           <div>
-            <div class="section-tag">PROVEN TRACK RECORD</div>
+            <div class="section-tag" data-i18n="milestones.tag">PROVEN TRACK RECORD</div>
             <h2 class="milestones-title">
-              PROVEN
-              <span class="sub-line">MILESTONES</span>
+              <span data-i18n="milestones.title_main">PROVEN</span>
+              <span class="sub-line" data-i18n="milestones.title_sub">MILESTONES</span>
             </h2>
           </div>
           <div>
             @if($profile->github_url)
               <a href="{{ $profile->github_url }}" target="_blank" rel="noopener" class="btn-awards-cta">
-                <span>VIEW GITHUB REPOS</span>
+                <span data-i18n="milestones.btn_github">VIEW GITHUB REPOS</span>
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="14" y1="5" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
               </a>
             @endif
@@ -456,10 +556,10 @@
           <table class="milestones-table">
             <thead>
               <tr>
-                <th>ORGANIZATION / CLIENT</th>
-                <th>PROJECT & DELIVERABLE</th>
-                <th>PRIMARY TECH</th>
-                <th>PERIOD / STATUS</th>
+                <th data-i18n="milestones.col_org">ORGANIZATION / CLIENT</th>
+                <th data-i18n="milestones.col_project">PROJECT & DELIVERABLE</th>
+                <th data-i18n="milestones.col_tech">PRIMARY TECH</th>
+                <th data-i18n="milestones.col_period">PERIOD / STATUS</th>
               </tr>
             </thead>
             <tbody>
@@ -482,12 +582,12 @@
       <div class="container split-grid-section">
         <!-- Tech Stack Matrix -->
         <div class="reveal">
-          <div class="section-tag">CORE COMPETENCIES</div>
-          <h2 class="section-title-large" style="margin-bottom: 2rem;">TECH STACK</h2>
+          <div class="section-tag" data-i18n="stack_edu.skills_tag">CORE COMPETENCIES</div>
+          <h2 class="section-title-large" style="margin-bottom: 2rem;" data-i18n="stack_edu.skills_title">TECH STACK</h2>
 
           @if(isset($skillsByCategory['web_app']))
             <div class="skills-category">
-              <div class="skills-cat-title">// Web & App Development</div>
+              <div class="skills-cat-title" data-i18n="stack_edu.cat_webapp">// Web & App Development</div>
               <div class="skills-tag-cloud">
                 @foreach($skillsByCategory['web_app'] as $skill)
                   <span class="skill-pill">{{ $skill->name }}</span>
@@ -498,7 +598,7 @@
 
           @if(isset($skillsByCategory['database_arch']))
             <div class="skills-category">
-              <div class="skills-cat-title">// Database & Architecture</div>
+              <div class="skills-cat-title" data-i18n="stack_edu.cat_database">// Database & Architecture</div>
               <div class="skills-tag-cloud">
                 @foreach($skillsByCategory['database_arch'] as $skill)
                   <span class="skill-pill">{{ $skill->name }}</span>
@@ -509,7 +609,7 @@
 
           @if(isset($skillsByCategory['tools_cloud']))
             <div class="skills-category">
-              <div class="skills-cat-title">// Tools, Cloud & Creative</div>
+              <div class="skills-cat-title" data-i18n="stack_edu.cat_tools">// Tools, Cloud & Creative</div>
               <div class="skills-tag-cloud">
                 @foreach($skillsByCategory['tools_cloud'] as $skill)
                   <span class="skill-pill">{{ $skill->name }}</span>
@@ -521,8 +621,8 @@
 
         <!-- Academic Background -->
         <div class="reveal">
-          <div class="section-tag">EDUCATION</div>
-          <h2 class="section-title-large" style="margin-bottom: 2rem;">ACADEMIC</h2>
+          <div class="section-tag" data-i18n="stack_edu.edu_tag">EDUCATION</div>
+          <h2 class="section-title-large" style="margin-bottom: 2rem;" data-i18n="stack_edu.edu_title">ACADEMIC</h2>
 
           @foreach($educations as $education)
             <div class="edu-card">
@@ -543,10 +643,10 @@
       <div class="container">
         <div class="services-top-bar reveal">
           <div>
-            <div class="section-tag">CLIENT ENDORSEMENTS</div>
-            <h2 class="section-title-large">TESTIMONIALS</h2>
+            <div class="section-tag" data-i18n="testimonials.tag">CLIENT ENDORSEMENTS</div>
+            <h2 class="section-title-large" data-i18n="testimonials.title">TESTIMONIALS</h2>
           </div>
-          <p class="text-xs font-mono text-gray-400 max-w-md leading-relaxed">
+          <p class="text-xs font-mono text-gray-400 max-w-md leading-relaxed" data-i18n="testimonials.subtitle">
             Perspectives from founders, executives, and institutional partners on engineering scalable digital platforms together.
           </p>
         </div>
@@ -563,7 +663,7 @@
                       {{ $item->project_tag }}
                     </span>
                   @else
-                    <span class="px-2.5 py-1 text-[10px] font-mono uppercase tracking-wider rounded bg-gray-800 text-gray-300 font-semibold">
+                    <span class="px-2.5 py-1 text-[10px] font-mono uppercase tracking-wider rounded bg-gray-800 text-gray-300 font-semibold" data-i18n="testimonials.verified_partner">
                       Verified Partner
                     </span>
                   @endif
@@ -596,7 +696,7 @@
               </div>
             </article>
           @empty
-            <div class="col-span-full p-12 text-center rounded-2xl bg-[#121218] border border-gray-800 text-gray-500 font-mono text-xs">
+            <div class="col-span-full p-12 text-center rounded-2xl bg-[#121218] border border-gray-800 text-gray-500 font-mono text-xs" data-i18n="testimonials.empty">
               Client testimonials will appear here once published.
             </div>
           @endforelse
@@ -610,11 +710,11 @@
         <div class="contact-grid">
           <!-- Left Contact Info -->
           <div class="reveal">
-            <div class="section-tag">GET IN TOUCH</div>
+            <div class="section-tag" data-i18n="contact.tag">GET IN TOUCH</div>
             <h2 class="contact-title">
-              LET'S BUILD SOMETHING <span>IMPACTFUL</span>
+              <span data-i18n="contact.title_prefix">LET'S BUILD SOMETHING</span> <span data-i18n="contact.title_highlight">IMPACTFUL</span>
             </h2>
-            <p class="contact-desc">
+            <p class="contact-desc" data-i18n="contact.desc">
               Siap berkolaborasi dalam perancangan aplikasi web berskala produksi, platform SaaS kustom, sistem manajemen internal, maupun landing page berkonversi tinggi.
             </p>
 
@@ -625,7 +725,7 @@
                   <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
                 </div>
                 <div class="contact-item-text">
-                  <span class="label">WhatsApp & Phone</span>
+                  <span class="label" data-i18n="contact.label_wa">WhatsApp & Phone</span>
                   <div class="value">
                     <a href="https://wa.me/{{ $profile->whatsapp_number }}" target="_blank" rel="noopener">{{ $profile->phone }}</a>
                     <button class="btn-copy" data-copy="{{ $profile->whatsapp_number }}" title="Copy phone number">Copy</button>
@@ -639,7 +739,7 @@
                   <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
                 </div>
                 <div class="contact-item-text">
-                  <span class="label">Email Address</span>
+                  <span class="label" data-i18n="contact.label_email">Email Address</span>
                   <div class="value">
                     <a href="mailto:{{ $profile->email }}">{{ $profile->email }}</a>
                     <button class="btn-copy" data-copy="{{ $profile->email }}" title="Copy email address">Copy</button>
@@ -653,7 +753,7 @@
                   <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
                 </div>
                 <div class="contact-item-text">
-                  <span class="label">Location</span>
+                  <span class="label" data-i18n="contact.label_location">Location</span>
                   <div class="value" style="color:var(--text-secondary);">{{ $profile->location }}</div>
                 </div>
               </div>
@@ -665,17 +765,17 @@
             <form id="contact-form" action="{{ route('contact.submit') }}" method="POST">
               @csrf
               <div class="form-group">
-                <label for="sender-name" class="form-label">Your Name / Company</label>
-                <input type="text" id="sender-name" name="name" class="form-input" placeholder="e.g. Budi Santoso / PT. Inovasi Digital" required>
+                <label for="sender-name" class="form-label" data-i18n="contact.form_name">Your Name / Company</label>
+                <input type="text" id="sender-name" name="name" class="form-input" placeholder="e.g. Budi Santoso / PT. Inovasi Digital" data-i18n-attr="placeholder:contact.placeholder_name" required>
               </div>
 
               <div class="form-group">
-                <label for="sender-email" class="form-label">Your Email or WhatsApp</label>
-                <input type="text" id="sender-email" name="email_or_phone" class="form-input" placeholder="e.g. budi@example.com or 08123456789" required>
+                <label for="sender-email" class="form-label" data-i18n="contact.form_contact">Your Email or WhatsApp</label>
+                <input type="text" id="sender-email" name="email_or_phone" class="form-input" placeholder="e.g. budi@example.com or 08123456789" data-i18n-attr="placeholder:contact.placeholder_contact" required>
               </div>
 
               <div class="form-group">
-                <label for="project-type" class="form-label">Interested Service / Project Type</label>
+                <label for="project-type" class="form-label" data-i18n="contact.form_service">Interested Service / Project Type</label>
                 <select id="project-type" name="project_type" class="form-select">
                   <option value="SaaS & Custom Web Application">SaaS & Custom Web Application</option>
                   <option value="Enterprise Management System">Enterprise Management System</option>
@@ -686,12 +786,12 @@
               </div>
 
               <div class="form-group">
-                <label for="sender-message" class="form-label">Project Details & Requirements</label>
-                <textarea id="sender-message" name="message" class="form-textarea" placeholder="Ceritakan ide, kebutuhan sistem, atau jadwal pengerjaan proyek Anda..." required></textarea>
+                <label for="sender-message" class="form-label" data-i18n="contact.form_details">Project Details & Requirements</label>
+                <textarea id="sender-message" name="message" class="form-textarea" placeholder="Ceritakan ide, kebutuhan sistem, atau jadwal pengerjaan proyek Anda..." data-i18n-attr="placeholder:contact.placeholder_details" required></textarea>
               </div>
 
               <button type="submit" class="btn-submit-form">
-                <span>SEND DIRECT VIA WHATSAPP</span>
+                <span data-i18n="contact.btn_submit">SEND DIRECT VIA WHATSAPP</span>
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
               </button>
             </form>
@@ -706,7 +806,7 @@
 
           <div>
             <a href="#hero" class="btn-scroll-top" id="scroll-top-btn">
-              <span>BACK TO TOP</span>
+              <span data-i18n="footer.back_to_top">BACK TO TOP</span>
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="19" x2="12" y2="5"></line><polyline points="5 12 12 5 19 12"></polyline></svg>
             </a>
           </div>
@@ -730,26 +830,26 @@
 
         <div class="modal-meta-grid">
           <div class="modal-meta-item">
-            <span class="meta-label">Client / Org</span>
+            <span class="meta-label" data-i18n="modal.client">Client / Org</span>
             <div class="meta-val" id="modal-client">Client Name</div>
           </div>
           <div class="modal-meta-item">
-            <span class="meta-label">Role</span>
+            <span class="meta-label" data-i18n="modal.role">Role</span>
             <div class="meta-val" id="modal-role">Full-Stack Developer</div>
           </div>
           <div class="modal-meta-item">
-            <span class="meta-label">Timeline</span>
+            <span class="meta-label" data-i18n="modal.timeline">Timeline</span>
             <div class="meta-val" id="modal-timeline">Nov 2024 – Present</div>
           </div>
         </div>
 
         <p class="modal-desc" id="modal-desc">Project comprehensive overview...</p>
 
-        <h4 style="font-family:var(--font-mono);font-size:0.82rem;color:var(--accent-orange);margin-bottom:0.75rem;text-transform:uppercase;letter-spacing:0.08em;">Key Deliverables & Impact</h4>
+        <h4 style="font-family:var(--font-mono);font-size:0.82rem;color:var(--accent-orange);margin-bottom:0.75rem;text-transform:uppercase;letter-spacing:0.08em;" data-i18n="modal.deliverables">Key Deliverables & Impact</h4>
         <ul id="modal-highlights" style="margin-bottom:1.5rem;font-size:0.9rem;color:var(--text-secondary);line-height:1.6;">
         </ul>
 
-        <h4 style="font-family:var(--font-mono);font-size:0.82rem;color:var(--text-muted);margin-bottom:0.75rem;text-transform:uppercase;letter-spacing:0.08em;">Technologies Used</h4>
+        <h4 style="font-family:var(--font-mono);font-size:0.82rem;color:var(--text-muted);margin-bottom:0.75rem;text-transform:uppercase;letter-spacing:0.08em;" data-i18n="modal.technologies">Technologies Used</h4>
         <div id="modal-stack" style="display:flex;flex-wrap:wrap;gap:0.5rem;">
         </div>
       </div>
@@ -761,6 +861,12 @@
 
   <!-- Dynamic Database Projects Injected into JavaScript -->
   <script>
+    window.I18N_DICTIONARY = {
+      id: @json(trans('portfolio', [], 'id')),
+      en: @json(trans('portfolio', [], 'en'))
+    };
+    window.ACTIVE_LOCALE = @json($currentLocale ?? 'id');
+
     window.DYNAMIC_PROJECTS = {
       @foreach($projects as $p)
         '{{ $p->slug }}': {
