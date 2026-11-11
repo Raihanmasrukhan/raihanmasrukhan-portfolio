@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Raihan Adib Masrukhan — Software Engineer & Full-Stack Web Developer</title>
+  
+  <!-- SEO & Social Meta Tags -->
+  <meta name="description" content="Portfolio of Raihan Adib Masrukhan. Software Engineer & Full-Stack Web Developer specializing in Laravel, React.js, Multi-tenant SaaS architecture, Geofencing, PWA, and high-impact digital solutions.">
+  <meta name="keywords" content="Raihan Adib Masrukhan, Software Engineer, Full-Stack Developer, Web Developer Indonesia, Laravel, React, SaaS, Geofencing, PWA">
+  <meta name="author" content="Raihan Adib Masrukhan">
+
+  <!-- Open Graph / Social Sharing -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Raihan Adib Masrukhan — Software Engineer & Full-Stack Web Developer">
+  <meta property="og:description" content="Transforming complex business logic into high-performance web applications, scalable SaaS systems, and intuitive digital experiences.">
+  <meta property="og:image" content="assets/images/hero.jpg">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23ff5500'/><text x='50%' y='55%' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-weight='900' font-size='52' fill='%23000'>RM</text></svg>">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=JetBrains+Mono:wght@400;500;700&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+  <!-- Custom Cursor Elements -->
+  <div class="custom-cursor" aria-hidden="true"></div>
+  <div class="custom-cursor-follower" aria-hidden="true"></div>
+
+  <!-- Site Header -->
+  <header class="site-header" id="site-header">
+    <div class="container header-inner">
+      <div class="header-left">
+        <div class="location-badge">
+          <span class="status-dot"></span>
+          <span>Based in Depok & Bogor, ID</span>
+        </div>
+      </div>
+
+      <div class="header-center">
+        <span class="time-pulse">●</span>
+        <span id="live-time">19:30:00 WIB</span>
+      </div>
+
+      <div class="header-right">
+        <button class="btn-menu-toggle" id="menu-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+          <span>MENU</span>
+          <div class="menu-icon-bars" aria-hidden="true">
+            <span></span>
+            <span></span>
+          </div>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Fullscreen Navigation Overlay -->
+  <div class="nav-overlay" id="nav-overlay" role="dialog" aria-modal="true" aria-label="Navigation Menu">
+    <div class="nav-overlay-inner">
+      <nav class="nav-links-list">
+        <div class="nav-link-item"><a href="#about">01. ABOUT</a></div>
+        <div class="nav-link-item"><a href="#services">02. WHAT I OFFER</a></div>
+        <div class="nav-link-item"><a href="#process">03. HOW I WORK</a></div>
+        <div class="nav-link-item"><a href="#experience">04. EXPERIENCE</a></div>
+        <div class="nav-link-item"><a href="#projects">05. SELECTED WORKS</a></div>
+        <div class="nav-link-item"><a href="#milestones">06. MILESTONES</a></div>
+        <div class="nav-link-item"><a href="#stack-education">07. STACK & EDU</a></div>
+        <div class="nav-link-item"><a href="#contact" style="color:var(--accent-orange);">08. START A PROJECT ➔</a></div>
+      </nav>
+      <div class="nav-overlay-footer">
+        <a href="https://github.com/Raihanmasrukhan" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://www.linkedin.com/in/raihan-masrukhan-22626b316/" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://wa.me/6285864459552" target="_blank" rel="noopener">WhatsApp</a>
+        <a href="mailto:Raihanmasrukhan56@gmail.com">Email</a>
+      </div>
+    </div>
+  </div>
+
+  <main id="main-content">
+    <!-- Hero Section (Matches Reference Image) -->
+    <section class="hero-section" id="hero">
+      <div class="hero-bg-accent" aria-hidden="true"></div>
+      <div class="hero-vignette" aria-hidden="true"></div>
+
+      <div class="container hero-grid">
+        <!-- Left Hero Typography & Actions -->
+        <div class="hero-left">
+          <div class="hero-title-wrap">
+            <h1 class="hero-name">
+              <span>RAIHAN</span>
+              <span class="hero-name-sub"><span class="outline-text">MAS</span>RUKHAN</span>
+            </h1>
+          </div>
+
+          <p class="hero-description">
+            Software Engineer & Full-Stack Web Developer. Transforming complex business logic into high-performance web applications, scalable SaaS systems, and intuitive digital experiences.
+          </p>
+
+          <div class="hero-actions">
+            <div class="social-links">
+              <!-- GitHub -->
+              <a href="https://github.com/Raihanmasrukhan" target="_blank" rel="noopener" class="social-btn" aria-label="GitHub Profile">
+                <svg viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+              </a>
+              <!-- LinkedIn -->
+              <a href="https://www.linkedin.com/in/raihan-masrukhan-22626b316/" target="_blank" rel="noopener" class="social-btn" aria-label="LinkedIn Profile">
+                <svg viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+              </a>
+              <!-- WhatsApp -->
+              <a href="https://wa.me/6285864459552" target="_blank" rel="noopener" class="social-btn" aria-label="Direct WhatsApp">
+                <svg viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+              </a>
+              <!-- Email -->
+              <a href="mailto:Raihanmasrukhan56@gmail.com" class="social-btn" aria-label="Send Email">
+                <svg viewBox="0 0 24 24"><path d="M0 3v18h24v-18h-24zm21.518 2l-9.518 7.713-9.518-7.713h19.036zm-19.518 14v-11.817l9.518 7.682 9.518-7.682v11.817h-19.036z"/></svg>
+              </a>
+            </div>
+
+            <a href="#contact" class="btn-primary-orange">
+              <span>START A PROJECT</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Right Hero Portrait & Floating Specialties -->
+        <div class="hero-right">
+          <div class="portrait-wrapper">
+            <img src="assets/images/hero.jpg" alt="Raihan Adib Masrukhan portrait" class="portrait-img" width="520" height="520">
+          </div>
+
+          <!-- Floating Services Pill (Image 1 Style) -->
+          <div class="hero-services-pill">
+            <div class="services-tag-header">Specialties</div>
+            <ul class="services-tag-list">
+              <li>Full-Stack Web Dev</li>
+              <li>SaaS Architecture</li>
+              <li>Laravel & React Ecosystem</li>
+              <li>Geofencing & PWA Systems</li>
+              <li>Creative UI/UX Engineering</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Editorial About Section (Matches Reference Image) -->
+    <section class="about-section" id="about">
+      <div class="container">
+        <div class="about-grid reveal">
+          <div class="about-meta">
+            <span>[ ABOUT ME ]</span>
+          </div>
+          <div>
+            <p class="about-statement">
+              I build <span class="text-bold">production-grade web platforms</span> and <span class="text-highlight">robust SaaS systems</span> that empower businesses and communities. Every solution begins with a <span class="text-bold">clean architectural foundation</span>, <span class="text-highlight">intuitive UI/UX</span>, and <span class="text-bold">rock-solid reliability</span> throughout.
+            </p>
+          </div>
+        </div>
+
+        <!-- Interactive Mini Gallery Preview Strip (Reference Match) -->
+        <div class="gallery-strip reveal">
+          <div class="gallery-card" data-project-trigger="saas-progress">
+            <img src="assets/images/project-saas.jpg" alt="GeoProgress SaaS System Preview" loading="lazy">
+            <div class="gallery-card-badge">
+              <span>SaaS Geofencing</span>
+              <span class="pill">VIEW ➔</span>
+            </div>
+          </div>
+
+          <div class="gallery-card" data-project-trigger="umrah-travel">
+            <img src="assets/images/project-travel.jpg" alt="Umrah Travel Platform Preview" loading="lazy">
+            <div class="gallery-card-badge">
+              <span>Travel Management</span>
+              <span class="pill">VIEW ➔</span>
+            </div>
+          </div>
+
+          <div class="gallery-card" data-project-trigger="tahfidz-portal">
+            <img src="assets/images/project-tahfidz.jpg" alt="Tahfidz Education Portal Preview" loading="lazy">
+            <div class="gallery-card-badge">
+              <span>Tahfidz Academic</span>
+              <span class="pill">VIEW ➔</span>
+            </div>
+          </div>
+
+          <div class="gallery-card" data-project-trigger="agency-landing">
+            <img src="assets/images/project-landing.jpg" alt="High-Converting Agency Landing Preview" loading="lazy">
+            <div class="gallery-card-badge">
+              <span>Landing & UI/UX</span>
+              <span class="pill">VIEW ➔</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- What I Offer Section (Matches Reference Image: 03/05 WHAT I OFFER) -->
+    <section class="services-section" id="services">
+      <div class="container">
+        <div class="services-top-bar reveal">
+          <div>
+            <div class="section-counter">02 <span>/ 05</span></div>
+            <h2 class="section-title-large">WHAT I OFFER</h2>
+          </div>
+          <div>
+            <a href="#contact" class="btn-view-all">
+              <span>DISCUSS A PROJECT</span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+            </a>
+          </div>
+        </div>
+
+        <div class="services-grid">
+          <!-- Service 1 -->
+          <div class="service-card reveal">
+            <div>
+              <div class="service-card-num">01 // FULL-STACK APPS</div>
+              <h3 class="service-card-title">WEB & APP DEVELOPMENT</h3>
+              <p class="service-card-desc">
+                Engineering high-throughput, maintainable web applications using PHP, Laravel, React.js, Node.js, and modern REST APIs with seamless state management and responsive UI.
+              </p>
+            </div>
+            <div class="service-card-tags">
+              <span class="tech-tag">Laravel</span>
+              <span class="tech-tag">React.js</span>
+              <span class="tech-tag">Node.js</span>
+              <span class="tech-tag">Tailwind</span>
+            </div>
+          </div>
+
+          <!-- Service 2 -->
+          <div class="service-card reveal">
+            <div>
+              <div class="service-card-num">02 // ARCHITECTURE</div>
+              <h3 class="service-card-title">SAAS & MANAGEMENT SYSTEMS</h3>
+              <p class="service-card-desc">
+                Architecting multi-tenant Software-as-a-Service, Role-Based Access Control (RBAC), live GPS geofencing perimeter validation, and automated PDF reporting engines.
+              </p>
+            </div>
+            <div class="service-card-tags">
+              <span class="tech-tag">Multi-tenant</span>
+              <span class="tech-tag">Geofencing</span>
+              <span class="tech-tag">PDF Automation</span>
+              <span class="tech-tag">MySQL</span>
+            </div>
+          </div>
+
+          <!-- Service 3 -->
+          <div class="service-card reveal">
+            <div>
+              <div class="service-card-num">03 // PROGRESSIVE TECH</div>
+              <h3 class="service-card-title">PWA & DATABASE ENGINEERING</h3>
+              <p class="service-card-desc">
+                Building offline-ready Progressive Web Apps (PWA) with reliable background sync, relational & document database schemas (MySQL, MongoDB), and cloud deployment.
+              </p>
+            </div>
+            <div class="service-card-tags">
+              <span class="tech-tag">PWA</span>
+              <span class="tech-tag">MongoDB</span>
+              <span class="tech-tag">Docker</span>
+              <span class="tech-tag">cPanel / VPS</span>
+            </div>
+          </div>
+
+          <!-- Service 4 -->
+          <div class="service-card reveal">
+            <div>
+              <div class="service-card-num">04 // CREATIVE DIGITAL</div>
+              <h3 class="service-card-title">LANDING PAGES & UI/UX</h3>
+              <p class="service-card-desc">
+                Translating Figma prototypes into ultra-fast, conversion-optimized landing pages with Core Web Vitals optimization, micro-animations, and complete SEO setup.
+              </p>
+            </div>
+            <div class="service-card-tags">
+              <span class="tech-tag">Figma</span>
+              <span class="tech-tag">Conversion Rate</span>
+              <span class="tech-tag">SEO</span>
+              <span class="tech-tag">Speed Opt</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Work Process Section (Matches Reference Image: HOW I WORK with Orange Card) -->
+    <section class="process-section" id="process">
+      <div class="container">
+        <div class="process-header reveal">
+          <div>
+            <div class="section-tag">WORK PROCESS</div>
+            <h2 class="section-title-large">HOW I WORK</h2>
+          </div>
+          <p class="process-subtitle">
+            A simple, disciplined engineering process designed to turn complex business ideas into high-impact digital products, from concept to production.
+          </p>
+        </div>
+
+        <div class="process-grid">
+          <!-- Step 1 -->
+          <div class="process-card reveal">
+            <div class="process-card-num">1.</div>
+            <div>
+              <h3 class="process-card-title">DISCOVERY</h3>
+              <p class="process-card-desc">
+                I explore your business objectives, system workflows, operational constraints, and database relationships to ensure a perfect technical fit.
+              </p>
+            </div>
+          </div>
+
+          <!-- Step 2 (Vivid Orange Card - Reference Match) -->
+          <div class="process-card featured-orange reveal">
+            <div class="process-card-num">2.</div>
+            <div>
+              <h3 class="process-card-title">PLANNING</h3>
+              <p class="process-card-desc">
+                I thoroughly architect your database schemas, define modular API endpoints, and establish UI/UX wireframes for a clear, focused roadmap.
+              </p>
+            </div>
+          </div>
+
+          <!-- Step 3 -->
+          <div class="process-card reveal">
+            <div class="process-card-num">3.</div>
+            <div>
+              <h3 class="process-card-title">PRODUCTION</h3>
+              <p class="process-card-desc">
+                I build clean, maintainable code with precision, integrating backend business logic, responsive views, and robust security protocols.
+              </p>
+            </div>
+          </div>
+
+          <!-- Step 4 -->
+          <div class="process-card reveal">
+            <div class="process-card-num">4.</div>
+            <div>
+              <h3 class="process-card-title">DELIVERY</h3>
+              <p class="process-card-desc">
+                I meticulously test every workflow, deploy onto optimized production servers, and ensure seamless delivery with ongoing performance tuning.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Experience Section (Matches Reference Image: Floating White/Light Card) -->
+    <section class="experience-section" id="experience">
+      <div class="container">
+        <div class="experience-header-wrap reveal">
+          <div class="experience-badge">My Experience</div>
+          <h2 class="experience-title">
+            Turning Ideas into <span class="highlight-orange">High-Performance</span> Systems
+          </h2>
+        </div>
+
+        <!-- Floating Clean Light Container (Exact Match of Reference) -->
+        <div class="experience-floating-card reveal">
+          <div class="timeline-list">
+            <!-- Experience Item 1 -->
+            <div class="timeline-item">
+              <div class="timeline-role-info">
+                <h4>Web Developer & Desain Grafis</h4>
+                <div class="company-name">PT. BantuGrow Revolusi Digital</div>
+                <div class="date-span">Nov 2024 — Present (Remote)</div>
+              </div>
+              <div class="timeline-indicator">
+                <span class="timeline-dot"></span>
+              </div>
+              <div class="timeline-desc-info">
+                <p>
+                  Membangun dan mengembangkan ekosistem Software-as-a-Service (SaaS) serta solusi digital terintegrasi, termasuk perancangan Digital Progress Management System kustom dengan fitur geofencing, dukungan PWA, dan automasi laporan PDF. Men-deploy arsitektur landing page berkinerja tinggi serta mengelola aset digital.
+                </p>
+                <div class="timeline-badges">
+                  <span class="timeline-badge">SaaS Ecosystem</span>
+                  <span class="timeline-badge">Geofencing</span>
+                  <span class="timeline-badge">PWA</span>
+                  <span class="timeline-badge">PDF Automation</span>
+                  <span class="timeline-badge">Landing Pages</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Experience Item 2 -->
+            <div class="timeline-item">
+              <div class="timeline-role-info">
+                <h4>Web Developer & Multimedia</h4>
+                <div class="company-name">Pondok Pesantren Abdan Syakuro</div>
+                <div class="date-span">Okt 2024 — Present</div>
+              </div>
+              <div class="timeline-indicator">
+                <span class="timeline-dot"></span>
+              </div>
+              <div class="timeline-desc-info">
+                <p>
+                  Merancang, mengembangkan, dan mengelola Aplikasi Sistem Manajemen Tahfidz untuk digitalisasi pencatatan hafalan santri, pemantauan absensi, dan pelaporan akademik. Memelihara dan mengoptimalkan performa website profil pesantren sebagai pusat informasi utama PPDB.
+                </p>
+                <div class="timeline-badges">
+                  <span class="timeline-badge">Tahfidz System</span>
+                  <span class="timeline-badge">Academic Portal</span>
+                  <span class="timeline-badge">PPDB Traffic Hub</span>
+                  <span class="timeline-badge">Multimedia</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Experience Item 3 -->
+            <div class="timeline-item">
+              <div class="timeline-role-info">
+                <h4>Web Developer</h4>
+                <div class="company-name">PT. Ahsan Sabila Mumtaza</div>
+                <div class="date-span">Sep 2023 — Okt 2024</div>
+              </div>
+              <div class="timeline-indicator">
+                <span class="timeline-dot"></span>
+              </div>
+              <div class="timeline-desc-info">
+                <p>
+                  Membangun dan mengembangkan Aplikasi Sistem Manajemen Travel Umrah end-to-end (manifest keberangkatan, inventori perlengkapan, dan pelacakan status pembayaran). Mengelola server, kecepatan akses, dan sistem informasi paket wisata.
+                </p>
+                <div class="timeline-badges">
+                  <span class="timeline-badge">Travel Umrah SaaS</span>
+                  <span class="timeline-badge">Manifest Automation</span>
+                  <span class="timeline-badge">Inventory Tracking</span>
+                  <span class="timeline-badge">Server Ops</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Experience Item 4 -->
+            <div class="timeline-item">
+              <div class="timeline-role-info">
+                <h4>Web Developer</h4>
+                <div class="company-name">Pondok Pesantren Al Qolam Yatim</div>
+                <div class="date-span">Jun 2022 — Jul 2023</div>
+              </div>
+              <div class="timeline-indicator">
+                <span class="timeline-dot"></span>
+              </div>
+              <div class="timeline-desc-info">
+                <p>
+                  Membangun website resmi yayasan menggunakan Laravel dari tahap perancangan hingga deployment. Mengembangkan Dashboard Admin dan CMS kustom untuk pengelolaan artikel, berita, dan transparansi donasi digital.
+                </p>
+                <div class="timeline-badges">
+                  <span class="timeline-badge">Laravel Framework</span>
+                  <span class="timeline-badge">Custom CMS</span>
+                  <span class="timeline-badge">Digital Fundraising</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="experience-cta-wrap">
+            <a href="#contact" class="btn-floating-cta">
+              <span>Let's Work Together</span>
+              <span class="btn-circle-icon">➔</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Selected Works / Projects Showcase -->
+    <section class="projects-section" id="projects">
+      <div class="container">
+        <div class="projects-top reveal">
+          <div>
+            <div class="section-tag">PORTFOLIO SHOWCASE</div>
+            <h2 class="section-title-large">SELECTED WORKS</h2>
+          </div>
+
+          <div class="filter-buttons">
+            <button class="filter-btn active" data-filter="all">All Projects</button>
+            <button class="filter-btn" data-filter="saas">SaaS Platforms</button>
+            <button class="filter-btn" data-filter="enterprise">Management Systems</button>
+            <button class="filter-btn" data-filter="landing">Landing & CMS</button>
+          </div>
+        </div>
+
+        <div class="projects-grid">
+          <!-- Project 1: SaaS Geofencing -->
+          <div class="project-card reveal" data-category="saas">
+            <div class="project-thumb-wrap">
+              <img src="assets/images/project-saas.jpg" alt="GeoProgress SaaS System" class="project-thumb-img" loading="lazy">
+              <div class="project-badge-tag">SaaS & PWA</div>
+            </div>
+            <div class="project-body">
+              <div class="project-client-name">PT. BantuGrow Revolusi Digital</div>
+              <h3 class="project-title">Digital Progress & Geofencing SaaS</h3>
+              <p class="project-desc">
+                Multi-tenant SaaS platform featuring real-time geofencing validation, offline-ready Progressive Web App support, and automated daily PDF reporting.
+              </p>
+              <div class="project-tech-pills">
+                <span class="project-tech-pill">PHP / Laravel</span>
+                <span class="project-tech-pill">React.js</span>
+                <span class="project-tech-pill">PWA</span>
+                <span class="project-tech-pill">Geofencing</span>
+                <span class="project-tech-pill">MySQL</span>
+              </div>
+              <div class="project-actions">
+                <button class="btn-project-detail" data-project-trigger="saas-progress">
+                  <span>Explore Case Study</span>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Project 2: Umrah Travel Management -->
+          <div class="project-card reveal" data-category="enterprise">
+            <div class="project-thumb-wrap">
+              <img src="assets/images/project-travel.jpg" alt="Umrah Travel Operations System" class="project-thumb-img" loading="lazy">
+              <div class="project-badge-tag">Enterprise System</div>
+            </div>
+            <div class="project-body">
+              <div class="project-client-name">PT. Ahsan Sabila Mumtaza</div>
+              <h3 class="project-title">Umrah Travel Manifest & Operations</h3>
+              <p class="project-desc">
+                End-to-end operations platform managing flight manifests, baggage inventory, pilgrim payment schedules, and package bookings without manual error.
+              </p>
+              <div class="project-tech-pills">
+                <span class="project-tech-pill">Laravel</span>
+                <span class="project-tech-pill">MySQL</span>
+                <span class="project-tech-pill">RESTful API</span>
+                <span class="project-tech-pill">cPanel</span>
+              </div>
+              <div class="project-actions">
+                <button class="btn-project-detail" data-project-trigger="umrah-travel">
+                  <span>Explore Case Study</span>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Project 3: Tahfidz Academic System -->
+          <div class="project-card reveal" data-category="enterprise">
+            <div class="project-thumb-wrap">
+              <img src="assets/images/project-tahfidz.jpg" alt="Tahfidz & Attendance Management System" class="project-thumb-img" loading="lazy">
+              <div class="project-badge-tag">Academic Portal</div>
+            </div>
+            <div class="project-body">
+              <div class="project-client-name">Pondok Pesantren Abdan Syakuro</div>
+              <h3 class="project-title">Tahfidz & Academic Attendance Portal</h3>
+              <p class="project-desc">
+                Digitalization of Quran memorization logs, student daily attendance, PPDB enrollment hub, and automatic report cards for teachers and guardians.
+              </p>
+              <div class="project-tech-pills">
+                <span class="project-tech-pill">Laravel</span>
+                <span class="project-tech-pill">MySQL</span>
+                <span class="project-tech-pill">JavaScript</span>
+                <span class="project-tech-pill">Laragon / VPS</span>
+              </div>
+              <div class="project-actions">
+                <button class="btn-project-detail" data-project-trigger="tahfidz-portal">
+                  <span>Explore Case Study</span>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Project 4: High Converting Landing Pages -->
+          <div class="project-card reveal" data-category="landing">
+            <div class="project-thumb-wrap">
+              <img src="assets/images/project-landing.jpg" alt="High-Converting Marketing Landing Architecture" class="project-thumb-img" loading="lazy">
+              <div class="project-badge-tag">Landing & Performance</div>
+            </div>
+            <div class="project-body">
+              <div class="project-client-name">Agency & Client Campaigns</div>
+              <h3 class="project-title">High-Converting Digital Agency Architecture</h3>
+              <p class="project-desc">
+                Ultra-fast landing pages optimized for marketing campaigns, high conversion rates, structured SEO, and sub-second Core Web Vitals loading speeds.
+              </p>
+              <div class="project-tech-pills">
+                <span class="project-tech-pill">HTML5 / CSS3</span>
+                <span class="project-tech-pill">Modern JS</span>
+                <span class="project-tech-pill">Figma UI/UX</span>
+                <span class="project-tech-pill">Core Web Vitals</span>
+              </div>
+              <div class="project-actions">
+                <button class="btn-project-detail" data-project-trigger="agency-landing">
+                  <span>Explore Case Study</span>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Milestones & Track Record Table (Matches Reference: AWARDS WINNING Table) -->
+    <section class="milestones-section" id="milestones">
+      <div class="container">
+        <div class="milestones-header reveal">
+          <div>
+            <div class="section-tag">PROVEN TRACK RECORD</div>
+            <h2 class="milestones-title">
+              PROVEN
+              <span class="sub-line">MILESTONES</span>
+            </h2>
+          </div>
+          <div>
+            <a href="https://github.com/Raihanmasrukhan" target="_blank" rel="noopener" class="btn-awards-cta">
+              <span>VIEW GITHUB REPOS</span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+            </a>
+          </div>
+        </div>
+
+        <div class="milestones-table-wrap reveal">
+          <table class="milestones-table">
+            <thead>
+              <tr>
+                <th>ORGANIZATION / CLIENT</th>
+                <th>PROJECT & DELIVERABLE</th>
+                <th>PRIMARY TECH</th>
+                <th>PERIOD / STATUS</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="strong-col">PT. BantuGrow Revolusi Digital</td>
+                <td>Multi-tenant SaaS Architecture with Geofencing & PWA</td>
+                <td class="badge-col">Laravel, React, PWA, MySQL</td>
+                <td>Nov 2024 — Present</td>
+              </tr>
+              <tr>
+                <td class="strong-col">Pondok Pesantren Abdan Syakuro</td>
+                <td>Tahfidz Quran Digital Memorization & PPDB System</td>
+                <td class="badge-col">Laravel, MySQL, JavaScript</td>
+                <td>Okt 2024 — Present</td>
+              </tr>
+              <tr>
+                <td class="strong-col">PT. Ahsan Sabila Mumtaza</td>
+                <td>End-to-End Umrah Travel Operations & Manifest Tracker</td>
+                <td class="badge-col">Laravel, REST API, cPanel</td>
+                <td>Sep 2023 — Okt 2024</td>
+              </tr>
+              <tr>
+                <td class="strong-col">Pondok Pesantren Al Qolam Yatim</td>
+                <td>Official Web Portal & Custom Content Management System</td>
+                <td class="badge-col">Laravel, PHP, Custom CMS</td>
+                <td>Jun 2022 — Jul 2023</td>
+              </tr>
+              <tr>
+                <td class="strong-col">Independent Client Projects</td>
+                <td>High-Converting Company Profiles & Landing Page Conversions</td>
+                <td class="badge-col">Tailwind, React, Figma, SEO</td>
+                <td>Continuous</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tech Stack & Education Section -->
+    <section class="stack-education-section" id="stack-education">
+      <div class="container split-grid-section">
+        <!-- Tech Stack Matrix -->
+        <div class="reveal">
+          <div class="section-tag">CORE COMPETENCIES</div>
+          <h2 class="section-title-large" style="margin-bottom: 2rem;">TECH STACK</h2>
+
+          <div class="skills-category">
+            <div class="skills-cat-title">// Web & App Development</div>
+            <div class="skills-tag-cloud">
+              <span class="skill-pill">PHP</span>
+              <span class="skill-pill">Laravel</span>
+              <span class="skill-pill">JavaScript (ES6+)</span>
+              <span class="skill-pill">React.js</span>
+              <span class="skill-pill">Node.js</span>
+              <span class="skill-pill">HTML5 & CSS3</span>
+              <span class="skill-pill">Tailwind CSS</span>
+            </div>
+          </div>
+
+          <div class="skills-category">
+            <div class="skills-cat-title">// Database & Architecture</div>
+            <div class="skills-tag-cloud">
+              <span class="skill-pill">MySQL</span>
+              <span class="skill-pill">MongoDB</span>
+              <span class="skill-pill">Multi-tenant SaaS</span>
+              <span class="skill-pill">PWA (Progressive Web Apps)</span>
+              <span class="skill-pill">RBAC Permissions</span>
+            </div>
+          </div>
+
+          <div class="skills-category">
+            <div class="skills-cat-title">// Tools, Cloud & Creative</div>
+            <div class="skills-tag-cloud">
+              <span class="skill-pill">Git & GitHub</span>
+              <span class="skill-pill">Docker</span>
+              <span class="skill-pill">cPanel & Laragon</span>
+              <span class="skill-pill">Figma UI/UX</span>
+              <span class="skill-pill">RESTful APIs</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Academic Background -->
+        <div class="reveal">
+          <div class="section-tag">EDUCATION</div>
+          <h2 class="section-title-large" style="margin-bottom: 2rem;">ACADEMIC</h2>
+
+          <div class="edu-card">
+            <div class="edu-year">2024 — Sekarang</div>
+            <h3 class="edu-school">Politeknik IDN Bogor</h3>
+            <div class="edu-degree">Software Engineering (Online)</div>
+            <p class="edu-note">
+              Mahasiswa Aktif Semester 4. Menjalani perkuliahan sepenuhnya secara online di luar jam kerja untuk terus memperkuat fondasi rekayasa perangkat lunak tanpa mengganggu komitmen profesional.
+            </p>
+          </div>
+
+          <div class="edu-card">
+            <div class="edu-year">2019 — 2022</div>
+            <h3 class="edu-school">SMK Asyifa Depok</h3>
+            <div class="edu-degree">Rekayasa Perangkat Lunak (Software Engineering)</div>
+            <p class="edu-note">
+              Membangun fondasi komprehensif dalam pemrograman web, basis data terstruktur, algoritma perangkat lunak, dan metodologi pengembangan aplikasi.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact & Direct Inquiry Section (Matches Reference: START A PROJECT) -->
+    <section class="contact-section" id="contact">
+      <div class="container">
+        <div class="contact-grid">
+          <!-- Left Contact Info -->
+          <div class="reveal">
+            <div class="section-tag">GET IN TOUCH</div>
+            <h2 class="contact-title">
+              LET'S BUILD SOMETHING <span>IMPACTFUL</span>
+            </h2>
+            <p class="contact-desc">
+              Siap berkolaborasi dalam perancangan aplikasi web berskala produksi, platform SaaS kustom, sistem manajemen internal, maupun landing page berkonversi tinggi.
+            </p>
+
+            <div class="contact-info-list">
+              <!-- WhatsApp / Phone -->
+              <div class="contact-item">
+                <div class="contact-item-icon" aria-hidden="true">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+                </div>
+                <div class="contact-item-text">
+                  <span class="label">WhatsApp & Phone</span>
+                  <div class="value">
+                    <a href="https://wa.me/6285864459552" target="_blank" rel="noopener">+62 858-6445-9552</a>
+                    <button class="btn-copy" data-copy="+6285864459552" title="Copy phone number">Copy</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Email -->
+              <div class="contact-item">
+                <div class="contact-item-icon" aria-hidden="true">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                </div>
+                <div class="contact-item-text">
+                  <span class="label">Email Address</span>
+                  <div class="value">
+                    <a href="mailto:Raihanmasrukhan56@gmail.com">Raihanmasrukhan56@gmail.com</a>
+                    <button class="btn-copy" data-copy="Raihanmasrukhan56@gmail.com" title="Copy email address">Copy</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Location -->
+              <div class="contact-item">
+                <div class="contact-item-icon" aria-hidden="true">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                </div>
+                <div class="contact-item-text">
+                  <span class="label">Location</span>
+                  <div class="value" style="color:var(--text-secondary);">Depok & Bogor, Jawa Barat, Indonesia</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Interactive Direct Form -->
+          <div class="contact-form-wrap reveal">
+            <form id="contact-form">
+              <div class="form-group">
+                <label for="sender-name" class="form-label">Your Name / Company</label>
+                <input type="text" id="sender-name" class="form-input" placeholder="e.g. Budi Santoso / PT. Inovasi Digital" required>
+              </div>
+
+              <div class="form-group">
+                <label for="sender-email" class="form-label">Your Email or WhatsApp</label>
+                <input type="text" id="sender-email" class="form-input" placeholder="e.g. budi@example.com or 08123456789" required>
+              </div>
+
+              <div class="form-group">
+                <label for="project-type" class="form-label">Interested Service / Project Type</label>
+                <select id="project-type" class="form-select">
+                  <option value="SaaS & Custom Web Application">SaaS & Custom Web Application</option>
+                  <option value="Enterprise Management System (UMKM/Yayasan)">Enterprise Management System</option>
+                  <option value="Full-Stack Web Development (Laravel/React)">Full-Stack Web Development (Laravel/React)</option>
+                  <option value="High-Converting Landing Page & Company Profile">High-Converting Landing Page & Profile</option>
+                  <option value="UI/UX Design & System Consulting">UI/UX Design & Consulting</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="sender-message" class="form-label">Project Details & Requirements</label>
+                <textarea id="sender-message" class="form-textarea" placeholder="Ceritakan ide, kebutuhan sistem, atau jadwal pengerjaan proyek Anda..." required></textarea>
+              </div>
+
+              <button type="submit" class="btn-submit-form">
+                <span>SEND DIRECT VIA WHATSAPP</span>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </button>
+            </form>
+          </div>
+        </div>
+
+        <!-- Site Footer -->
+        <footer class="site-footer">
+          <div class="footer-left">
+            <span>© 2026 RAIHAN ADIB MASRUKHAN. ALL RIGHTS RESERVED.</span>
+          </div>
+
+          <div>
+            <a href="#hero" class="btn-scroll-top" id="scroll-top-btn">
+              <span>BACK TO TOP</span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="19" x2="12" y2="5"></line><polyline points="5 12 12 5 19 12"></polyline></svg>
+            </a>
+          </div>
+        </footer>
+      </div>
+    </section>
+  </main>
+
+  <!-- Project Lightbox Modal -->
+  <div class="modal-backdrop" id="project-modal" role="dialog" aria-modal="true" aria-label="Project Details">
+    <div class="modal-content-card">
+      <button class="modal-close-btn" id="modal-close" aria-label="Close project modal">✕</button>
+      
+      <div class="modal-image-wrap">
+        <img src="assets/images/project-saas.jpg" id="modal-image" alt="Project Preview">
+      </div>
+
+      <div class="modal-body">
+        <div class="modal-tag" id="modal-tag">SaaS Platform</div>
+        <h3 class="modal-title" id="modal-title">Project Title</h3>
+
+        <div class="modal-meta-grid">
+          <div class="modal-meta-item">
+            <span class="meta-label">Client / Org</span>
+            <div class="meta-val" id="modal-client">Client Name</div>
+          </div>
+          <div class="modal-meta-item">
+            <span class="meta-label">Role</span>
+            <div class="meta-val" id="modal-role">Full-Stack Developer</div>
+          </div>
+          <div class="modal-meta-item">
+            <span class="meta-label">Timeline</span>
+            <div class="meta-val" id="modal-timeline">Nov 2024 – Present</div>
+          </div>
+        </div>
+
+        <p class="modal-desc" id="modal-desc">Project comprehensive overview...</p>
+
+        <h4 style="font-family:var(--font-mono);font-size:0.82rem;color:var(--accent-orange);margin-bottom:0.75rem;text-transform:uppercase;letter-spacing:0.08em;">Key Deliverables & Impact</h4>
+        <ul id="modal-highlights" style="margin-bottom:1.5rem;font-size:0.9rem;color:var(--text-secondary);line-height:1.6;">
+        </ul>
+
+        <h4 style="font-family:var(--font-mono);font-size:0.82rem;color:var(--text-muted);margin-bottom:0.75rem;text-transform:uppercase;letter-spacing:0.08em;">Technologies Used</h4>
+        <div id="modal-stack" style="display:flex;flex-wrap:wrap;gap:0.5rem;">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="toast-notice" id="toast" role="status" aria-live="polite"></div>
+
+  <!-- Scripts -->
+  <script src="assets/js/main.js"></script>
+</body>
+</html>
