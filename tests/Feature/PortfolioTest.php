@@ -34,6 +34,11 @@ class PortfolioTest extends TestCase
         $response->assertDontSee('nav-login-pill');
         $response->assertDontSee('nav-admin-pill');
         $response->assertDontSee('nav-link-admin');
+        $response->assertDontSee('nav-mobile-prefs');
+        $response->assertDontSee('mobile-lang-switcher');
+        $response->assertDontSee('mobile-theme-toggle');
+        $response->assertSee('id="lang-switcher"', false);
+        $response->assertSee('id="theme-toggle"', false);
         $response->assertDontSee(route('login'), false);
 
         $this->get('/login')->assertStatus(200);

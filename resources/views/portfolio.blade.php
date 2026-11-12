@@ -210,26 +210,6 @@
   <!-- Fullscreen Navigation Overlay -->
   <div class="nav-overlay" id="nav-overlay" role="dialog" aria-modal="true" aria-label="Navigation Menu">
     <div class="nav-overlay-inner">
-      <!-- Mobile Preferences Bar -->
-      <div class="nav-mobile-prefs flex items-center justify-between pb-3.5 mb-3 border-b border-white/10 sm:hidden">
-        <div class="nav-mobile-prefs-label text-[11px] font-mono text-gray-400 uppercase tracking-widest" data-i18n="nav.preferences">PILIHAN TAMPILAN</div>
-        <div class="flex items-center gap-2">
-          <div class="lang-switcher-pill" id="mobile-lang-switcher" aria-label="Pilih Bahasa">
-            <button type="button" class="lang-btn active" data-lang="id">ID</button>
-            <span class="lang-divider">/</span>
-            <button type="button" class="lang-btn" data-lang="en">EN</button>
-          </div>
-          <button id="mobile-theme-toggle" class="btn-theme-toggle" aria-label="Toggle theme">
-            <span class="theme-icon-dark" aria-hidden="true">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
-            </span>
-            <span class="theme-icon-light" aria-hidden="true">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
-            </span>
-          </button>
-        </div>
-      </div>
-
       <div class="nav-overlay-label" data-i18n="nav.index_label">NAVIGATION INDEX</div>
       <nav class="nav-links-list">
         <div class="nav-link-item"><a href="#about"><span class="nav-num">01</span><span class="nav-text" data-i18n="nav.about">ABOUT ME</span><span class="nav-arrow">→</span></a></div>

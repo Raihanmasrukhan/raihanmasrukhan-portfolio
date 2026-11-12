@@ -12,7 +12,6 @@ return [
         'testimonials' => 'TESTIMONI KLIEN',
         'start_project' => 'MULAI PROYEK BARU',
         'index_label' => 'NAVIGASI INDEKS',
-        'preferences' => 'PILIHAN TAMPILAN',
     ],
     'hero' => [
         'available' => 'TERSEDIA UNTUK PROYEK BARU',

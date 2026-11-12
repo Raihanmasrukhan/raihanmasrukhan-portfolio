@@ -12,7 +12,6 @@ return [
         'testimonials' => 'TESTIMONIALS',
         'start_project' => 'START A PROJECT',
         'index_label' => 'NAVIGATION INDEX',
-        'preferences' => 'PREFERENCES',
     ],
     'hero' => [
         'available' => 'AVAILABLE FOR PROJECTS',

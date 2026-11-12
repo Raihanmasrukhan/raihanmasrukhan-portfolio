@@ -356,8 +356,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // 12. Theme Switcher (Light / Dark Mode)
   const themeToggles = [
-    document.getElementById('theme-toggle'),
-    document.getElementById('mobile-theme-toggle')
+    document.getElementById('theme-toggle')
   ].filter(Boolean);
 
   function getPreferredTheme() {

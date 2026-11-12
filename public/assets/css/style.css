@@ -2930,16 +2930,6 @@ body.light-mode .nav-admin-pill:hover {
   color: #ffffff;
 }
 
-[data-theme="light"] .nav-mobile-prefs,
-body.light-mode .nav-mobile-prefs {
-  border-bottom-color: rgba(15, 23, 42, 0.1);
-}
-
-[data-theme="light"] .nav-mobile-prefs-label,
-body.light-mode .nav-mobile-prefs-label {
-  color: #475569;
-}
-
 [data-theme="light"] .nav-link-item a,
 body.light-mode .nav-link-item a {
   color: #0f172a;
