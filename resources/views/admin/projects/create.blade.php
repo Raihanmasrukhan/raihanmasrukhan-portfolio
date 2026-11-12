@@ -29,10 +29,9 @@
         <div>
           <label class="block text-xs font-mono uppercase tracking-wider text-gray-400 mb-2">Filter Kategori *</label>
           <select name="category" required class="w-full px-4 py-3 rounded-xl bg-[#0a0a0d] border border-gray-700/80 text-white focus:outline-none focus:border-[#ff5500] text-sm font-mono">
-            <option value="saas" {{ old('category') == 'saas' ? 'selected' : '' }}>SaaS Platforms</option>
-            <option value="enterprise" {{ old('category') == 'enterprise' ? 'selected' : '' }}>Management Systems</option>
-            <option value="landing" {{ old('category') == 'landing' ? 'selected' : '' }}>Landing & CMS</option>
-            <option value="other" {{ old('category') == 'other' ? 'selected' : '' }}>Other Applications</option>
+            @foreach(\App\Models\Project::categoryOptions() as $catKey => $catLabel)
+              <option value="{{ $catKey }}" {{ old('category') == $catKey ? 'selected' : '' }}>{{ $catLabel }}</option>
+            @endforeach
           </select>
         </div>
 

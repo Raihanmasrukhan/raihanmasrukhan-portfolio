@@ -532,6 +532,8 @@
             <button class="filter-btn" data-filter="saas" data-i18n="projects.filter_saas">SaaS Platforms</button>
             <button class="filter-btn" data-filter="enterprise" data-i18n="projects.filter_enterprise">Management Systems</button>
             <button class="filter-btn" data-filter="landing" data-i18n="projects.filter_landing">Landing & CMS</button>
+            <button class="filter-btn" data-filter="design" data-i18n="projects.filter_design">Design & UI/UX</button>
+            <button class="filter-btn" data-filter="video-editing" data-i18n="projects.filter_video">Video Editing</button>
           </div>
         </div>
 
@@ -579,6 +581,10 @@
               </div>
             </div>
           @endforeach
+        </div>
+
+        <div id="projects-empty-state" class="projects-empty-state" style="display:none;" data-i18n="projects.empty_category">
+          Belum ada karya pada kategori ini.
         </div>
       </div>
     </section>

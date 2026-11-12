@@ -6,17 +6,28 @@ use App\Http\Controllers\Controller;
 use App\Models\Project;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 
 class ProjectController extends Controller
 {
     /**
      * Display a listing of projects.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $projects = Project::orderBy('sort_order')->latest('id')->paginate(15);
+        $categoryOptions = Project::categoryOptions();
+        $activeCategory = $request->query('category', 'all');
 
-        return view('admin.projects.index', compact('projects'));
+        $query = Project::orderBy('sort_order')->latest('id');
+        if ($activeCategory !== 'all' && array_key_exists($activeCategory, $categoryOptions)) {
+            $query->where('category', $activeCategory);
+        } else {
+            $activeCategory = 'all';
+        }
+
+        $projects = $query->paginate(15)->withQueryString();
+
+        return view('admin.projects.index', compact('projects', 'activeCategory', 'categoryOptions'));
     }
 
     /**
@@ -34,7 +45,7 @@ class ProjectController extends Controller
     {
         $validated = $request->validate([
             'title' => 'required|string|max:200',
-            'category' => 'required|string|max:50',
+            'category' => ['required', 'string', 'max:50', Rule::in(array_keys(Project::categoryOptions()))],
             'badge' => 'nullable|string|max:100',
             'client' => 'nullable|string|max:150',
             'role' => 'nullable|string|max:150',
@@ -115,7 +126,7 @@ class ProjectController extends Controller
     {
         $validated = $request->validate([
             'title' => 'required|string|max:200',
-            'category' => 'required|string|max:50',
+            'category' => ['required', 'string', 'max:50', Rule::in(array_keys(Project::categoryOptions()))],
             'badge' => 'nullable|string|max:100',
             'client' => 'nullable|string|max:150',
             'role' => 'nullable|string|max:150',

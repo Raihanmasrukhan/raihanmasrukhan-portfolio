@@ -51,9 +51,12 @@ return [
         'filter_saas' => 'Platform SaaS',
         'filter_enterprise' => 'Sistem Manajemen',
         'filter_landing' => 'Landing Page & Profil',
+        'filter_design' => 'Desain & UI/UX',
+        'filter_video' => 'Video Editing',
         'explore' => 'Lihat Studi Kasus',
         'live_demo' => 'Live Demo',
         'github_repo' => 'GitHub',
+        'empty_category' => 'Belum ada karya pada kategori ini.',
     ],
     'milestones' => [
         'tag' => 'REKAM JEJAK TERBUKTI',

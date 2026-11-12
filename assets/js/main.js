@@ -246,24 +246,39 @@ document.addEventListener('DOMContentLoaded', () => {
   // 7. Project Category Filter
   const filterBtns = document.querySelectorAll('.filter-btn');
   const projectCards = document.querySelectorAll('.project-card');
+  const projectsEmptyState = document.getElementById('projects-empty-state');
 
   filterBtns.forEach(btn => {
     btn.addEventListener('click', () => {
       filterBtns.forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       const filter = btn.getAttribute('data-filter');
+      let visibleCount = 0;
 
       projectCards.forEach(card => {
+        if (card._filterTimer) {
+          clearTimeout(card._filterTimer);
+        }
         const category = card.getAttribute('data-category');
         if (filter === 'all' || category === filter) {
+          visibleCount++;
           card.style.display = 'flex';
-          setTimeout(() => { card.style.opacity = '1'; card.style.transform = 'translateY(0)'; }, 20);
+          card._filterTimer = setTimeout(() => {
+            card.style.opacity = '1';
+            card.style.transform = 'translateY(0)';
+          }, 20);
         } else {
           card.style.opacity = '0';
           card.style.transform = 'translateY(15px)';
-          setTimeout(() => { card.style.display = 'none'; }, 200);
+          card._filterTimer = setTimeout(() => {
+            card.style.display = 'none';
+          }, 200);
         }
       });
+
+      if (projectsEmptyState) {
+        projectsEmptyState.style.display = visibleCount === 0 ? 'block' : 'none';
+      }
     });
   });
 

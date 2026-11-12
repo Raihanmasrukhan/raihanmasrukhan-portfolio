@@ -249,6 +249,44 @@ class AdminDashboardTest extends TestCase
 
         $this->delete("/admin/projects/{$project->id}")->assertRedirect('/admin/projects');
         $this->assertDatabaseMissing('projects', ['id' => $project->id]);
+
+        // Verify Design & Video Editing categories work in Admin & Homepage
+        $this->post('/admin/projects', [
+            'title' => 'Brand Identity Poster Pack',
+            'category' => 'design',
+            'badge' => 'Graphic Design',
+            'overview' => 'Visual identity dan desain konten promosi.',
+            'tech_stack_text' => 'Figma, Canva',
+            'live_url' => 'https://figma.com/file/brand-pack',
+        ])->assertRedirect('/admin/projects');
+
+        $this->post('/admin/projects', [
+            'title' => 'Company Profile Reel 2026',
+            'category' => 'video-editing',
+            'badge' => 'Video Editing',
+            'overview' => 'Video highlight kampanye dan motion graphics.',
+            'tech_stack_text' => 'CapCut, Premiere',
+            'live_url' => 'https://youtube.com/watch?v=demo123',
+        ])->assertRedirect('/admin/projects');
+
+        $this->get('/admin/projects?category=design')
+            ->assertStatus(200)
+            ->assertSee('Brand Identity Poster Pack')
+            ->assertDontSee('Company Profile Reel 2026');
+
+        $this->get('/admin/projects?category=video-editing')
+            ->assertStatus(200)
+            ->assertSee('Company Profile Reel 2026')
+            ->assertDontSee('Brand Identity Poster Pack');
+
+        $this->get('/')
+            ->assertStatus(200)
+            ->assertSee('data-filter="design"', false)
+            ->assertSee('data-filter="video-editing"', false)
+            ->assertSee('data-category="design"', false)
+            ->assertSee('data-category="video-editing"', false)
+            ->assertSee('Brand Identity Poster Pack')
+            ->assertSee('Company Profile Reel 2026');
     }
 
     public function test_admin_experiences_and_educations_full_crud(): void

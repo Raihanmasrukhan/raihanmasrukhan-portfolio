@@ -18,6 +18,18 @@
     </a>
   </div>
 
+  <!-- Category Filter Tabs -->
+  <div class="flex flex-wrap items-center gap-2">
+    <a href="{{ route('admin.projects.index') }}" class="px-3.5 py-2 rounded-xl font-mono text-xs transition-all border {{ $activeCategory === 'all' ? 'bg-[#ff5500] text-black border-[#ff5500] font-bold shadow-md shadow-[#ff5500]/20' : 'bg-[#121218] text-gray-300 border-gray-800 hover:border-gray-700 hover:text-white' }}">
+      Semua Kategori
+    </a>
+    @foreach($categoryOptions as $catKey => $catLabel)
+      <a href="{{ route('admin.projects.index', ['category' => $catKey]) }}" class="px-3.5 py-2 rounded-xl font-mono text-xs transition-all border {{ $activeCategory === $catKey ? 'bg-[#ff5500] text-black border-[#ff5500] font-bold shadow-md shadow-[#ff5500]/20' : 'bg-[#121218] text-gray-300 border-gray-800 hover:border-gray-700 hover:text-white' }}">
+        {{ $catLabel }}
+      </a>
+    @endforeach
+  </div>
+
   <!-- Projects List Table -->
   <div class="rounded-2xl bg-[#121218] border border-gray-800 overflow-hidden shadow-xl">
     <div class="overflow-x-auto">

@@ -16,4 +16,21 @@ class Project extends Model
         'tech_stack' => 'array',
         'is_featured' => 'boolean',
     ];
+
+    /**
+     * Supported project showcase categories across Admin and public portfolio.
+     *
+     * @return array<string, string>
+     */
+    public static function categoryOptions(): array
+    {
+        return [
+            'saas' => 'SaaS Platforms',
+            'enterprise' => 'Management Systems',
+            'landing' => 'Landing & CMS',
+            'design' => 'Desain & UI/UX',
+            'video-editing' => 'Video Editing',
+            'other' => 'Other Applications',
+        ];
+    }
 }

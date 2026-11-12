@@ -51,9 +51,12 @@ return [
         'filter_saas' => 'SaaS Platforms',
         'filter_enterprise' => 'Management Systems',
         'filter_landing' => 'Landing & CMS',
+        'filter_design' => 'Design & UI/UX',
+        'filter_video' => 'Video Editing',
         'explore' => 'Explore Case Study',
         'live_demo' => 'Live Demo',
         'github_repo' => 'GitHub',
+        'empty_category' => 'No projects published in this category yet.',
     ],
     'milestones' => [
         'tag' => 'PROVEN TRACK RECORD',

@@ -258,5 +258,7 @@ class PortfolioTest extends TestCase
         $response->assertSee('data-i18n="hero.cv_btn"', false);
         $response->assertSee('data-i18n="contact.view_cv"', false);
         $response->assertSee('data-i18n="footer.rights"', false);
+        $response->assertSee('data-filter="design"', false);
+        $response->assertSee('data-filter="video-editing"', false);
     }
 }
