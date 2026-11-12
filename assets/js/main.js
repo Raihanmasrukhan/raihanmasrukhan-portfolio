@@ -1,28 +1,10 @@
 /**
  * RAIHAN ADIB MASRUKHAN — PORTFOLIO JAVASCRIPT
- * Interactive features: Live Clock, Custom Cursor, Project Modal, Filter System, WhatsApp Direct Form, Toast
+ * Interactive features: Custom Cursor, Project Modal, Filter System, Theme & Language Switcher, WhatsApp Direct Form, Toast
  */
 
 document.addEventListener('DOMContentLoaded', () => {
-  // 1. Live Time Counter (WIB - Western Indonesian Time / Jakarta GMT+7)
-  const clockElement = document.getElementById('live-time');
-  function updateLiveClock() {
-    if (!clockElement) return;
-    const now = new Date();
-    const options = {
-      timeZone: 'Asia/Jakarta',
-      hour12: true,
-      hour: '2-digit',
-      minute: '2-digit',
-      second: '2-digit'
-    };
-    const timeString = new Intl.DateTimeFormat('en-US', options).format(now);
-    clockElement.textContent = `${timeString} WIB`;
-  }
-  updateLiveClock();
-  setInterval(updateLiveClock, 1000);
-
-  // 2. Custom Cursor
+  // 1. Custom Cursor
   const cursor = document.querySelector('.custom-cursor');
   const follower = document.querySelector('.custom-cursor-follower');
   

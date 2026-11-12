@@ -42,7 +42,7 @@
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Outfit:wght@600;700;800;900&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
 
   <!-- Stylesheets -->
-  <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
+  <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}{{ file_exists(public_path('assets/css/style.css')) ? '?v=' . filemtime(public_path('assets/css/style.css')) : '' }}">
   @vite(['resources/css/app.css', 'resources/js/app.js'])
 
   <style>
@@ -94,23 +94,42 @@
     /* Light Theme Overrides for Testimonials & Components */
     [data-theme="light"] .testimonials-section,
     body.light-mode .testimonials-section {
-      background: linear-gradient(180deg, var(--bg-primary) 0%, rgba(241, 245, 249, 0.85) 50%, var(--bg-primary) 100%);
+      background: linear-gradient(180deg, var(--bg-primary) 0%, #f1f5f9 50%, var(--bg-primary) 100%);
+    }
+    [data-theme="light"] .testimonials-subtitle,
+    body.light-mode .testimonials-subtitle {
+      color: #475569 !important;
+    }
+    [data-theme="light"] .testimonial-verified-badge,
+    body.light-mode .testimonial-verified-badge {
+      background: #f1f5f9 !important;
+      color: #334155 !important;
+      border: 1px solid rgba(15, 23, 42, 0.08);
     }
     [data-theme="light"] .testimonial-card,
     body.light-mode .testimonial-card {
       background: #ffffff;
-      border-color: rgba(15, 23, 42, 0.08);
-      box-shadow: 0 4px 20px rgba(15, 23, 42, 0.04);
+      border-color: rgba(15, 23, 42, 0.09);
+      box-shadow: 0 6px 24px rgba(15, 23, 42, 0.05);
+    }
+    [data-theme="light"] .testimonial-card:hover,
+    body.light-mode .testimonial-card:hover {
+      border-color: rgba(255, 85, 0, 0.45);
+      box-shadow: 0 20px 45px rgba(15, 23, 42, 0.09);
     }
     [data-theme="light"] .testimonial-card.is-featured,
     body.light-mode .testimonial-card.is-featured {
       background: linear-gradient(145deg, #ffffff 0%, #fff7ed 100%);
       border-color: rgba(255, 85, 0, 0.45);
-      box-shadow: 0 10px 30px rgba(255, 85, 0, 0.08);
+      box-shadow: 0 12px 32px rgba(255, 85, 0, 0.09);
+    }
+    [data-theme="light"] .testimonial-quote-mark,
+    body.light-mode .testimonial-quote-mark {
+      color: rgba(255, 85, 0, 0.16);
     }
     [data-theme="light"] .testimonial-card blockquote,
     body.light-mode .testimonial-card blockquote {
-      color: #334155 !important;
+      color: #1e293b !important;
     }
     [data-theme="light"] .testimonial-card .text-white,
     body.light-mode .testimonial-card .text-white {
@@ -124,6 +143,12 @@
     body.light-mode .testimonial-card .border-gray-800\/80 {
       border-color: rgba(15, 23, 42, 0.08) !important;
     }
+    [data-theme="light"] .testimonial-empty,
+    body.light-mode .testimonial-empty {
+      background: #ffffff !important;
+      border-color: rgba(15, 23, 42, 0.1) !important;
+      color: #64748b !important;
+    }
   </style>
 </head>
 <body>
@@ -136,17 +161,9 @@
   <header class="site-header" id="site-header">
     <div class="container header-inner">
       <div class="header-left">
-        <div class="location-badge">
-          @if($profile->is_available)
-            <span class="status-dot"></span>
-          @endif
-          <span>{{ $profile->location }}</span>
-        </div>
-      </div>
-
-      <div class="header-center">
-        <span class="time-pulse">●</span>
-        <span id="live-time">19:30:00 WIB</span>
+        <a href="#hero" class="header-brand" aria-label="{{ $profile->full_name }}">
+          <span>RM</span><span class="brand-dot">.</span>
+        </a>
       </div>
 
       <div class="header-right flex items-center gap-2.5 sm:gap-3">
@@ -180,11 +197,11 @@
         </button>
 
         @auth
-          <a href="{{ route('admin.dashboard') }}" class="text-[11px] font-mono text-[#ff5500] hover:text-white uppercase tracking-wider px-3 py-1.5 rounded-full border border-[#ff5500]/40 bg-[#ff5500]/10 transition-colors hidden sm:inline-block" data-i18n="nav.admin_dashboard">
+          <a href="{{ route('admin.dashboard') }}" class="nav-admin-pill text-[11px] font-mono text-[#ff5500] hover:text-white uppercase tracking-wider px-3 py-1.5 rounded-full border border-[#ff5500]/40 bg-[#ff5500]/10 transition-colors hidden sm:inline-block" data-i18n="nav.admin_dashboard">
             Dashboard Admin ➔
           </a>
         @else
-          <a href="{{ route('login') }}" class="text-[11px] font-mono text-gray-400 hover:text-white uppercase tracking-wider px-3 py-1.5 rounded-full border border-gray-800 bg-gray-900/60 transition-colors hidden sm:inline-block" data-i18n="nav.admin_login">
+          <a href="{{ route('login') }}" class="nav-login-pill text-[11px] font-mono text-gray-400 hover:text-white uppercase tracking-wider px-3 py-1.5 rounded-full border border-gray-800 bg-gray-900/60 transition-colors hidden sm:inline-block" data-i18n="nav.admin_login">
             Admin Login
           </a>
         @endauth
@@ -204,8 +221,8 @@
   <div class="nav-overlay" id="nav-overlay" role="dialog" aria-modal="true" aria-label="Navigation Menu">
     <div class="nav-overlay-inner">
       <!-- Mobile Preferences Bar -->
-      <div class="flex items-center justify-between pb-3.5 mb-3 border-b border-white/10 sm:hidden">
-        <div class="text-[11px] font-mono text-gray-400 uppercase tracking-widest">PILIHAN TAMPILAN</div>
+      <div class="nav-mobile-prefs flex items-center justify-between pb-3.5 mb-3 border-b border-white/10 sm:hidden">
+        <div class="nav-mobile-prefs-label text-[11px] font-mono text-gray-400 uppercase tracking-widest">PILIHAN TAMPILAN</div>
         <div class="flex items-center gap-2">
           <div class="lang-switcher-pill" id="mobile-lang-switcher" aria-label="Pilih Bahasa">
             <button type="button" class="lang-btn active" data-lang="id">ID</button>
@@ -646,7 +663,7 @@
             <div class="section-tag" data-i18n="testimonials.tag">CLIENT ENDORSEMENTS</div>
             <h2 class="section-title-large" data-i18n="testimonials.title">TESTIMONIALS</h2>
           </div>
-          <p class="text-xs font-mono text-gray-400 max-w-md leading-relaxed" data-i18n="testimonials.subtitle">
+          <p class="testimonials-subtitle text-xs font-mono text-gray-400 max-w-md leading-relaxed" data-i18n="testimonials.subtitle">
             Perspectives from founders, executives, and institutional partners on engineering scalable digital platforms together.
           </p>
         </div>
@@ -663,7 +680,7 @@
                       {{ $item->project_tag }}
                     </span>
                   @else
-                    <span class="px-2.5 py-1 text-[10px] font-mono uppercase tracking-wider rounded bg-gray-800 text-gray-300 font-semibold" data-i18n="testimonials.verified_partner">
+                    <span class="testimonial-verified-badge px-2.5 py-1 text-[10px] font-mono uppercase tracking-wider rounded bg-gray-800 text-gray-300 font-semibold" data-i18n="testimonials.verified_partner">
                       Verified Partner
                     </span>
                   @endif
@@ -696,7 +713,7 @@
               </div>
             </article>
           @empty
-            <div class="col-span-full p-12 text-center rounded-2xl bg-[#121218] border border-gray-800 text-gray-500 font-mono text-xs" data-i18n="testimonials.empty">
+            <div class="testimonial-empty col-span-full p-12 text-center rounded-2xl bg-[#121218] border border-gray-800 text-gray-500 font-mono text-xs" data-i18n="testimonials.empty">
               Client testimonials will appear here once published.
             </div>
           @endforelse
@@ -888,7 +905,7 @@
   </script>
 
   <!-- Interactive Scripts -->
-  <script src="{{ asset('assets/js/main.js') }}"></script>
+  <script src="{{ asset('assets/js/main.js') }}{{ file_exists(public_path('assets/js/main.js')) ? '?v=' . filemtime(public_path('assets/js/main.js')) : '' }}"></script>
 
   <script>
     // Handle flash toast messages

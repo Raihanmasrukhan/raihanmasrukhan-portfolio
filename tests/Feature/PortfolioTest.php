@@ -26,6 +26,8 @@ class PortfolioTest extends TestCase
         $response->assertSee('TESTIMONIALS');
         $response->assertSee('CLIENT ENDORSEMENTS');
         $response->assertDontSee('BUKU TAMU');
+        $response->assertDontSee('live-time');
+        $response->assertDontSee('location-badge');
     }
 
     public function test_visitor_can_submit_contact_message(): void
