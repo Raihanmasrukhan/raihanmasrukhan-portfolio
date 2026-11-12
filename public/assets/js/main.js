@@ -150,18 +150,20 @@ document.addEventListener('DOMContentLoaded', () => {
     const data = projectsData[projectId];
     if (!data || !modalBackdrop) return;
 
+    const translateText = window.__translatePortfolioContent || ((val) => val);
+
     if (modalImage) modalImage.src = data.image;
-    if (modalTag) modalTag.textContent = data.badge;
-    if (modalTitle) modalTitle.textContent = data.title;
-    if (modalClient) modalClient.textContent = data.client;
-    if (modalRole) modalRole.textContent = data.role;
-    if (modalTimeline) modalTimeline.textContent = data.timeline;
-    if (modalDesc) modalDesc.textContent = data.overview;
+    if (modalTag) modalTag.textContent = translateText(data.badge);
+    if (modalTitle) modalTitle.textContent = translateText(data.title);
+    if (modalClient) modalClient.textContent = translateText(data.client);
+    if (modalRole) modalRole.textContent = translateText(data.role);
+    if (modalTimeline) modalTimeline.textContent = translateText(data.timeline);
+    if (modalDesc) modalDesc.textContent = translateText(data.overview);
 
     if (modalHighlights) {
       const highlights = Array.isArray(data.highlights) ? data.highlights : [];
       modalHighlights.innerHTML = highlights
-        .map(h => `<li style="margin-bottom:0.5rem;position:relative;padding-left:1.2rem;"><span style="position:absolute;left:0;color:var(--accent-orange);">▹</span>${h}</li>`)
+        .map(h => `<li style="margin-bottom:0.5rem;position:relative;padding-left:1.2rem;"><span style="position:absolute;left:0;color:var(--accent-orange);">▹</span>${translateText(h)}</li>`)
         .join('');
     }
 
@@ -323,7 +325,12 @@ document.addEventListener('DOMContentLoaded', () => {
       e.preventDefault();
       const active = document.documentElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
       applyTheme(active);
-      showToast(active === 'light' ? 'Mode Terang diaktifkan' : 'Mode Gelap diaktifkan');
+      const isEn = (localStorage.getItem('portfolio_locale') || window.ACTIVE_LOCALE || 'id') === 'en';
+      showToast(
+        active === 'light'
+          ? (isEn ? 'Light Mode enabled' : 'Mode Terang diaktifkan')
+          : (isEn ? 'Dark Mode enabled' : 'Mode Gelap diaktifkan')
+      );
     });
   });
 
@@ -337,7 +344,61 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // 13. Multi-language Translation Engine (ID / EN)
   const i18nDictionary = window.I18N_DICTIONARY || {};
+  const contentPairs = Array.isArray(window.I18N_CONTENT_PAIRS) ? window.I18N_CONTENT_PAIRS : [];
   let currentLocale = localStorage.getItem('portfolio_locale') || window.ACTIVE_LOCALE || 'id';
+  if (!i18nDictionary[currentLocale]) {
+    currentLocale = 'id';
+  }
+
+  function normalizeI18nText(str) {
+    return String(str || '').replace(/\r\n/g, '\n').replace(/[ \t]+/g, ' ').replace(/\n+/g, '\n').trim();
+  }
+
+  const idToEnMap = new Map();
+  const enToIdMap = new Map();
+  contentPairs.forEach(pair => {
+    if (!pair || !pair.id || !pair.en) return;
+    idToEnMap.set(normalizeI18nText(pair.id), pair.en);
+    enToIdMap.set(normalizeI18nText(pair.en), pair.id);
+  });
+
+  // Preserve exact database-rendered values once so custom Admin inputs are never lost
+  const dbElements = Array.from(document.querySelectorAll('[data-i18n-db]'));
+  dbElements.forEach(el => {
+    if (el.dataset.dbOrigHtml === undefined) {
+      el.dataset.dbOrigHtml = el.innerHTML;
+      el.dataset.dbOrigText = el.textContent;
+    }
+  });
+
+  function applyCommonPhraseFallback(text, targetLocale) {
+    if (!text) return text;
+    if (targetLocale === 'en') {
+      return text
+        .replace(/\bOkt\b/g, 'Oct')
+        .replace(/\bMei\b/g, 'May')
+        .replace(/\bAgu\b/g, 'Aug')
+        .replace(/\bDes\b/g, 'Dec')
+        .replace(/\bSekarang\b/g, 'Present');
+    }
+    return text;
+  }
+
+  function translateContentString(rawText, targetLocale) {
+    const locale = targetLocale || currentLocale;
+    const key = normalizeI18nText(rawText);
+    if (!key) return rawText;
+
+    if (locale === 'en' && idToEnMap.has(key)) {
+      return idToEnMap.get(key);
+    }
+    if (locale === 'id' && enToIdMap.has(key)) {
+      return enToIdMap.get(key);
+    }
+    return applyCommonPhraseFallback(rawText, locale);
+  }
+
+  window.__translatePortfolioContent = (val) => translateContentString(val, currentLocale);
 
   function getNestedTranslation(obj, path) {
     if (!obj || !path) return undefined;
@@ -358,11 +419,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const dict = i18nDictionary[locale];
 
-    // 1. Update text / html
+    // 1. Update static UI text / html
     document.querySelectorAll('[data-i18n]').forEach(el => {
       const key = el.getAttribute('data-i18n');
       const translation = getNestedTranslation(dict, key);
-      if (translation !== undefined) {
+      if (typeof translation === 'string') {
         if (translation.includes('<') && translation.includes('>')) {
           el.innerHTML = translation;
         } else {
@@ -371,7 +432,44 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
-    // 2. Update attributes (placeholder, title, aria-label)
+    // 2. Update DB-driven content cleanly without losing custom Admin edits
+    dbElements.forEach(el => {
+      const mode = el.getAttribute('data-i18n-db') || 'text';
+      const origHtml = el.dataset.dbOrigHtml ?? el.innerHTML;
+      const origText = el.dataset.dbOrigText ?? el.textContent;
+      const lookupRaw = mode === 'html' ? origHtml : origText;
+      const normalized = normalizeI18nText(lookupRaw);
+
+      if (locale === 'en') {
+        if (idToEnMap.has(normalized)) {
+          const translated = idToEnMap.get(normalized);
+          if (mode === 'html') {
+            el.innerHTML = translated;
+          } else {
+            el.textContent = translated;
+          }
+        } else {
+          if (mode === 'html') {
+            el.innerHTML = origHtml;
+          } else {
+            el.textContent = applyCommonPhraseFallback(origText, 'en');
+          }
+        }
+      } else {
+        if (enToIdMap.has(normalized)) {
+          const translated = enToIdMap.get(normalized);
+          if (mode === 'html') {
+            el.innerHTML = translated;
+          } else {
+            el.textContent = translated;
+          }
+        } else {
+          el.innerHTML = origHtml;
+        }
+      }
+    });
+
+    // 3. Update attributes (placeholder, title, aria-label)
     document.querySelectorAll('[data-i18n-attr]').forEach(el => {
       const attrData = el.getAttribute('data-i18n-attr');
       const pairs = attrData.split(',');
@@ -386,7 +484,13 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
 
-    // 3. Keep Laravel session in sync in background
+    // Update menu toggle label if nav overlay is currently open
+    if (menuToggle && navOverlay?.classList.contains('active')) {
+      const labels = getMenuLabels();
+      menuToggle.innerHTML = `${labels.close} <span style="font-size:1.1rem;margin-left:4px;">✕</span>`;
+    }
+
+    // 4. Keep Laravel session in sync in background
     fetch('/lang/' + locale, {
       headers: {
         'X-Requested-With': 'XMLHttpRequest',
@@ -399,15 +503,15 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // Bind language buttons
-  document.querySelectorAll('.lang-btn').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      e.preventDefault();
-      const selected = btn.getAttribute('data-lang');
-      if (selected && selected !== currentLocale) {
-        applyLocale(selected, true);
-      }
-    });
+  // Delegate clicks across desktop & mobile language switchers
+  document.addEventListener('click', (e) => {
+    const btn = e.target.closest('.lang-btn');
+    if (!btn) return;
+    e.preventDefault();
+    const selected = btn.getAttribute('data-lang');
+    if (selected && selected !== currentLocale) {
+      applyLocale(selected, true);
+    }
   });
 
   // Apply default/saved locale on load

@@ -222,7 +222,7 @@
     <div class="nav-overlay-inner">
       <!-- Mobile Preferences Bar -->
       <div class="nav-mobile-prefs flex items-center justify-between pb-3.5 mb-3 border-b border-white/10 sm:hidden">
-        <div class="nav-mobile-prefs-label text-[11px] font-mono text-gray-400 uppercase tracking-widest">PILIHAN TAMPILAN</div>
+        <div class="nav-mobile-prefs-label text-[11px] font-mono text-gray-400 uppercase tracking-widest" data-i18n="nav.preferences">PILIHAN TAMPILAN</div>
         <div class="flex items-center gap-2">
           <div class="lang-switcher-pill" id="mobile-lang-switcher" aria-label="Pilih Bahasa">
             <button type="button" class="lang-btn active" data-lang="id">ID</button>
@@ -299,12 +299,12 @@
                 @if($profile->is_available)
                   <span class="hero-badge-dot"></span>
                 @endif
-                <span>{{ $profile->availability_status ?? 'Available for Projects' }}</span>
+                <span data-i18n-db="text">{{ $profile->availability_status ?? 'Available for Projects' }}</span>
               </div>
               @if(!empty($profile->location))
                 <div class="hero-location-pill">
                   <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
-                  <span>{{ $profile->location }}</span>
+                  <span data-i18n-db="text">{{ $profile->location }}</span>
                 </div>
               @endif
             </div>
@@ -317,10 +317,10 @@
 
           <div class="hero-description">
             @if(!empty($profile->headline))
-              <span class="hero-description-lead">{{ $profile->headline }}</span>
+              <span class="hero-description-lead" data-i18n-db="text">{{ $profile->headline }}</span>
             @endif
             @if(!empty($profile->sub_headline))
-              <span class="hero-description-body">{{ $profile->sub_headline }}</span>
+              <span class="hero-description-body" data-i18n-db="text">{{ $profile->sub_headline }}</span>
             @endif
           </div>
 
@@ -362,7 +362,7 @@
 
             @if($cvHref)
               <a href="{{ $cvHref }}" target="_blank" rel="noopener" class="btn-secondary-cv">
-                <span>RESUME / CV</span>
+                <span data-i18n="hero.cv_btn">RESUME / CV</span>
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
               </a>
             @endif
@@ -381,7 +381,7 @@
               <div class="services-tag-header" data-i18n="hero.specialties_title">Specialties</div>
               <ul class="services-tag-list">
                 @foreach($profile->hero_specialties as $specialty)
-                  <li>{{ $specialty }}</li>
+                  <li data-i18n-db="text">{{ $specialty }}</li>
                 @endforeach
               </ul>
             </div>
@@ -398,11 +398,11 @@
             <span data-i18n="about.tag">[ ABOUT ME ]</span>
             <p class="about-meta-name">{{ $profile->full_name }}</p>
             @if(!empty($profile->location))
-              <p class="about-meta-location">{{ $profile->location }}</p>
+              <p class="about-meta-location" data-i18n-db="text">{{ $profile->location }}</p>
             @endif
           </div>
           <div>
-            <div class="about-statement">
+            <div class="about-statement" data-i18n-db="html">
               {!! $profile->about_statement !!}
             </div>
           </div>
@@ -413,10 +413,10 @@
           @foreach($projects->take(4) as $miniProject)
             <div class="gallery-card" data-project-trigger="{{ $miniProject->slug }}">
               <img src="{{ asset($miniProject->image) }}" alt="{{ $miniProject->title }} Preview" loading="lazy">
-              <div class="gallery-card-badge">
-                <span>{{ $miniProject->badge ?? $miniProject->category }}</span>
-                <span class="pill" data-i18n="about.view_btn">VIEW ➔</span>
-              </div>
+                <div class="gallery-card-badge">
+                  <span data-i18n-db="text">{{ $miniProject->badge ?? $miniProject->category }}</span>
+                  <span class="pill" data-i18n="about.view_btn">VIEW ➔</span>
+                </div>
             </div>
           @endforeach
         </div>
@@ -445,7 +445,7 @@
               <div>
                 <div class="service-card-num">{{ $service->number_label }}</div>
                 <h3 class="service-card-title">{{ $service->title }}</h3>
-                <p class="service-card-desc">{{ $service->description }}</p>
+                <p class="service-card-desc" data-i18n-db="text">{{ $service->description }}</p>
               </div>
               @if(is_array($service->tags))
                 <div class="service-card-tags">
@@ -479,7 +479,7 @@
               <div class="process-card-num">{{ $process->step_number }}</div>
               <div>
                 <h3 class="process-card-title">{{ $process->title }}</h3>
-                <p class="process-card-desc">{{ $process->description }}</p>
+                <p class="process-card-desc" data-i18n-db="text">{{ $process->description }}</p>
               </div>
             </div>
           @endforeach
@@ -502,19 +502,19 @@
             @foreach($experiences as $exp)
               <div class="timeline-item">
                 <div class="timeline-role-info">
-                  <h4>{{ $exp->role }}</h4>
+                  <h4 data-i18n-db="text">{{ $exp->role }}</h4>
                   <div class="company-name">{{ $exp->company }}</div>
-                  <div class="date-span">{{ $exp->date_span }}</div>
+                  <div class="date-span" data-i18n-db="text">{{ $exp->date_span }}</div>
                 </div>
                 <div class="timeline-indicator">
                   <span class="timeline-dot"></span>
                 </div>
                 <div class="timeline-desc-info">
-                  <p>{{ $exp->description }}</p>
+                  <p data-i18n-db="text">{{ $exp->description }}</p>
                   @if(is_array($exp->badges))
                     <div class="timeline-badges">
                       @foreach($exp->badges as $b)
-                        <span class="timeline-badge">{{ $b }}</span>
+                        <span class="timeline-badge" data-i18n-db="text">{{ $b }}</span>
                       @endforeach
                     </div>
                   @endif
@@ -555,12 +555,12 @@
             <div class="project-card reveal" data-category="{{ $project->category }}">
               <div class="project-thumb-wrap">
                 <img src="{{ asset($project->image) }}" alt="{{ $project->title }}" class="project-thumb-img" loading="lazy">
-                <div class="project-badge-tag">{{ $project->badge ?? $project->category }}</div>
+                <div class="project-badge-tag" data-i18n-db="text">{{ $project->badge ?? $project->category }}</div>
               </div>
               <div class="project-body">
                 <div class="project-client-name">{{ $project->client ?? 'Independent Project' }}</div>
-                <h3 class="project-title">{{ $project->title }}</h3>
-                <p class="project-desc">{{ $project->overview }}</p>
+                <h3 class="project-title" data-i18n-db="text">{{ $project->title }}</h3>
+                <p class="project-desc" data-i18n-db="text">{{ $project->overview }}</p>
                 @if(is_array($project->tech_stack))
                   <div class="project-tech-pills">
                     @foreach($project->tech_stack as $tech)
@@ -616,9 +616,9 @@
               @foreach($milestones as $milestone)
                 <tr>
                   <td class="strong-col">{{ $milestone->organization }}</td>
-                  <td>{{ $milestone->project_name }}</td>
+                  <td data-i18n-db="text">{{ $milestone->project_name }}</td>
                   <td class="badge-col">{{ $milestone->tech_stack }}</td>
-                  <td>{{ $milestone->period }}</td>
+                  <td data-i18n-db="text">{{ $milestone->period }}</td>
                 </tr>
               @endforeach
             </tbody>
@@ -676,11 +676,11 @@
 
           @foreach($educations as $education)
             <div class="edu-card">
-              <div class="edu-year">{{ $education->period }}</div>
+              <div class="edu-year" data-i18n-db="text">{{ $education->period }}</div>
               <h3 class="edu-school">{{ $education->school }}</h3>
-              <div class="edu-degree">{{ $education->degree }}</div>
+              <div class="edu-degree" data-i18n-db="text">{{ $education->degree }}</div>
               @if($education->notes)
-                <p class="edu-note">{{ $education->notes }}</p>
+                <p class="edu-note" data-i18n-db="text">{{ $education->notes }}</p>
               @endif
             </div>
           @endforeach
@@ -724,7 +724,7 @@
                 </div>
 
                 <blockquote class="text-sm text-gray-200 leading-relaxed font-sans relative z-10">
-                  "{{ $item->message }}"
+                  "<span data-i18n-db="text">{{ $item->message }}</span>"
                 </blockquote>
               </div>
 
@@ -736,11 +736,19 @@
                   <div class="font-bold text-sm text-white truncate flex items-center gap-2">
                     <span>{{ $item->name }}</span>
                     @if($item->is_pinned)
-                      <span class="text-[9px] font-mono bg-[#ff5500] text-black font-black px-1.5 py-0.5 rounded uppercase">Featured</span>
+                      <span class="text-[9px] font-mono bg-[#ff5500] text-black font-black px-1.5 py-0.5 rounded uppercase" data-i18n="testimonials.featured_badge">Featured</span>
                     @endif
                   </div>
                   <div class="text-[11px] font-mono text-gray-400 truncate mt-0.5">
-                    {{ collect([$item->role_title, $item->company])->filter()->implode(' • ') ?: 'Client Partner' }}
+                    @if($item->role_title && $item->company)
+                      <span data-i18n-db="text">{{ $item->role_title }}</span> • <span>{{ $item->company }}</span>
+                    @elseif($item->role_title)
+                      <span data-i18n-db="text">{{ $item->role_title }}</span>
+                    @elseif($item->company)
+                      <span>{{ $item->company }}</span>
+                    @else
+                      <span>Client Partner</span>
+                    @endif
                   </div>
                 </div>
               </div>
@@ -815,9 +823,9 @@
                     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
                   </div>
                   <div class="contact-item-text">
-                    <span class="label">Resume / CV</span>
+                    <span class="label" data-i18n="contact.label_cv">Resume / CV</span>
                     <div class="value">
-                      <a href="{{ $cvHref }}" target="_blank" rel="noopener">Lihat / Unduh Resume (CV) &rarr;</a>
+                      <a href="{{ $cvHref }}" target="_blank" rel="noopener" data-i18n="contact.view_cv">Lihat / Unduh Resume (CV) &rarr;</a>
                     </div>
                   </div>
                 </div>
@@ -842,11 +850,11 @@
               <div class="form-group">
                 <label for="project-type" class="form-label" data-i18n="contact.form_service">Interested Service / Project Type</label>
                 <select id="project-type" name="project_type" class="form-select">
-                  <option value="SaaS & Custom Web Application">SaaS & Custom Web Application</option>
-                  <option value="Enterprise Management System">Enterprise Management System</option>
-                  <option value="Full-Stack Web Development (Laravel/React)">Full-Stack Web Development (Laravel/React)</option>
-                  <option value="High-Converting Landing Page & Profile">High-Converting Landing Page & Profile</option>
-                  <option value="UI/UX Design & Consulting">UI/UX Design & Consulting</option>
+                  <option value="SaaS & Custom Web Application" data-i18n="contact.service_opt_1">SaaS & Custom Web Application</option>
+                  <option value="Enterprise Management System" data-i18n="contact.service_opt_2">Enterprise Management System</option>
+                  <option value="Full-Stack Web Development (Laravel/React)" data-i18n="contact.service_opt_3">Full-Stack Web Development (Laravel/React)</option>
+                  <option value="High-Converting Landing Page & Profile" data-i18n="contact.service_opt_4">High-Converting Landing Page & Profile</option>
+                  <option value="UI/UX Design & Consulting" data-i18n="contact.service_opt_5">UI/UX Design & Consulting</option>
                 </select>
               </div>
 
@@ -866,7 +874,7 @@
         <!-- Site Footer -->
         <footer class="site-footer">
           <div class="footer-left">
-            <span>© {{ date('Y') }} {{ strtoupper($profile->full_name) }}. ALL RIGHTS RESERVED. POWERED BY LARAVEL & TAILWIND.</span>
+            <span>© {{ date('Y') }} {{ strtoupper($profile->full_name) }}.</span> <span data-i18n="footer.rights">ALL RIGHTS RESERVED. POWERED BY LARAVEL & TAILWIND.</span>
           </div>
 
           <div>
@@ -930,6 +938,7 @@
       id: @json(trans('portfolio', [], 'id')),
       en: @json(trans('portfolio', [], 'en'))
     };
+    window.I18N_CONTENT_PAIRS = @json(config('portfolio_i18n.pairs', []));
     window.ACTIVE_LOCALE = @json($currentLocale ?? 'id');
 
     window.DYNAMIC_PROJECTS = {

@@ -219,4 +219,36 @@ class PortfolioTest extends TestCase
         $response->assertDontSee('data-i18n="hero.sub_headline"', false);
         $response->assertDontSee('data-i18n="about.statement"', false);
     }
+
+    public function test_bilingual_i18n_dictionary_and_db_pairs_are_complete(): void
+    {
+        $this->seed();
+
+        $idDict = trans('portfolio', [], 'id');
+        $enDict = trans('portfolio', [], 'en');
+
+        $this->assertSame(array_keys($idDict), array_keys($enDict));
+        foreach ($idDict as $section => $items) {
+            $this->assertSame(array_keys($items), array_keys($enDict[$section]), "Missing keys in section [{$section}]");
+        }
+
+        $pairs = config('portfolio_i18n.pairs', []);
+        $this->assertNotEmpty($pairs);
+
+        $idIndexed = collect($pairs)->pluck('en', 'id');
+        $profile = ProfileSetting::current();
+        $this->assertTrue($idIndexed->has($profile->sub_headline));
+        $this->assertTrue($idIndexed->has($profile->about_statement));
+
+        $profile->update(['cv_url' => 'https://example.com/cv-raihan.pdf']);
+
+        $response = $this->get('/');
+        $response->assertStatus(200);
+        $response->assertSee('window.I18N_DICTIONARY', false);
+        $response->assertSee('window.I18N_CONTENT_PAIRS', false);
+        $response->assertSee('data-i18n-db="html"', false);
+        $response->assertSee('data-i18n="hero.cv_btn"', false);
+        $response->assertSee('data-i18n="contact.view_cv"', false);
+        $response->assertSee('data-i18n="footer.rights"', false);
+    }
 }
