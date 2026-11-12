@@ -22,8 +22,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // 1. Admin User
-        User::updateOrCreate(
+        // 1. Admin User (never overwrite existing admin credentials on re-seed)
+        User::firstOrCreate(
             ['email' => env('ADMIN_EMAIL', 'admin@raihan.dev')],
             [
                 'name' => 'Raihan Adib Masrukhan',
@@ -31,36 +31,95 @@ class DatabaseSeeder extends Seeder
             ]
         );
 
-        // 2. Profile & Site Settings (Directly from CV)
-        ProfileSetting::updateOrCreate(
-            ['id' => 1],
+        self::syncCvData();
+
+        // 10. Initial Client Testimonials
+        $testimonials = [
             [
-                'full_name' => 'Raihan Adib Masrukhan',
-                'hero_title_line1' => 'RAIHAN',
-                'hero_title_prefix' => 'MAS',
-                'hero_title_suffix' => 'RUKHAN',
-                'headline' => 'Web Developer & Digital Creative',
-                'sub_headline' => 'Praktisi teknologi dan digital dengan pengalaman 3 tahun di bidang Web Developer dan Digital Creative, serta terbiasa mengeksekusi proyek dari hulu ke hilir. Membangun aplikasi web berkinerja tinggi, sistem SaaS kustom, sistem manajemen terintegrasi, dan landing page berkonversi tinggi.',
-                'location' => 'Based in Depok & Bogor, ID',
-                'availability_status' => 'Available for Projects',
-                'is_available' => true,
-                'avatar' => 'images/hero-cutout.png',
-                'hero_specialties' => [
-                    'Full-Stack Web Dev (PHP/Laravel & React)',
-                    'Multi-tenant SaaS Architecture',
-                    'Geofencing & PWA Systems',
-                    'Custom Management Systems',
-                    'Digital Creative & UI/UX',
-                ],
-                'about_statement' => 'Praktisi teknologi dan digital dengan pengalaman 3 tahun di bidang <span class="text-bold">Web Developer</span> dan <span class="text-highlight">Digital Creative</span>, serta terbiasa mengeksekusi proyek dari hulu ke hilir. Saya adalah sosok yang punya rasa ingin tahu tinggi, mudah beradaptasi di berbagai situasi, dan memiliki semangat belajar yang besar. Sangat terbuka untuk berkontribusi di bidang apa pun serta selalu antusias mengeksplorasi hal-hal baru untuk memberikan solusi terbaik yang efisien dan solutif.',
-                'phone' => '+6285864459552',
-                'whatsapp_number' => '6285864459552',
-                'email' => 'Raihanmasrukhan56@gmail.com',
-                'github_url' => 'https://github.com/Raihanmasrukhan',
-                'linkedin_url' => 'https://www.linkedin.com/in/raihan-masrukhan-22626b316/',
-                'instagram_url' => null,
-            ]
-        );
+                'name' => 'Reza Pratama',
+                'role_title' => 'Founder & Product Director',
+                'company' => 'PT BantuGrow Revolusi Digital',
+                'project_tag' => 'SaaS Geofencing & PWA',
+                'email' => null,
+                'message' => 'Raihan menunjukkan kedisiplinan arsitektur yang sangat luar biasa saat membangun sistem SaaS progress manajemen kami. Dari validasi geofencing GPS presisi hingga PWA offline-sync dan automasi PDF, setiap modul terkirim tepat waktu dengan keandalan tinggi.',
+                'avatar_color' => '#ff5500',
+                'rating' => 5,
+                'is_approved' => true,
+                'is_pinned' => true,
+            ],
+            [
+                'name' => 'Ustadz Ahmad Fauzi, M.Pd.',
+                'role_title' => 'Kepala Operasional Akademik',
+                'company' => 'Pondok Pesantren Abdan Syakuro',
+                'project_tag' => 'Sistem Tahfidz & PPDB',
+                'email' => null,
+                'message' => 'Sistem Manajemen Tahfidz dan portal PPDB yang dibangun Mas Raihan sangat membantu digitalisasi pencatatan hafalan santri serta transparansi laporan akademik bagi wali santri. Administrasi jadi rapi dan bebas dari resiko kehilangan data.',
+                'avatar_color' => '#ff8800',
+                'rating' => 5,
+                'is_approved' => true,
+                'is_pinned' => false,
+            ],
+            [
+                'name' => 'H. Hendra Wijaya',
+                'role_title' => 'Direktur Operasional',
+                'company' => 'PT Ahsan Sabila Mumtaza',
+                'project_tag' => 'Sistem Travel Umrah',
+                'email' => null,
+                'message' => 'Transformasi sistem manifest keberangkatan dan pelacakan inventori jamaah berjalan sangat lancar. Human error dalam pendataan jamaah berhasil ditekan hingga nol, dan reservasi online jadi sangat cepat dan aman.',
+                'avatar_color' => '#10b981',
+                'rating' => 5,
+                'is_approved' => true,
+                'is_pinned' => false,
+            ],
+        ];
+
+        foreach ($testimonials as $t) {
+            Testimonial::updateOrCreate(['name' => $t['name']], $t);
+        }
+    }
+
+    /**
+     * Synchronize public portfolio profile, projects, experience, education, skills,
+     * services, work processes, and milestones directly from the CV without touching
+     * user credentials or visitor testimonials.
+     */
+    public static function syncCvData(): void
+    {
+        // 2. Profile & Site Settings (Directly from CV)
+        $profileData = [
+            'full_name' => 'Raihan Adib Masrukhan',
+            'hero_title_line1' => 'RAIHAN',
+            'hero_title_prefix' => 'MAS',
+            'hero_title_suffix' => 'RUKHAN',
+            'headline' => 'Web Developer & Digital Creative',
+            'sub_headline' => 'Praktisi teknologi dan digital dengan pengalaman 3 tahun di bidang Web Developer dan Digital Creative, serta terbiasa mengeksekusi proyek dari hulu ke hilir. Membangun aplikasi web berkinerja tinggi, sistem SaaS kustom, sistem manajemen terintegrasi, dan landing page berkonversi tinggi.',
+            'location' => 'Based in Depok & Bogor, ID',
+            'availability_status' => 'Available for Projects',
+            'is_available' => true,
+            'avatar' => 'images/hero-cutout.png',
+            'hero_specialties' => [
+                'Full-Stack Web Dev (PHP/Laravel & React)',
+                'Multi-tenant SaaS Architecture',
+                'Geofencing & PWA Systems',
+                'Custom Management Systems',
+                'Digital Creative & UI/UX',
+            ],
+            'about_statement' => 'Praktisi teknologi dan digital dengan pengalaman 3 tahun di bidang <span class="text-bold">Web Developer</span> dan <span class="text-highlight">Digital Creative</span>, serta terbiasa mengeksekusi proyek dari hulu ke hilir. Saya adalah sosok yang punya rasa ingin tahu tinggi, mudah beradaptasi di berbagai situasi, dan memiliki semangat belajar yang besar. Sangat terbuka untuk berkontribusi di bidang apa pun serta selalu antusias mengeksplorasi hal-hal baru untuk memberikan solusi terbaik yang efisien dan solutif.',
+            'phone' => '+6285864459552',
+            'whatsapp_number' => '6285864459552',
+            'email' => 'Raihanmasrukhan56@gmail.com',
+            'github_url' => 'https://github.com/Raihanmasrukhan',
+            'linkedin_url' => 'https://www.linkedin.com/in/raihan-masrukhan-22626b316/',
+            'instagram_url' => null,
+        ];
+
+        $existingProfile = ProfileSetting::query()->first();
+
+        if ($existingProfile) {
+            $existingProfile->update($profileData);
+        } else {
+            ProfileSetting::create(['id' => 1, ...$profileData]);
+        }
 
         // 3. Projects (Matched to CV work history & flagship systems)
         $projects = [
@@ -386,50 +445,6 @@ class DatabaseSeeder extends Seeder
 
         foreach ($milestones as $m) {
             Milestone::create($m);
-        }
-
-        // 10. Initial Client Testimonials
-        $testimonials = [
-            [
-                'name' => 'Reza Pratama',
-                'role_title' => 'Founder & Product Director',
-                'company' => 'PT BantuGrow Revolusi Digital',
-                'project_tag' => 'SaaS Geofencing & PWA',
-                'email' => null,
-                'message' => 'Raihan menunjukkan kedisiplinan arsitektur yang sangat luar biasa saat membangun sistem SaaS progress manajemen kami. Dari validasi geofencing GPS presisi hingga PWA offline-sync dan automasi PDF, setiap modul terkirim tepat waktu dengan keandalan tinggi.',
-                'avatar_color' => '#ff5500',
-                'rating' => 5,
-                'is_approved' => true,
-                'is_pinned' => true,
-            ],
-            [
-                'name' => 'Ustadz Ahmad Fauzi, M.Pd.',
-                'role_title' => 'Kepala Operasional Akademik',
-                'company' => 'Pondok Pesantren Abdan Syakuro',
-                'project_tag' => 'Sistem Tahfidz & PPDB',
-                'email' => null,
-                'message' => 'Sistem Manajemen Tahfidz dan portal PPDB yang dibangun Mas Raihan sangat membantu digitalisasi pencatatan hafalan santri serta transparansi laporan akademik bagi wali santri. Administrasi jadi rapi dan bebas dari resiko kehilangan data.',
-                'avatar_color' => '#ff8800',
-                'rating' => 5,
-                'is_approved' => true,
-                'is_pinned' => false,
-            ],
-            [
-                'name' => 'H. Hendra Wijaya',
-                'role_title' => 'Direktur Operasional',
-                'company' => 'PT Ahsan Sabila Mumtaza',
-                'project_tag' => 'Sistem Travel Umrah',
-                'email' => null,
-                'message' => 'Transformasi sistem manifest keberangkatan dan pelacakan inventori jamaah berjalan sangat lancar. Human error dalam pendataan jamaah berhasil ditekan hingga nol, dan reservasi online jadi sangat cepat dan aman.',
-                'avatar_color' => '#10b981',
-                'rating' => 5,
-                'is_approved' => true,
-                'is_pinned' => false,
-            ],
-        ];
-
-        foreach ($testimonials as $t) {
-            Testimonial::updateOrCreate(['name' => $t['name']], $t);
         }
     }
 }

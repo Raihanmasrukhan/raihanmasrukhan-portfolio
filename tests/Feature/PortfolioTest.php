@@ -2,8 +2,10 @@
 
 namespace Tests\Feature;
 
+use App\Models\Education;
 use App\Models\Testimonial;
 use App\Models\User;
+use Database\Seeders\DatabaseSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
@@ -140,5 +142,42 @@ class PortfolioTest extends TestCase
 
         $this->patch("/admin/testimonials/{$testimonial->id}/toggle-approval")->assertRedirect();
         $this->assertFalse($testimonial->fresh()->is_approved);
+    }
+
+    public function test_cv_sync_updates_portfolio_without_overwriting_users_or_testimonials(): void
+    {
+        $admin = User::create([
+            'name' => 'Custom Admin',
+            'email' => 'custom@raihan.dev',
+            'password' => Hash::make('secret-prod-pass'),
+        ]);
+
+        $customTestimonial = Testimonial::create([
+            'name' => 'Klien Produksi',
+            'role_title' => 'CEO',
+            'company' => 'PT Mitra Nyata',
+            'project_tag' => 'Custom App',
+            'message' => 'Layanan sangat memuaskan.',
+            'avatar_color' => '#ff5500',
+            'rating' => 5,
+            'is_approved' => true,
+            'is_pinned' => false,
+        ]);
+
+        DatabaseSeeder::syncCvData();
+
+        $this->assertTrue(Hash::check('secret-prod-pass', $admin->fresh()->password));
+        $this->assertDatabaseHas('testimonials', ['id' => $customTestimonial->id, 'name' => 'Klien Produksi']);
+        $this->assertDatabaseHas('profile_settings', [
+            'headline' => 'Web Developer & Digital Creative',
+            'phone' => '+6285864459552',
+        ]);
+        $this->assertDatabaseHas('experiences', ['company' => 'PT Bilcode Global Teknologi']);
+        $this->assertDatabaseHas(Education::class, ['school' => 'Politeknik IDN Bogor']);
+
+        $response = $this->get('/');
+        $response->assertStatus(200);
+        $response->assertSee('PT Bilcode Global Teknologi');
+        $response->assertSee('Politeknik IDN Bogor');
     }
 }
