@@ -11,8 +11,6 @@ return [
         'stack' => 'SKILL & PENDIDIKAN',
         'testimonials' => 'TESTIMONI KLIEN',
         'start_project' => 'MULAI PROYEK BARU',
-        'admin_dashboard' => 'DASHBOARD ADMIN',
-        'admin_login' => 'LOGIN ADMIN',
         'index_label' => 'NAVIGASI INDEKS',
         'preferences' => 'PILIHAN TAMPILAN',
     ],

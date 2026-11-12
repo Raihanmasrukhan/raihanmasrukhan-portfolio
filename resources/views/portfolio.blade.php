@@ -196,16 +196,6 @@
           </span>
         </button>
 
-        @auth
-          <a href="{{ route('admin.dashboard') }}" class="nav-admin-pill text-[11px] font-mono text-[#ff5500] hover:text-white uppercase tracking-wider px-3 py-1.5 rounded-full border border-[#ff5500]/40 bg-[#ff5500]/10 transition-colors hidden sm:inline-block" data-i18n="nav.admin_dashboard">
-            Dashboard Admin ➔
-          </a>
-        @else
-          <a href="{{ route('login') }}" class="nav-login-pill text-[11px] font-mono text-gray-400 hover:text-white uppercase tracking-wider px-3 py-1.5 rounded-full border border-gray-800 bg-gray-900/60 transition-colors hidden sm:inline-block" data-i18n="nav.admin_login">
-            Admin Login
-          </a>
-        @endauth
-
         <button class="btn-menu-toggle" id="menu-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
           <span id="menu-btn-text">MENU</span>
           <div class="menu-icon-bars" aria-hidden="true">
@@ -251,11 +241,6 @@
         <div class="nav-link-item"><a href="#stack-education"><span class="nav-num">07</span><span class="nav-text" data-i18n="nav.stack">STACK &amp; EDU</span><span class="nav-arrow">→</span></a></div>
         <div class="nav-link-item"><a href="#testimonials"><span class="nav-num">08</span><span class="nav-text" data-i18n="nav.testimonials">TESTIMONIALS</span><span class="nav-arrow">→</span></a></div>
         <div class="nav-link-item nav-link-cta"><a href="#contact"><span class="nav-num">09</span><span class="nav-text" data-i18n="nav.start_project">START A PROJECT</span><span class="nav-arrow">➔</span></a></div>
-        @auth
-          <div class="nav-link-item nav-link-admin"><a href="{{ route('admin.dashboard') }}"><span class="nav-num">10</span><span class="nav-text" data-i18n="nav.admin_dashboard">ADMIN DASHBOARD</span><span class="nav-arrow">⚙</span></a></div>
-        @else
-          <div class="nav-link-item nav-link-admin"><a href="{{ route('login') }}"><span class="nav-num">10</span><span class="nav-text" data-i18n="nav.admin_login">ADMIN LOGIN</span><span class="nav-arrow">→</span></a></div>
-        @endauth
       </nav>
       @php
         $cvHref = !empty($profile->cv_url)

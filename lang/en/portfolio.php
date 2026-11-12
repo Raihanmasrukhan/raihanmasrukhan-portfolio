@@ -11,8 +11,6 @@ return [
         'stack' => 'STACK & EDU',
         'testimonials' => 'TESTIMONIALS',
         'start_project' => 'START A PROJECT',
-        'admin_dashboard' => 'ADMIN DASHBOARD',
-        'admin_login' => 'ADMIN LOGIN',
         'index_label' => 'NAVIGATION INDEX',
         'preferences' => 'PREFERENCES',
     ],

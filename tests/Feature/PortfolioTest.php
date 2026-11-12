@@ -29,6 +29,14 @@ class PortfolioTest extends TestCase
         $response->assertDontSee('BUKU TAMU');
         $response->assertDontSee('live-time');
         $response->assertDontSee('location-badge');
+        $response->assertDontSee('Admin Login');
+        $response->assertDontSee('ADMIN LOGIN');
+        $response->assertDontSee('nav-login-pill');
+        $response->assertDontSee('nav-admin-pill');
+        $response->assertDontSee('nav-link-admin');
+        $response->assertDontSee(route('login'), false);
+
+        $this->get('/login')->assertStatus(200);
     }
 
     public function test_visitor_can_submit_contact_message(): void
