@@ -54,6 +54,8 @@ return [
         'filter_enterprise' => 'Management Systems',
         'filter_landing' => 'Landing & CMS',
         'explore' => 'Explore Case Study',
+        'live_demo' => 'Live Demo',
+        'github_repo' => 'GitHub',
     ],
     'milestones' => [
         'tag' => 'PROVEN TRACK RECORD',
@@ -116,5 +118,7 @@ return [
         'timeline' => 'Timeline',
         'deliverables' => 'Key Deliverables & Impact',
         'technologies' => 'Technologies Used',
+        'visit_live' => 'Visit Live Demo',
+        'view_github' => 'GitHub Repository',
     ],
 ];

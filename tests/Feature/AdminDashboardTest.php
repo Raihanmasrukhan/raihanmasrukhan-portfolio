@@ -192,6 +192,8 @@ class AdminDashboardTest extends TestCase
             'overview' => 'Full enterprise CRM solution.',
             'highlights_text' => "Realtime reporting\nRBAC support",
             'tech_stack_text' => 'Laravel, React, MySQL',
+            'live_url' => 'https://demo.crm-platform.test',
+            'github_url' => 'https://github.com/raihan/enterprise-crm',
             'image_file' => UploadedFile::fake()->image('mockup.jpg', 800, 450),
             'sort_order' => 1,
             'is_featured' => '1',
@@ -200,8 +202,24 @@ class AdminDashboardTest extends TestCase
         $project = Project::where('slug', 'enterprise-crm-platform')->firstOrFail();
         $this->assertSame(['Realtime reporting', 'RBAC support'], $project->highlights);
         $this->assertSame(['Laravel', 'React', 'MySQL'], $project->tech_stack);
+        $this->assertSame('https://demo.crm-platform.test', $project->live_url);
+        $this->assertSame('https://github.com/raihan/enterprise-crm', $project->github_url);
         $this->assertTrue($project->is_featured);
         Storage::disk('public')->assertExists(str_replace('storage/', '', $project->image));
+
+        $this->get('/admin/projects')
+            ->assertStatus(200)
+            ->assertSee('https://demo.crm-platform.test')
+            ->assertSee('https://github.com/raihan/enterprise-crm');
+
+        $homepage = $this->get('/');
+        $homepage->assertStatus(200);
+        $homepage->assertSee('href="https://demo.crm-platform.test"', false);
+        $homepage->assertSee('href="https://github.com/raihan/enterprise-crm"', false);
+        $homepage->assertSee('data-i18n="projects.live_demo"', false);
+        $homepage->assertSee('data-i18n="projects.github_repo"', false);
+        $homepage->assertSee('liveUrl:', false);
+        $homepage->assertSee('githubUrl:', false);
 
         // Duplicate title gets unique slug suffix
         $this->post('/admin/projects', [

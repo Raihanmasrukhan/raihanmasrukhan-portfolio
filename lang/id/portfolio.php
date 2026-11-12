@@ -54,6 +54,8 @@ return [
         'filter_enterprise' => 'Sistem Manajemen',
         'filter_landing' => 'Landing Page & Profil',
         'explore' => 'Lihat Studi Kasus',
+        'live_demo' => 'Live Demo',
+        'github_repo' => 'GitHub',
     ],
     'milestones' => [
         'tag' => 'REKAM JEJAK TERBUKTI',
@@ -116,5 +118,7 @@ return [
         'timeline' => 'Waktu Pelaksanaan',
         'deliverables' => 'Capaian Utama & Dampak Sistem',
         'technologies' => 'Teknologi yang Digunakan',
+        'visit_live' => 'Buka Live Demo',
+        'view_github' => 'Repositori GitHub',
     ],
 ];

@@ -47,6 +47,16 @@
                     <div class="text-xs font-mono text-gray-500">
                       {{ $proj->client ?? 'Independent' }}
                     </div>
+                    @if(!empty($proj->live_url) || !empty($proj->github_url))
+                      <div class="flex flex-wrap items-center gap-2 mt-1.5">
+                        @if(!empty($proj->live_url))
+                          <a href="{{ $proj->live_url }}" target="_blank" rel="noopener noreferrer" class="text-[10px] font-mono text-[#ff5500] hover:underline">Live Demo ↗</a>
+                        @endif
+                        @if(!empty($proj->github_url))
+                          <a href="{{ $proj->github_url }}" target="_blank" rel="noopener noreferrer" class="text-[10px] font-mono text-gray-400 hover:text-white hover:underline">GitHub Repo ↗</a>
+                        @endif
+                      </div>
+                    @endif
                   </div>
                 </div>
               </td>
