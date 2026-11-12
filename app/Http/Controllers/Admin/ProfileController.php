@@ -46,7 +46,8 @@ class ProfileController extends Controller
             'github_url' => 'nullable|url|max:255',
             'linkedin_url' => 'nullable|url|max:255',
             'instagram_url' => 'nullable|url|max:255',
-            'cv_url' => 'nullable|string|max:255',
+            'cv_url' => 'nullable|string|max:500',
+            'cv_file' => 'nullable|file|mimes:pdf,doc,docx|max:10240',
             'avatar_file' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:5120',
         ]);
 
@@ -80,7 +81,18 @@ class ProfileController extends Controller
         $profile->github_url = $validated['github_url'] ?? null;
         $profile->linkedin_url = $validated['linkedin_url'] ?? null;
         $profile->instagram_url = $validated['instagram_url'] ?? null;
-        $profile->cv_url = $validated['cv_url'] ?? null;
+
+        if ($request->boolean('remove_cv')) {
+            $profile->cv_url = null;
+        } elseif ($request->hasFile('cv_file')) {
+            $cvFile = $request->file('cv_file');
+            $cvFileName = 'cv_'.time().'.'.$cvFile->getClientOriginalExtension();
+            $cvFile->storeAs('cv', $cvFileName, 'public');
+            $profile->cv_url = 'storage/cv/'.$cvFileName;
+        } else {
+            $profile->cv_url = $validated['cv_url'] ?? null;
+        }
+
         $profile->save();
 
         // Optional password update for logged in user

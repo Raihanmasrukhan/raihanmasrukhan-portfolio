@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\Education;
+use App\Models\ProfileSetting;
 use App\Models\Testimonial;
 use App\Models\User;
 use Database\Seeders\DatabaseSeeder;
@@ -181,5 +182,41 @@ class PortfolioTest extends TestCase
         $response->assertStatus(200);
         $response->assertSee('PT Bilcode Global Teknologi');
         $response->assertSee('Politeknik IDN Bogor');
+    }
+
+    public function test_profile_and_cv_fields_render_verbatim_without_i18n_overwrite(): void
+    {
+        $this->seed();
+
+        $profile = ProfileSetting::current();
+        $profile->update([
+            'full_name' => 'Nama Kustom Uji',
+            'headline' => 'Principal Software Engineer',
+            'sub_headline' => 'Principal Software Engineer. Membangun arsitektur cloud berkinerja tinggi.',
+            'location' => 'Jakarta Selatan, ID',
+            'availability_status' => 'Open for Consulting Q4',
+            'is_available' => true,
+            'about_statement' => 'Editorial kustom <span class="text-bold">langsung dari admin</span>.',
+            'instagram_url' => 'https://instagram.com/custom.uji',
+            'cv_url' => 'https://example.com/cv-kustom.pdf',
+        ]);
+
+        $response = $this->get('/');
+        $response->assertStatus(200);
+        $response->assertSee('Nama Kustom Uji');
+        $response->assertSee('Principal Software Engineer');
+        $response->assertSee('Principal Software Engineer. Membangun arsitektur cloud berkinerja tinggi.');
+        $response->assertSee('Jakarta Selatan, ID');
+        $response->assertSee('Open for Consulting Q4');
+        $response->assertSee('Editorial kustom <span class="text-bold">langsung dari admin</span>.', false);
+        $response->assertSee('https://instagram.com/custom.uji');
+        $response->assertSee('https://example.com/cv-kustom.pdf');
+        $response->assertSee('RESUME / CV');
+
+        // Ensure JS i18n dictionary will not overwrite admin-managed Profile fields
+        $response->assertDontSee('data-i18n="hero.available"', false);
+        $response->assertDontSee('data-i18n="hero.headline"', false);
+        $response->assertDontSee('data-i18n="hero.sub_headline"', false);
+        $response->assertDontSee('data-i18n="about.statement"', false);
     }
 }

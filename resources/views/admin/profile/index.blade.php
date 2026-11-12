@@ -181,9 +181,36 @@
           <input type="url" name="instagram_url" value="{{ old('instagram_url', $profile->instagram_url) }}" class="w-full px-4 py-3 rounded-xl bg-[#0a0a0d] border border-gray-700/80 text-white focus:outline-none focus:border-[#ff5500] text-sm font-mono">
         </div>
 
-        <div class="md:col-span-2">
-          <label class="block text-xs font-mono uppercase tracking-wider text-gray-400 mb-2">Link Download CV / Resume (URL atau Google Drive / Cloud Link)</label>
-          <input type="text" name="cv_url" value="{{ old('cv_url', $profile->cv_url) }}" class="w-full px-4 py-3 rounded-xl bg-[#0a0a0d] border border-gray-700/80 text-white focus:outline-none focus:border-[#ff5500] text-sm font-mono" placeholder="https://drive.google.com/file/... atau link CV Anda">
+        <div class="md:col-span-2 pt-2 border-t border-gray-800/80 space-y-4">
+          <div>
+            <label class="block text-xs font-mono uppercase tracking-wider text-gray-400 mb-2">Link Download CV / Resume (URL Eksternal / Path File)</label>
+            <input type="text" name="cv_url" value="{{ old('cv_url', $profile->cv_url) }}" class="w-full px-4 py-3 rounded-xl bg-[#0a0a0d] border border-gray-700/80 text-white focus:outline-none focus:border-[#ff5500] text-sm font-mono" placeholder="https://drive.google.com/file/... atau upload file CV di bawah">
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 items-start">
+            <div>
+              <label class="block text-xs font-mono uppercase tracking-wider text-gray-400 mb-2">Upload File Resume / CV (PDF / DOC / DOCX, Maks. 10MB)</label>
+              <input type="file" name="cv_file" accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document" class="w-full px-3 py-2.5 rounded-xl bg-[#0a0a0d] border border-gray-700/80 text-gray-300 text-xs font-mono file:mr-4 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-[#ff5500] file:text-white hover:file:bg-[#e64d00]">
+              <p class="mt-1.5 text-[11px] font-mono text-gray-500">Jika mengupload file baru, link CV akan otomatis diarahkan ke file ini.</p>
+            </div>
+
+            @if(!empty($profile->cv_url))
+              @php
+                $cvPreviewUrl = \Illuminate\Support\Str::startsWith($profile->cv_url, ['http://', 'https://', '/']) ? $profile->cv_url : asset($profile->cv_url);
+              @endphp
+              <div class="p-3.5 rounded-xl bg-[#0a0a0d] border border-gray-800 flex flex-col gap-2.5">
+                <div class="flex items-center justify-between gap-2">
+                  <span class="text-[11px] font-mono uppercase tracking-wider text-emerald-400">CV Aktif Terpasang</span>
+                  <a href="{{ $cvPreviewUrl }}" target="_blank" rel="noopener" class="text-xs font-mono text-[#ff5500] hover:underline">Lihat / Unduh CV &rarr;</a>
+                </div>
+                <p class="text-xs font-mono text-gray-400 truncate">{{ $profile->cv_url }}</p>
+                <label class="inline-flex items-center gap-2 text-xs font-mono text-red-400 cursor-pointer pt-1">
+                  <input type="checkbox" name="remove_cv" value="1" class="rounded bg-[#111216] border-gray-700 text-red-500 focus:ring-red-500">
+                  <span>Hapus CV saat ini</span>
+                </label>
+              </div>
+            @endif
+          </div>
         </div>
       </div>
     </div>

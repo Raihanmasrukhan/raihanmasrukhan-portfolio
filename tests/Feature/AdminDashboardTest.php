@@ -112,6 +112,8 @@ class AdminDashboardTest extends TestCase
             'email' => 'raihan@example.com',
             'github_url' => 'https://github.com/Raihanmasrukhan',
             'linkedin_url' => 'https://www.linkedin.com/in/raihan-masrukhan-22626b316/',
+            'instagram_url' => 'https://instagram.com/raihan.dev',
+            'cv_file' => UploadedFile::fake()->create('cv-raihan.pdf', 256, 'application/pdf'),
             'avatar_file' => UploadedFile::fake()->image('portrait.png', 400, 400),
             'new_password' => 'newpass123',
             'new_password_confirmation' => 'newpass123',
@@ -122,11 +124,26 @@ class AdminDashboardTest extends TestCase
         $profile = ProfileSetting::current();
         $this->assertSame('Available Now', $profile->availability_status);
         $this->assertSame(['Laravel', 'React.js', 'SaaS'], $profile->hero_specialties);
+        $this->assertSame('https://instagram.com/raihan.dev', $profile->instagram_url);
         $this->assertStringStartsWith('storage/images/hero_', $profile->avatar);
+        $this->assertStringStartsWith('storage/cv/cv_', $profile->cv_url);
         Storage::disk('public')->assertExists(str_replace('storage/', '', $profile->avatar));
+        Storage::disk('public')->assertExists(str_replace('storage/', '', $profile->cv_url));
         $this->assertTrue(Hash::check('newpass123', $admin->fresh()->password));
 
-        // Verify clearing specialties saves an empty array cleanly
+        $homepage = $this->get('/');
+        $homepage->assertStatus(200);
+        $homepage->assertSee('Raihan Adib Masrukhan');
+        $homepage->assertSee('Web Developer &amp; Digital Creative', false);
+        $homepage->assertSee('Subheadline terbaru.');
+        $homepage->assertSee('Depok, Indonesia');
+        $homepage->assertSee('Available Now');
+        $homepage->assertSee('Statement <span class="text-bold">lengkap</span>.', false);
+        $homepage->assertSee('https://instagram.com/raihan.dev');
+        $homepage->assertSee('RESUME / CV');
+        $homepage->assertSee($profile->cv_url);
+
+        // Verify clearing specialties, unchecking availability, and removing CV updates DB and homepage
         $this->put('/admin/profile', [
             'full_name' => 'Raihan Adib Masrukhan',
             'hero_title_line1' => 'RAIHAN',
@@ -138,6 +155,7 @@ class AdminDashboardTest extends TestCase
             'availability_status' => 'Busy',
             'about_statement' => 'Statement baru.',
             'hero_specialties_text' => '',
+            'remove_cv' => '1',
             'phone' => '+6285864459552',
             'whatsapp_number' => '6285864459552',
             'email' => 'raihan@example.com',
@@ -146,6 +164,14 @@ class AdminDashboardTest extends TestCase
         $profile->refresh();
         $this->assertFalse($profile->is_available);
         $this->assertSame([], $profile->hero_specialties);
+        $this->assertNull($profile->cv_url);
+
+        $updatedHome = $this->get('/');
+        $updatedHome->assertStatus(200);
+        $updatedHome->assertSee('Busy');
+        $updatedHome->assertSee('Statement baru.');
+        $updatedHome->assertDontSee('hero-badge-dot');
+        $updatedHome->assertDontSee('RESUME / CV');
     }
 
     public function test_admin_projects_full_crud_and_image_upload(): void

@@ -901,6 +901,14 @@ body::before {
   margin-bottom: 1.5rem;
 }
 
+.hero-badge-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.65rem;
+  margin-bottom: 1.25rem;
+}
+
 .hero-badge-pill {
   display: inline-flex;
   align-items: center;
@@ -915,10 +923,38 @@ body::before {
   color: #ffffff;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  margin-bottom: 1.25rem;
+  margin-bottom: 0;
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.45);
+}
+
+.hero-location-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.4rem 0.9rem;
+  background: rgba(18, 18, 24, 0.52);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: var(--radius-full);
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.88);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.hero-fullname {
+  margin-top: 0.65rem;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.85);
 }
 
 .hero-badge-dot {
@@ -1076,6 +1112,32 @@ body::before {
   transform: translateX(4px);
 }
 
+.btn-secondary-cv {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  background: rgba(18, 18, 24, 0.55);
+  color: #ffffff;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.85rem 1.45rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  transition: var(--transition-fast);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.btn-secondary-cv:hover {
+  background: #ffffff;
+  border-color: #ffffff;
+  color: #0d0d10;
+  transform: translateY(-2px);
+}
+
 /* Right Hero Portrait & Floating Services */
 .hero-right {
   position: relative;
@@ -1228,6 +1290,24 @@ body::before {
   letter-spacing: 0.15em;
   text-transform: uppercase;
   padding-top: 0.5rem;
+}
+
+.about-meta-name {
+  margin-top: 1rem;
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  text-transform: none;
+  color: var(--text-primary);
+}
+
+.about-meta-location {
+  margin-top: 0.25rem;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  color: var(--text-secondary);
 }
 
 .about-statement {
@@ -2584,11 +2664,17 @@ body::before {
     margin-bottom: 1.15rem;
   }
 
-  .hero-badge-pill {
+  .hero-badge-row {
+    gap: 0.5rem;
+    margin-bottom: 0.9rem;
+  }
+
+  .hero-badge-pill,
+  .hero-location-pill {
     font-size: 0.7rem;
     padding: 0.35rem 0.85rem;
     gap: 0.45rem;
-    margin-bottom: 0.9rem;
+    margin-bottom: 0;
     line-height: 1.35;
     max-width: 100%;
   }
@@ -2639,7 +2725,8 @@ body::before {
     gap: 0.75rem;
   }
 
-  .btn-primary-orange {
+  .btn-primary-orange,
+  .btn-secondary-cv {
     width: 100%;
     justify-content: center;
     padding: 0.95rem 1.5rem;
@@ -3122,4 +3209,30 @@ body.light-mode .toast-notice {
   background: #ffffff;
   color: #0f172a;
   box-shadow: 0 16px 40px rgba(15, 23, 42, 0.16);
+}
+
+[data-theme="light"] .hero-location-pill,
+body.light-mode .hero-location-pill {
+  background: rgba(255, 255, 255, 0.85);
+  border-color: rgba(15, 23, 42, 0.12);
+  color: #334155;
+}
+
+[data-theme="light"] .hero-fullname,
+body.light-mode .hero-fullname {
+  color: #334155;
+}
+
+[data-theme="light"] .btn-secondary-cv,
+body.light-mode .btn-secondary-cv {
+  background: rgba(255, 255, 255, 0.88);
+  border-color: rgba(15, 23, 42, 0.18);
+  color: #0f172a;
+}
+
+[data-theme="light"] .btn-secondary-cv:hover,
+body.light-mode .btn-secondary-cv:hover {
+  background: #0f172a;
+  border-color: #0f172a;
+  color: #ffffff;
 }

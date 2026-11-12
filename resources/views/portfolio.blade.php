@@ -257,6 +257,11 @@
           <div class="nav-link-item nav-link-admin"><a href="{{ route('login') }}"><span class="nav-num">10</span><span class="nav-text" data-i18n="nav.admin_login">ADMIN LOGIN</span><span class="nav-arrow">→</span></a></div>
         @endauth
       </nav>
+      @php
+        $cvHref = !empty($profile->cv_url)
+          ? (\Illuminate\Support\Str::startsWith($profile->cv_url, ['http://', 'https://', '/']) ? $profile->cv_url : asset($profile->cv_url))
+          : null;
+      @endphp
       <div class="nav-overlay-footer">
         @if($profile->github_url)
           <a href="{{ $profile->github_url }}" target="_blank" rel="noopener">GitHub</a>
@@ -264,8 +269,14 @@
         @if($profile->linkedin_url)
           <a href="{{ $profile->linkedin_url }}" target="_blank" rel="noopener">LinkedIn</a>
         @endif
+        @if($profile->instagram_url)
+          <a href="{{ $profile->instagram_url }}" target="_blank" rel="noopener">Instagram</a>
+        @endif
         @if($profile->whatsapp_number)
           <a href="https://wa.me/{{ $profile->whatsapp_number }}" target="_blank" rel="noopener">WhatsApp</a>
+        @endif
+        @if($cvHref)
+          <a href="{{ $cvHref }}" target="_blank" rel="noopener">Resume / CV</a>
         @endif
         <a href="mailto:{{ $profile->email }}">Email</a>
       </div>
@@ -283,29 +294,34 @@
         <!-- Left Hero Typography & Actions -->
         <div class="hero-left">
           <div class="hero-title-wrap">
-            <div class="hero-badge-pill">
-              <span class="hero-badge-dot"></span>
-              <span data-i18n="hero.available">{{ $profile->availability_status ?? 'Available for Projects' }}</span>
+            <div class="hero-badge-row">
+              <div class="hero-badge-pill">
+                @if($profile->is_available)
+                  <span class="hero-badge-dot"></span>
+                @endif
+                <span>{{ $profile->availability_status ?? 'Available for Projects' }}</span>
+              </div>
+              @if(!empty($profile->location))
+                <div class="hero-location-pill">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                  <span>{{ $profile->location }}</span>
+                </div>
+              @endif
             </div>
             <h1 class="hero-name">
               <span class="hero-name-top">{{ $profile->hero_title_line1 }}</span>
               <span class="hero-name-sub"><span class="outline-text">{{ $profile->hero_title_prefix }}</span><span class="solid-text">{{ $profile->hero_title_suffix }}</span></span>
             </h1>
+            <p class="hero-fullname">{{ $profile->full_name }}</p>
           </div>
 
           <div class="hero-description">
-            @php
-              $headlineStr = $profile->headline;
-              $subStr = $profile->sub_headline ?? '';
-              $cleanedBody = trim(str_ireplace($headlineStr . '.', '', $subStr));
-              if (empty($cleanedBody)) {
-                $cleanedBody = $subStr;
-              }
-            @endphp
-            @if(!empty($headlineStr))
-              <span class="hero-description-lead" data-i18n="hero.headline">{{ $headlineStr }}</span>
+            @if(!empty($profile->headline))
+              <span class="hero-description-lead">{{ $profile->headline }}</span>
             @endif
-            <span class="hero-description-body" data-i18n="hero.sub_headline">{{ $cleanedBody }}</span>
+            @if(!empty($profile->sub_headline))
+              <span class="hero-description-body">{{ $profile->sub_headline }}</span>
+            @endif
           </div>
 
           <div class="hero-actions">
@@ -328,6 +344,12 @@
                 </a>
               @endif
 
+              @if($profile->instagram_url)
+                <a href="{{ $profile->instagram_url }}" target="_blank" rel="noopener" class="social-btn" aria-label="Instagram Profile">
+                  <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                </a>
+              @endif
+
               <a href="mailto:{{ $profile->email }}" class="social-btn" aria-label="Send Email">
                 <svg viewBox="0 0 24 24"><path d="M0 3v18h24v-18h-24zm21.518 2l-9.518 7.713-9.518-7.713h19.036zm-19.518 14v-11.817l9.518 7.682 9.518-7.682v11.817h-19.036z"/></svg>
               </a>
@@ -337,6 +359,13 @@
               <span data-i18n="hero.start_project_cta">START A PROJECT</span>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
             </a>
+
+            @if($cvHref)
+              <a href="{{ $cvHref }}" target="_blank" rel="noopener" class="btn-secondary-cv">
+                <span>RESUME / CV</span>
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+              </a>
+            @endif
           </div>
         </div>
 
@@ -367,9 +396,13 @@
         <div class="about-grid reveal">
           <div class="about-meta">
             <span data-i18n="about.tag">[ ABOUT ME ]</span>
+            <p class="about-meta-name">{{ $profile->full_name }}</p>
+            @if(!empty($profile->location))
+              <p class="about-meta-location">{{ $profile->location }}</p>
+            @endif
           </div>
           <div>
-            <div class="about-statement" data-i18n="about.statement">
+            <div class="about-statement">
               {!! $profile->about_statement !!}
             </div>
           </div>
@@ -774,6 +807,21 @@
                   <div class="value" style="color:var(--text-secondary);">{{ $profile->location }}</div>
                 </div>
               </div>
+
+              @if($cvHref)
+                <!-- Resume / CV -->
+                <div class="contact-item">
+                  <div class="contact-item-icon" aria-hidden="true">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+                  </div>
+                  <div class="contact-item-text">
+                    <span class="label">Resume / CV</span>
+                    <div class="value">
+                      <a href="{{ $cvHref }}" target="_blank" rel="noopener">Lihat / Unduh Resume (CV) &rarr;</a>
+                    </div>
+                  </div>
+                </div>
+              @endif
             </div>
           </div>
 
