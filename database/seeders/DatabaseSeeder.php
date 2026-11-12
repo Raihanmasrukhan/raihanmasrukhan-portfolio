@@ -18,12 +18,12 @@ use Illuminate\Support\Facades\Hash;
 class DatabaseSeeder extends Seeder
 {
     /**
-     * Seed the application's database.
+     * Seed the application's database with accurate CV profile data.
      */
     public function run(): void
     {
         // 1. Admin User
-        User::firstOrCreate(
+        User::updateOrCreate(
             ['email' => env('ADMIN_EMAIL', 'admin@raihan.dev')],
             [
                 'name' => 'Raihan Adib Masrukhan',
@@ -31,29 +31,29 @@ class DatabaseSeeder extends Seeder
             ]
         );
 
-        // 2. Profile & Site Settings
-        ProfileSetting::firstOrCreate(
+        // 2. Profile & Site Settings (Directly from CV)
+        ProfileSetting::updateOrCreate(
             ['id' => 1],
             [
                 'full_name' => 'Raihan Adib Masrukhan',
                 'hero_title_line1' => 'RAIHAN',
                 'hero_title_prefix' => 'MAS',
                 'hero_title_suffix' => 'RUKHAN',
-                'headline' => 'Software Engineer & Full-Stack Web Developer',
-                'sub_headline' => 'Software Engineer & Full-Stack Web Developer. Transforming complex business logic into high-performance web applications, scalable SaaS systems, and intuitive digital experiences.',
+                'headline' => 'Web Developer & Digital Creative',
+                'sub_headline' => 'Praktisi teknologi dan digital dengan pengalaman 3 tahun di bidang Web Developer dan Digital Creative, serta terbiasa mengeksekusi proyek dari hulu ke hilir. Membangun aplikasi web berkinerja tinggi, sistem SaaS kustom, sistem manajemen terintegrasi, dan landing page berkonversi tinggi.',
                 'location' => 'Based in Depok & Bogor, ID',
                 'availability_status' => 'Available for Projects',
                 'is_available' => true,
-                'avatar' => 'images/hero.jpg',
+                'avatar' => 'images/hero-cutout.png',
                 'hero_specialties' => [
-                    'Full-Stack Web Dev',
-                    'SaaS Architecture',
-                    'Laravel & React Ecosystem',
+                    'Full-Stack Web Dev (PHP/Laravel & React)',
+                    'Multi-tenant SaaS Architecture',
                     'Geofencing & PWA Systems',
-                    'Creative UI/UX Engineering',
+                    'Custom Management Systems',
+                    'Digital Creative & UI/UX',
                 ],
-                'about_statement' => 'I build <span class="text-bold">production-grade web platforms</span> and <span class="text-highlight">robust SaaS systems</span> that empower businesses and communities. Every solution begins with a <span class="text-bold">clean architectural foundation</span>, <span class="text-highlight">intuitive UI/UX</span>, and <span class="text-bold">rock-solid reliability</span> throughout.',
-                'phone' => '+62 858-6445-9552',
+                'about_statement' => 'Praktisi teknologi dan digital dengan pengalaman 3 tahun di bidang <span class="text-bold">Web Developer</span> dan <span class="text-highlight">Digital Creative</span>, serta terbiasa mengeksekusi proyek dari hulu ke hilir. Saya adalah sosok yang punya rasa ingin tahu tinggi, mudah beradaptasi di berbagai situasi, dan memiliki semangat belajar yang besar. Sangat terbuka untuk berkontribusi di bidang apa pun serta selalu antusias mengeksplorasi hal-hal baru untuk memberikan solusi terbaik yang efisien dan solutif.',
+                'phone' => '+6285864459552',
                 'whatsapp_number' => '6285864459552',
                 'email' => 'Raihanmasrukhan56@gmail.com',
                 'github_url' => 'https://github.com/Raihanmasrukhan',
@@ -62,7 +62,7 @@ class DatabaseSeeder extends Seeder
             ]
         );
 
-        // 3. Projects
+        // 3. Projects (Matched to CV work history & flagship systems)
         $projects = [
             [
                 'title' => 'Digital Progress & Geofencing SaaS',
@@ -70,14 +70,14 @@ class DatabaseSeeder extends Seeder
                 'category' => 'saas',
                 'badge' => 'SaaS & PWA',
                 'client' => 'PT. BantuGrow Revolusi Digital',
-                'role' => 'Web Developer & UI/UX Designer',
-                'timeline' => 'Nov 2024 – Present',
-                'overview' => 'An end-to-end multi-tenant Software-as-a-Service (SaaS) and progress management system. Engineered for high-accuracy workforce tracking with live geofencing polygon boundaries, offline Progressive Web App (PWA) sync, dynamic multi-role authorization, and automated daily PDF reporting engine.',
+                'role' => 'Web Developer & Desain Grafis (Remote)',
+                'timeline' => 'Nov 2024 – Mei 2026',
+                'overview' => 'Ekosistem Software-as-a-Service (SaaS) dan sistem manajemen kemajuan proyek digital terintegrasi. Dilengkapi dengan validasi radius geofencing polygon GPS presisi tinggi untuk presensi lapangan, dukungan Progressive Web App (PWA) offline-first dengan sinkronisasi otomatis, kontrol akses multi-role (RBAC), serta automasi pembuatan laporan harian dalam format PDF.',
                 'highlights' => [
-                    'Real-time GPS geofencing radius validation for field task attendance',
-                    'Offline-first Progressive Web App (PWA) with background sync',
-                    'Automated executive PDF report generator & analytics charts',
-                    'Streamlined multi-company tenant architecture and role-based permissions',
+                    'Validasi radius geofencing GPS real-time untuk pemantauan presensi dan progres tugas lapangan',
+                    'Progressive Web App (PWA) offline-first dengan sinkronisasi background otomatis',
+                    'Automasi pembuatan laporan eksekutif PDF & dashboard visual analitik',
+                    'Arsitektur multi-tenant terisolasi dengan hak akses dinamis per perusahaan',
                 ],
                 'tech_stack' => ['PHP / Laravel', 'JavaScript / React', 'MySQL', 'PWA', 'Tailwind CSS', 'Geofencing API'],
                 'image' => 'images/project-saas.jpg',
@@ -85,83 +85,84 @@ class DatabaseSeeder extends Seeder
                 'is_featured' => true,
             ],
             [
-                'title' => 'Umrah Travel Manifest & Operations System',
-                'slug' => 'umrah-travel',
+                'title' => 'Custom Management System & High-Converting Landing Pages',
+                'slug' => 'bilcode-management',
                 'category' => 'enterprise',
-                'badge' => 'Enterprise System',
-                'client' => 'PT. Ahsan Sabila Mumtaza (Ahsan Tour & Travel)',
+                'badge' => 'Custom Management System',
+                'client' => 'PT Bilcode Global Teknologi',
                 'role' => 'Web Developer',
-                'timeline' => 'Sep 2023 – Oct 2024',
-                'overview' => 'Comprehensive travel management platform built to orchestrate large-scale Umrah pilgrimages. Features automated flight manifest generation, baggage & luggage inventory tracker, passenger milestone payments, and live hotel booking management.',
+                'timeline' => 'Okt 2025 – Nov 2026',
+                'overview' => 'Pengembangan sistem manajemen kustom (custom management system) yang disesuaikan secara presisi dengan alur kerja spesifik dan kebutuhan operasional bisnis klien, serta perancangan landing page responsif berkinerja tinggi untuk kampanye pemasaran terpadu.',
                 'highlights' => [
-                    'Automated passenger manifest and flight scheduling with zero human error',
-                    'Equipment & inventory logistics tracking across departure hubs',
-                    'End-to-end payment status tracking and dynamic invoicing',
-                    'High performance portal with integrated promotional assets and fast mobile UX',
+                    'Membangun custom management system yang merampingkan operasional bisnis klien dari hulu ke hilir',
+                    'Optimalisasi antarmuka web yang intuitif untuk memaksimalkan konversi prospek (lead conversion)',
+                    'Landing page responsif berkecepatan tinggi dengan integrasi form prospek dinamis',
+                    'Efisiensi operasional klien meningkat signifikan berkat digitalisasi sistem yang terintegrasi',
                 ],
-                'tech_stack' => ['PHP / Laravel', 'MySQL', 'REST API', 'JavaScript', 'cPanel', 'Responsive UI'],
-                'image' => 'images/project-travel.jpg',
+                'tech_stack' => ['PHP / Laravel', 'React.js', 'Tailwind CSS', 'MySQL', 'REST API', 'Figma UI/UX'],
+                'image' => 'images/project-landing.jpg',
                 'sort_order' => 2,
                 'is_featured' => true,
             ],
             [
-                'title' => 'Tahfidz & Academic Attendance Portal',
+                'title' => 'Aplikasi Sistem Manajemen Tahfidz & Portal PPDB',
                 'slug' => 'tahfidz-portal',
                 'category' => 'enterprise',
-                'badge' => 'Academic Portal',
+                'badge' => 'Sistem Akademik & PPDB',
                 'client' => 'Pondok Pesantren Abdan Syakuro',
                 'role' => 'Web Developer & Multimedia',
-                'timeline' => 'Oct 2024 – Present',
-                'overview' => 'Specialized educational management software designed to digitalize Quran memorization (Tahfidz) tracking, student daily attendance, and real-time academic report cards for parents and administrators. Also powers the institution\'s PPDB student admissions.',
+                'timeline' => 'Okt 2024 – Nov 2025',
+                'overview' => 'Aplikasi Sistem Manajemen Tahfidz untuk digitalisasi pencatatan hafalan santri, pemantauan absensi terpadu, dan pelaporan akademik periodik bagi wali santri. Sekaligus pemeliharaan website profil pesantren sebagai pusat informasi utama Penerimaan Peserta Didik Baru (PPDB) yang terintegrasi dengan kampanye digital ads.',
                 'highlights' => [
-                    'Granular Juz, Surah, and Ayah memorization progress logging with visual charts',
-                    'Digitalized daily attendance reducing paper-based administrative workload',
-                    'Parent portal for instant academic and memorization milestone updates',
-                    'Integrated official portal with admission inquiry conversion funnels',
+                    'Mengubah administrasi hafalan menjadi sistematis dan aman dari resiko kehilangan data fisik',
+                    'Pencatatan hafalan granular per Juz, Surah, dan Ayat dengan laporan perkembangan real-time',
+                    'Menjamin kelancaran dan kestabilan sistem pendaftaran santri baru (PPDB)',
+                    'Perluasan brand awareness pesantren secara signifikan melalui integrasi multimedia dan iklan digital',
                 ],
-                'tech_stack' => ['Laravel', 'MySQL', 'JavaScript', 'Bootstrap / CSS3', 'Laragon / Cloud VPS'],
+                'tech_stack' => ['Laravel', 'MySQL', 'JavaScript', 'Tailwind CSS', 'cPanel / Cloud VPS'],
                 'image' => 'images/project-tahfidz.jpg',
                 'sort_order' => 3,
                 'is_featured' => true,
             ],
             [
-                'title' => 'High-Converting Digital Agency Architecture',
-                'slug' => 'agency-landing',
-                'category' => 'landing',
-                'badge' => 'Landing & Performance',
-                'client' => 'PT. BantuGrow Revolusi Digital & Clients',
-                'role' => 'Full-Stack Developer & UI/UX Designer',
-                'timeline' => '2024',
-                'overview' => 'A suite of ultra-high performance landing pages and conversion-optimized websites built for high-stakes marketing and ad campaigns. Focused on sub-second load times, Core Web Vitals optimization, interactive micro-animations, and lead capture funnels.',
+                'title' => 'Aplikasi Sistem Manajemen Travel Umrah End-to-End',
+                'slug' => 'umrah-travel',
+                'category' => 'enterprise',
+                'badge' => 'Travel ERP System',
+                'client' => 'PT Ahsan Sabila Mumtaza (Ahsan Tour & Travel)',
+                'role' => 'Web Developer',
+                'timeline' => 'Sep 2022 – Okt 2024',
+                'overview' => 'Aplikasi sistem manajemen travel umrah komprehensif end-to-end yang mencakup pengelolaan basis data jamaah terpusat, pembuatan manifest keberangkatan otomatis, manajemen inventori perlengkapan, pelacakan status pembayaran, dan sistem informasi paket wisata terintegrasi.',
                 'highlights' => [
-                    '98+ Google Lighthouse performance score with sub-second page loads',
-                    'High conversion rates with strategic UI/UX placement and interactive CTA forms',
-                    'End-to-end meta tags, OpenGraph social sharing, and structured JSON-LD SEO',
-                    'Pixel-perfect responsive layout across mobile, tablet, and desktop monitors',
+                    'Mempercepat operasional dan meminimalisir human error dalam pendataan ratusan jamaah',
+                    'Automasi pembuatan manifest penerbangan, akomodasi hotel, dan logistik perlengkapan umrah',
+                    'Pelacakan status pembayaran dan penerbitan bukti reservasi online yang cepat dan aman',
+                    'Pengelolaan infrastruktur server dan performa website untuk stabilitas saat traffic tinggi',
                 ],
-                'tech_stack' => ['HTML5 / CSS3', 'Modern JS', 'Figma UI/UX', 'Core Web Vitals', 'Tailwind CSS'],
-                'image' => 'images/project-landing.jpg',
+                'tech_stack' => ['PHP / Laravel', 'MySQL', 'REST API', 'JavaScript', 'cPanel', 'Responsive UI'],
+                'image' => 'images/project-travel.jpg',
                 'sort_order' => 4,
                 'is_featured' => true,
             ],
             [
-                'title' => 'Foundation Portal & Custom Editorial CMS',
-                'slug' => 'alqolam-cms',
+                'title' => 'High-Converting Landing Pages & Performance Architecture',
+                'slug' => 'agency-landing',
                 'category' => 'landing',
-                'badge' => 'Web Portal & CMS',
-                'client' => 'Pondok Pesantren Al Qolam Yatim & Dhuafa',
-                'role' => 'Web Developer',
-                'timeline' => 'Jun 2022 – Jul 2023',
-                'overview' => 'Official institutional portal and customized content management system (CMS) created to amplify digital presence and facilitate public fundraising for orphan empowerment programs.',
+                'badge' => 'Landing Page Conversion',
+                'client' => 'PT BantuGrow & Clients',
+                'role' => 'Web Developer & Digital Creative',
+                'timeline' => '2024 – 2026',
+                'overview' => 'Suite arsitektur landing page dan portal profil perusahaan dengan skor Core Web Vitals 98+, fokus pada kecepatan load sub-detik, hierarki visual berbasis konversi psikologis, dan integrasi WhatsApp API direct form.',
                 'highlights' => [
-                    'Custom Laravel CMS allowing non-technical staff to publish articles and financial transparency reports',
-                    'Integrated digital fundraising appeal and campaign tracking',
-                    'Robust multi-role dashboard for administrative staff',
+                    'Skor Google Lighthouse 98+ dengan waktu render antarmuka instan',
+                    'Penempatan elemen UI/UX strategis untuk memaksimalkan lead conversion rate',
+                    'Optimasi lengkap SEO on-page, open-graph metadata, dan structured JSON-LD',
+                    'Desain visual terstandarisasi Figma dengan layout responsif lintas monitor',
                 ],
-                'tech_stack' => ['Laravel', 'PHP', 'MySQL', 'CSS3', 'Git'],
-                'image' => 'images/project-tahfidz.jpg',
+                'tech_stack' => ['HTML5 / CSS3', 'Modern JS', 'Tailwind CSS', 'Figma', 'SEO & Speed Opt'],
+                'image' => 'images/project-landing.jpg',
                 'sort_order' => 5,
-                'is_featured' => false,
+                'is_featured' => true,
             ],
         ];
 
@@ -169,100 +170,112 @@ class DatabaseSeeder extends Seeder
             Project::updateOrCreate(['slug' => $proj['slug']], $proj);
         }
 
-        // 4. Work Experiences
+        // 4. Work Experiences (Exact CV Records)
+        // Clear previous experience table to ensure clean sort order
+        Experience::query()->delete();
+
         $experiences = [
             [
-                'role' => 'Web Developer & Desain Grafis',
-                'company' => 'PT. BantuGrow Revolusi Digital',
-                'date_span' => 'Nov 2024 — Present (Remote)',
-                'description' => 'Membangun dan mengembangkan ekosistem Software-as-a-Service (SaaS) serta solusi digital terintegrasi, termasuk perancangan Digital Progress Management System kustom dengan fitur geofencing, dukungan PWA, dan automasi laporan PDF. Men-deploy arsitektur landing page berkinerja tinggi serta mengelola aset digital.',
-                'badges' => ['SaaS Ecosystem', 'Geofencing', 'PWA', 'PDF Automation', 'Landing Pages'],
+                'role' => 'Web Developer',
+                'company' => 'PT Bilcode Global Teknologi',
+                'date_span' => 'Okt 2025 – Nov 2026',
+                'description' => "• Merancang dan mengembangkan landing page yang responsif dan berkinerja tinggi untuk mendukung berbagai kampanye pemasaran klien.\n• Membangun sistem manajemen kustom (custom management system) yang disesuaikan dengan alur kerja spesifik dan kebutuhan operasional bisnis klien.\n\nDampak: Memaksimalkan konversi prospek (lead conversion) klien melalui optimalisasi antarmuka web yang intuitif, serta meningkatkan efisiensi operasional bisnis klien berkat digitalisasi sistem yang terintegrasi.",
+                'badges' => ['Custom Management System', 'Landing Page Conversion', 'Lead Conversion', 'Business Ops Optimization', 'Integrated Systems'],
                 'sort_order' => 1,
                 'is_current' => true,
             ],
             [
-                'role' => 'Web Developer & Multimedia',
-                'company' => 'Pondok Pesantren Abdan Syakuro',
-                'date_span' => 'Okt 2024 — Present',
-                'description' => 'Merancang, mengembangkan, dan mengelola Aplikasi Sistem Manajemen Tahfidz untuk digitalisasi pencatatan hafalan santri, pemantauan absensi, dan pelaporan akademik. Memelihara dan mengoptimalkan performa website profil pesantren sebagai pusat informasi utama PPDB.',
-                'badges' => ['Tahfidz System', 'Academic Portal', 'PPDB Traffic Hub', 'Multimedia'],
+                'role' => 'Web Developer & Desain Grafis (Remote)',
+                'company' => 'PT BantuGrow Revolusi Digital',
+                'date_span' => 'Nov 2024 – Mei 2026',
+                'description' => "• Membangun dan mengembangkan ekosistem Software-as-a-Service (SaaS) serta solusi digital terintegrasi, termasuk perancangan Digital Progress Management System kustom dengan fitur geofencing, dukungan PWA, dan automasi laporan PDF.\n• Mengelola ekosistem media sosial perusahaan secara end-to-end, mulai dari perancangan visual (desain grafis), video editing untuk publikasi konten rutin, hingga eksekusi dan optimasi kampanye periklanan digital (Digital Ads).\n\nDampak: Meningkatkan efisiensi dan transparansi operasional klien melalui sistem terintegrasi, serta memaksimalkan konversi dan lead generation dari kampanye pemasaran digital.",
+                'badges' => ['SaaS Ecosystem', 'Geofencing Radius', 'Progressive Web App (PWA)', 'Automasi Laporan PDF', 'Digital Ads & Creative'],
                 'sort_order' => 2,
-                'is_current' => true,
+                'is_current' => false,
             ],
             [
-                'role' => 'Web Developer',
-                'company' => 'PT. Ahsan Sabila Mumtaza',
-                'date_span' => 'Sep 2023 — Okt 2024',
-                'description' => 'Membangun dan mengembangkan Aplikasi Sistem Manajemen Travel Umrah end-to-end (manifest keberangkatan, inventori perlengkapan, dan pelacakan status pembayaran). Mengelola server, kecepatan akses, dan sistem informasi paket wisata.',
-                'badges' => ['Travel Umrah SaaS', 'Manifest Automation', 'Inventory Tracking', 'Server Ops'],
+                'role' => 'Web Developer & Multimedia',
+                'company' => 'Pondok Pesantren Abdan Syakuro',
+                'date_span' => 'Okt 2024 – Nov 2025',
+                'description' => "• Merancang, mengembangkan, dan mengelola Aplikasi Sistem Manajemen Tahfidz untuk digitalisasi pencatatan hafalan santri, pemantauan absensi, dan pelaporan akademik.\n• Memelihara dan mengoptimalkan kinerja website profil pesantren sebagai pusat informasi utama Penerimaan Peserta Didik Baru (PPDB).\n• Mendesain, mengedit, dan mengintegrasikan konten visual publikasi ke ekosistem digital pesantren, sekaligus mengelola periklanan digital (Ads).\n\nDampak: Mengubah administrasi hafalan menjadi sistematis dan aman dari kehilangan data, menjamin kelancaran sistem pendaftaran santri baru, serta memperluas brand awareness pesantren secara signifikan di media sosial.",
+                'badges' => ['Sistem Manajemen Tahfidz', 'Website PPDB', 'Pelaporan Akademik', 'Multimedia & Ads', 'Keamanan Basis Data'],
                 'sort_order' => 3,
                 'is_current' => false,
             ],
             [
                 'role' => 'Web Developer',
-                'company' => 'Pondok Pesantren Al Qolam Yatim',
-                'date_span' => 'Jun 2022 — Jul 2023',
-                'description' => 'Membangun website resmi yayasan menggunakan Laravel dari tahap perancangan hingga deployment. Mengembangkan Dashboard Admin dan CMS kustom untuk pengelolaan artikel, berita, dan transparansi donasi digital.',
-                'badges' => ['Laravel Framework', 'Custom CMS', 'Digital Fundraising'],
+                'company' => 'PT Ahsan Sabila Mumtaza (Ahsan Tour & Travel)',
+                'date_span' => 'Sep 2022 – Okt 2024',
+                'description' => "• Membangun dan mengembangkan Aplikasi Sistem Manajemen Travel Umrah secara end-to-end yang mencakup pengelolaan data jamaah, manifest keberangkatan, inventori perlengkapan, dan pelacakan status pembayaran.\n• Mengelola infrastruktur server dan performa website perusahaan, serta mengintegrasikan aset visual promosi ke dalam platform web.\n• Melakukan pembaruan sistem informasi paket wisata dan umrah secara berkala.\n• Menjalankan kampanye media sosial secara end-to-end (desain, distribusi konten, pemasangan iklan).\n\nDampak: Mempercepat operasional dan meminimalisir human error dalam pendataan jamaah, memberikan pengalaman reservasi online yang cepat dan aman, serta memperluas jangkauan pasar untuk layanan paket tour.",
+                'badges' => ['Sistem Travel Umrah', 'Manifest Keberangkatan', 'Inventori Jamaah', 'Infrastruktur Server', 'Reservasi Online'],
                 'sort_order' => 4,
                 'is_current' => false,
             ],
         ];
 
         foreach ($experiences as $exp) {
-            Experience::updateOrCreate(['company' => $exp['company'], 'role' => $exp['role']], $exp);
+            Experience::create($exp);
         }
 
-        // 5. Education
+        // 5. Education (Exact CV Records)
+        Education::query()->delete();
+
         $educations = [
             [
                 'school' => 'Politeknik IDN Bogor',
                 'degree' => 'Software Engineering (Online)',
-                'period' => '2024 — Sekarang',
-                'notes' => 'Mahasiswa Aktif Semester 4. Menjalani perkuliahan sepenuhnya secara online di luar jam kerja untuk terus memperkuat fondasi rekayasa perangkat lunak tanpa mengganggu komitmen profesional.',
+                'period' => '2024 – Sekarang',
+                'notes' => 'Status: Mahasiswa Aktif Semester 5 (Online). Menjalani perkuliahan sepenuhnya secara online di luar jam kerja. Jadwal studi yang fleksibel ini dipastikan tidak akan mengganggu produktivitas, komitmen, maupun jam operasional profesional perusahaan.',
                 'sort_order' => 1,
             ],
             [
                 'school' => 'SMK Asyifa Depok',
                 'degree' => 'Rekayasa Perangkat Lunak (Software Engineering)',
-                'period' => '2019 — 2022',
-                'notes' => 'Membangun fondasi komprehensif dalam pemrograman web, basis data terstruktur, algoritma perangkat lunak, dan metodologi pengembangan aplikasi.',
+                'period' => '2019 – 2022',
+                'notes' => 'Mempelajari fondasi menyeluruh pemrograman perangkat lunak, pengembangan aplikasi web terstruktur, algoritma, basis data relasional, dan metodologi rekayasa sistem.',
                 'sort_order' => 2,
             ],
         ];
 
         foreach ($educations as $edu) {
-            Education::updateOrCreate(['school' => $edu['school']], $edu);
+            Education::create($edu);
         }
 
-        // 6. Skills
+        // 6. Skills (Grouped exactly as in CV)
+        Skill::query()->delete();
+
         $skills = [
-            // Web & App
+            // Web & App Development
             ['name' => 'PHP', 'category' => 'web_app', 'level' => 'Advanced', 'sort_order' => 1],
             ['name' => 'Laravel', 'category' => 'web_app', 'level' => 'Expert', 'sort_order' => 2],
-            ['name' => 'JavaScript (ES6+)', 'category' => 'web_app', 'level' => 'Advanced', 'sort_order' => 3],
+            ['name' => 'JavaScript', 'category' => 'web_app', 'level' => 'Advanced', 'sort_order' => 3],
             ['name' => 'React.js', 'category' => 'web_app', 'level' => 'Proficient', 'sort_order' => 4],
             ['name' => 'Node.js', 'category' => 'web_app', 'level' => 'Intermediate', 'sort_order' => 5],
-            ['name' => 'HTML5 & CSS3', 'category' => 'web_app', 'level' => 'Expert', 'sort_order' => 6],
-            ['name' => 'Tailwind CSS', 'category' => 'web_app', 'level' => 'Advanced', 'sort_order' => 7],
+            ['name' => 'HTML5', 'category' => 'web_app', 'level' => 'Expert', 'sort_order' => 6],
+            ['name' => 'CSS3', 'category' => 'web_app', 'level' => 'Expert', 'sort_order' => 7],
+            ['name' => 'Tailwind CSS', 'category' => 'web_app', 'level' => 'Advanced', 'sort_order' => 8],
 
             // Database & Architecture
-            ['name' => 'MySQL', 'category' => 'database_arch', 'level' => 'Advanced', 'sort_order' => 8],
-            ['name' => 'MongoDB', 'category' => 'database_arch', 'level' => 'Intermediate', 'sort_order' => 9],
-            ['name' => 'Multi-tenant SaaS', 'category' => 'database_arch', 'level' => 'Advanced', 'sort_order' => 10],
-            ['name' => 'PWA Systems', 'category' => 'database_arch', 'level' => 'Advanced', 'sort_order' => 11],
-            ['name' => 'RBAC Permissions', 'category' => 'database_arch', 'level' => 'Advanced', 'sort_order' => 12],
+            ['name' => 'MySQL', 'category' => 'database_arch', 'level' => 'Advanced', 'sort_order' => 9],
+            ['name' => 'MongoDB', 'category' => 'database_arch', 'level' => 'Intermediate', 'sort_order' => 10],
+            ['name' => 'Multi-tenant SaaS Architecture', 'category' => 'database_arch', 'level' => 'Advanced', 'sort_order' => 11],
+            ['name' => 'Progressive Web Apps (PWA)', 'category' => 'database_arch', 'level' => 'Advanced', 'sort_order' => 12],
+            ['name' => 'Multi-role Access Control (RBAC)', 'category' => 'database_arch', 'level' => 'Advanced', 'sort_order' => 13],
 
-            // Tools & Cloud
-            ['name' => 'Git & GitHub', 'category' => 'tools_cloud', 'level' => 'Advanced', 'sort_order' => 13],
-            ['name' => 'Docker', 'category' => 'tools_cloud', 'level' => 'Intermediate', 'sort_order' => 14],
-            ['name' => 'cPanel & Laragon', 'category' => 'tools_cloud', 'level' => 'Advanced', 'sort_order' => 15],
-            ['name' => 'Figma UI/UX', 'category' => 'tools_cloud', 'level' => 'Proficient', 'sort_order' => 16],
-            ['name' => 'RESTful APIs', 'category' => 'tools_cloud', 'level' => 'Advanced', 'sort_order' => 17],
+            // Tools & Deployment
+            ['name' => 'Git & GitHub', 'category' => 'tools_cloud', 'level' => 'Advanced', 'sort_order' => 14],
+            ['name' => 'Docker', 'category' => 'tools_cloud', 'level' => 'Intermediate', 'sort_order' => 15],
+            ['name' => 'VS Code', 'category' => 'tools_cloud', 'level' => 'Expert', 'sort_order' => 16],
+            ['name' => 'cPanel', 'category' => 'tools_cloud', 'level' => 'Advanced', 'sort_order' => 17],
+            ['name' => 'Laragon', 'category' => 'tools_cloud', 'level' => 'Advanced', 'sort_order' => 18],
+            ['name' => 'Ngrok', 'category' => 'tools_cloud', 'level' => 'Intermediate', 'sort_order' => 19],
+            ['name' => 'Figma (UI/UX)', 'category' => 'tools_cloud', 'level' => 'Advanced', 'sort_order' => 20],
+            ['name' => 'Canva & CapCut', 'category' => 'tools_cloud', 'level' => 'Advanced', 'sort_order' => 21],
+            ['name' => 'Google Workspace', 'category' => 'tools_cloud', 'level' => 'Advanced', 'sort_order' => 22],
         ];
 
         foreach ($skills as $skill) {
-            Skill::updateOrCreate(['name' => $skill['name']], $skill);
+            Skill::create($skill);
         }
 
         // 7. Services
@@ -270,29 +283,29 @@ class DatabaseSeeder extends Seeder
             [
                 'number_label' => '01 // FULL-STACK APPS',
                 'title' => 'WEB & APP DEVELOPMENT',
-                'description' => 'Engineering high-throughput, maintainable web applications using PHP, Laravel, React.js, Node.js, and modern REST APIs with seamless state management and responsive UI.',
-                'tags' => ['Laravel', 'React.js', 'Node.js', 'Tailwind'],
+                'description' => 'Membangun aplikasi web berperforma tinggi dan terukur menggunakan ekosistem PHP, Laravel, JavaScript, React.js, Node.js, dan Tailwind CSS dengan arsitektur bersih dan responsif.',
+                'tags' => ['Laravel', 'React.js', 'Node.js', 'Tailwind CSS'],
                 'sort_order' => 1,
             ],
             [
                 'number_label' => '02 // ARCHITECTURE',
-                'title' => 'SAAS & MANAGEMENT SYSTEMS',
-                'description' => 'Architecting multi-tenant Software-as-a-Service, Role-Based Access Control (RBAC), live GPS geofencing perimeter validation, and automated PDF reporting engines.',
-                'tags' => ['Multi-tenant', 'Geofencing', 'PDF Automation', 'MySQL'],
+                'title' => 'SAAS & CUSTOM MANAGEMENT',
+                'description' => 'Merancang arsitektur Software-as-a-Service multi-tenant, kontrol akses berbasis peran (RBAC), validasi geofencing GPS real-time, dan automasi reporting PDF.',
+                'tags' => ['Multi-tenant SaaS', 'Geofencing', 'Custom ERP', 'MySQL'],
                 'sort_order' => 2,
             ],
             [
                 'number_label' => '03 // PROGRESSIVE TECH',
                 'title' => 'PWA & DATABASE ENGINEERING',
-                'description' => 'Building offline-ready Progressive Web Apps (PWA) with reliable background sync, relational & document database schemas (MySQL, MongoDB), and cloud deployment.',
+                'description' => 'Mengembangkan Progressive Web Apps (PWA) offline-first dengan sinkronisasi background, desain skema basis data relasional & non-relasional (MySQL, MongoDB), dan deployment server.',
                 'tags' => ['PWA', 'MongoDB', 'Docker', 'cPanel / VPS'],
                 'sort_order' => 3,
             ],
             [
-                'number_label' => '04 // CREATIVE DIGITAL',
-                'title' => 'LANDING PAGES & UI/UX',
-                'description' => 'Translating Figma prototypes into ultra-fast, conversion-optimized landing pages with Core Web Vitals optimization, micro-animations, and complete SEO setup.',
-                'tags' => ['Figma', 'Conversion Rate', 'SEO', 'Speed Opt'],
+                'number_label' => '04 // DIGITAL CREATIVE',
+                'title' => 'LANDING PAGE & UI/UX',
+                'description' => 'Merancang antarmuka web intuitif berbasis Figma, landing page berkonversi tinggi, pengoptimalan kecepatan Google Core Web Vitals, dan integrasi aset kreatif.',
+                'tags' => ['Figma UI/UX', 'Lead Conversion', 'Canva / CapCut', 'SEO Opt'],
                 'sort_order' => 4,
             ],
         ];
@@ -306,28 +319,28 @@ class DatabaseSeeder extends Seeder
             [
                 'step_number' => '1.',
                 'title' => 'DISCOVERY',
-                'description' => 'I explore your business objectives, system workflows, operational constraints, and database relationships to ensure a perfect technical fit.',
+                'description' => 'Mengeksplorasi kebutuhan bisnis, alur kerja operasional, batasan sistem, dan struktur data untuk memastikan fondasi teknis yang tepat sasaran.',
                 'is_featured' => false,
                 'sort_order' => 1,
             ],
             [
                 'step_number' => '2.',
                 'title' => 'PLANNING',
-                'description' => 'I thoroughly architect your database schemas, define modular API endpoints, and establish UI/UX wireframes for a clear, focused roadmap.',
+                'description' => 'Merancang arsitektur basis data, pemetaan endpoint API modular, serta wireframe UI/UX Figma untuk roadmap pengembangan yang terarah.',
                 'is_featured' => true,
                 'sort_order' => 2,
             ],
             [
                 'step_number' => '3.',
                 'title' => 'PRODUCTION',
-                'description' => 'I build clean, maintainable code with precision, integrating backend business logic, responsive views, and robust security protocols.',
+                'description' => 'Menulis kode bersih dan terstruktur dengan standar tinggi, mengintegrasikan backend bisnis logika, tampilan responsif, dan pengamanan sistem.',
                 'is_featured' => false,
                 'sort_order' => 3,
             ],
             [
                 'step_number' => '4.',
                 'title' => 'DELIVERY',
-                'description' => 'I meticulously test every workflow, deploy onto optimized production servers, and ensure seamless delivery with ongoing performance tuning.',
+                'description' => 'Menguji menyeluruh setiap skenario alur kerja, mendistribusikan ke server produksi, dan memastikan pemeliharaan performa sistem berkelanjutan.',
                 'is_featured' => false,
                 'sort_order' => 4,
             ],
@@ -337,47 +350,42 @@ class DatabaseSeeder extends Seeder
             WorkProcess::updateOrCreate(['step_number' => $proc['step_number']], $proc);
         }
 
-        // 9. Milestones
+        // 9. Milestones (Direct Match to CV Companies & Deliverables)
+        Milestone::query()->delete();
+
         $milestones = [
             [
-                'organization' => 'PT. BantuGrow Revolusi Digital',
-                'project_name' => 'Multi-tenant SaaS Architecture with Geofencing & PWA',
-                'tech_stack' => 'Laravel, React, PWA, MySQL',
-                'period' => 'Nov 2024 — Present',
+                'organization' => 'PT Bilcode Global Teknologi',
+                'project_name' => 'Custom Management System & High-Converting Landing Page',
+                'tech_stack' => 'Laravel, React.js, Tailwind, MySQL',
+                'period' => 'Okt 2025 – Nov 2026',
                 'sort_order' => 1,
             ],
             [
-                'organization' => 'Pondok Pesantren Abdan Syakuro',
-                'project_name' => 'Tahfidz Quran Digital Memorization & PPDB System',
-                'tech_stack' => 'Laravel, MySQL, JavaScript',
-                'period' => 'Okt 2024 — Present',
+                'organization' => 'PT BantuGrow Revolusi Digital',
+                'project_name' => 'Multi-tenant SaaS Architecture with Geofencing & PWA',
+                'tech_stack' => 'Laravel, React, PWA, MySQL, PDF Engine',
+                'period' => 'Nov 2024 – Mei 2026',
                 'sort_order' => 2,
             ],
             [
-                'organization' => 'PT. Ahsan Sabila Mumtaza',
-                'project_name' => 'End-to-End Umrah Travel Operations & Manifest Tracker',
-                'tech_stack' => 'Laravel, REST API, cPanel',
-                'period' => 'Sep 2023 — Okt 2024',
+                'organization' => 'Pondok Pesantren Abdan Syakuro',
+                'project_name' => 'Aplikasi Sistem Manajemen Tahfidz & Portal Resmi PPDB',
+                'tech_stack' => 'Laravel, MySQL, JavaScript, Multimedia',
+                'period' => 'Okt 2024 – Nov 2025',
                 'sort_order' => 3,
             ],
             [
-                'organization' => 'Pondok Pesantren Al Qolam Yatim',
-                'project_name' => 'Official Web Portal & Custom Content Management System',
-                'tech_stack' => 'Laravel, PHP, Custom CMS',
-                'period' => 'Jun 2022 — Jul 2023',
+                'organization' => 'PT Ahsan Sabila Mumtaza (Ahsan Tour & Travel)',
+                'project_name' => 'Aplikasi Sistem Manajemen Travel Umrah End-to-End',
+                'tech_stack' => 'Laravel, REST API, cPanel, Manifest',
+                'period' => 'Sep 2022 – Okt 2024',
                 'sort_order' => 4,
-            ],
-            [
-                'organization' => 'Independent Client Projects',
-                'project_name' => 'High-Converting Company Profiles & Landing Page Conversions',
-                'tech_stack' => 'Tailwind, React, Figma, SEO',
-                'period' => 'Continuous',
-                'sort_order' => 5,
             ],
         ];
 
         foreach ($milestones as $m) {
-            Milestone::updateOrCreate(['organization' => $m['organization']], $m);
+            Milestone::create($m);
         }
 
         // 10. Initial Client Testimonials
@@ -385,10 +393,10 @@ class DatabaseSeeder extends Seeder
             [
                 'name' => 'Reza Pratama',
                 'role_title' => 'Founder & Product Director',
-                'company' => 'PT. BantuGrow Revolusi Digital',
+                'company' => 'PT BantuGrow Revolusi Digital',
                 'project_tag' => 'SaaS Geofencing & PWA',
                 'email' => null,
-                'message' => 'Raihan demonstrated exceptional architectural discipline when engineering our multi-tenant SaaS progress system. From real-time GPS geofencing to offline PWA synchronization and automated PDF reporting, every module shipped on schedule with rock-solid reliability.',
+                'message' => 'Raihan menunjukkan kedisiplinan arsitektur yang sangat luar biasa saat membangun sistem SaaS progress manajemen kami. Dari validasi geofencing GPS presisi hingga PWA offline-sync dan automasi PDF, setiap modul terkirim tepat waktu dengan keandalan tinggi.',
                 'avatar_color' => '#ff5500',
                 'rating' => 5,
                 'is_approved' => true,
@@ -396,11 +404,11 @@ class DatabaseSeeder extends Seeder
             ],
             [
                 'name' => 'Ustadz Ahmad Fauzi, M.Pd.',
-                'role_title' => 'Head of Academic Operations',
+                'role_title' => 'Kepala Operasional Akademik',
                 'company' => 'Pondok Pesantren Abdan Syakuro',
-                'project_tag' => 'Tahfidz & Academic Portal',
+                'project_tag' => 'Sistem Tahfidz & PPDB',
                 'email' => null,
-                'message' => 'Sistem Manajemen Tahfidz dan portal PPDB yang dibangun sangat membantu digitalisasi pencatatan hafalan santri serta transparansi laporan akademik bagi wali santri. Antarmukanya intuitif dan sangat cepat diakses.',
+                'message' => 'Sistem Manajemen Tahfidz dan portal PPDB yang dibangun Mas Raihan sangat membantu digitalisasi pencatatan hafalan santri serta transparansi laporan akademik bagi wali santri. Administrasi jadi rapi dan bebas dari resiko kehilangan data.',
                 'avatar_color' => '#ff8800',
                 'rating' => 5,
                 'is_approved' => true,
@@ -408,11 +416,11 @@ class DatabaseSeeder extends Seeder
             ],
             [
                 'name' => 'H. Hendra Wijaya',
-                'role_title' => 'Operations Director',
-                'company' => 'PT. Ahsan Sabila Mumtaza',
-                'project_tag' => 'Umrah Operations Platform',
+                'role_title' => 'Direktur Operasional',
+                'company' => 'PT Ahsan Sabila Mumtaza',
+                'project_tag' => 'Sistem Travel Umrah',
                 'email' => null,
-                'message' => 'Transformasi sistem manifest keberangkatan dan pelacakan inventori jamaah berjalan sangat mulus. Kesalahan input manual berhasil ditekan hingga nol, dan performa portal tetap stabil di jam sibuk pendaftaran.',
+                'message' => 'Transformasi sistem manifest keberangkatan dan pelacakan inventori jamaah berjalan sangat lancar. Human error dalam pendataan jamaah berhasil ditekan hingga nol, dan reservasi online jadi sangat cepat dan aman.',
                 'avatar_color' => '#10b981',
                 'rating' => 5,
                 'is_approved' => true,

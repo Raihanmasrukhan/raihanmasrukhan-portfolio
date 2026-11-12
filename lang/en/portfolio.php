@@ -19,13 +19,13 @@ return [
         'available' => 'AVAILABLE FOR PROJECTS',
         'specialties_title' => 'SPECIALTIES',
         'start_project_cta' => 'START A PROJECT',
-        'headline' => 'Software Engineer & Full-Stack Web Developer',
-        'sub_headline' => 'Transforming complex business logic into high-performance web applications, scalable SaaS systems, and intuitive digital experiences.',
+        'headline' => 'Web Developer & Digital Creative',
+        'sub_headline' => 'Technology and digital practitioner with 3 years of hands-on experience in Web Development and Digital Creative, executing projects end-to-end. Building high-performance web applications, custom SaaS systems, integrated management platforms, and high-converting landing pages.',
     ],
     'about' => [
         'tag' => '[ ABOUT ME ]',
         'view_btn' => 'VIEW ➔',
-        'statement' => 'I build <span class="text-bold">production-grade web platforms</span> and <span class="text-highlight">robust SaaS systems</span> that empower businesses and communities. Every solution begins with a <span class="text-bold">clean architectural foundation</span>, <span class="text-highlight">intuitive UI/UX</span>, and <span class="text-bold">rock-solid reliability</span> throughout.',
+        'statement' => 'Technology and digital practitioner with 3 years of experience in <span class="text-bold">Web Development</span> and <span class="text-highlight">Digital Creative</span>, accustomed to executing projects end-to-end. Driven by high curiosity, strong adaptability across diverse situations, and a passion for continuous learning to deliver efficient and impactful solutions.',
     ],
     'services' => [
         'counter' => '02 / 05',

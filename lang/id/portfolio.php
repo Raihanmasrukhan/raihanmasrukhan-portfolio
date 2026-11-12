@@ -19,13 +19,13 @@ return [
         'available' => 'TERSEDIA UNTUK PROYEK BARU',
         'specialties_title' => 'KEAHLIAN KHUSUS',
         'start_project_cta' => 'KONSULTASI PROYEK',
-        'headline' => 'Software Engineer & Full-Stack Web Developer',
-        'sub_headline' => 'Mentransformasikan logika bisnis kompleks menjadi aplikasi web performa tinggi, sistem SaaS terukur, dan pengalaman digital yang intuitif.',
+        'headline' => 'Web Developer & Digital Creative',
+        'sub_headline' => 'Praktisi teknologi dan digital dengan pengalaman 3 tahun di bidang Web Developer dan Digital Creative, serta terbiasa mengeksekusi proyek dari hulu ke hilir. Membangun aplikasi web berkinerja tinggi, sistem SaaS kustom, sistem manajemen terintegrasi, dan landing page berkonversi tinggi.',
     ],
     'about' => [
         'tag' => '[ TENTANG SAYA ]',
         'view_btn' => 'LIHAT ➔',
-        'statement' => 'Saya membangun <span class="text-bold">platform web kelas produksi</span> dan <span class="text-highlight">arsitektur SaaS tangguh</span> yang memberdayakan bisnis serta komunitas. Setiap solusi dirancang dengan <span class="text-bold">fondasi arsitektur bersih</span>, <span class="text-highlight">UI/UX intuitif</span>, serta <span class="text-bold">keandalan sistem tinggi</span>.',
+        'statement' => 'Praktisi teknologi dan digital dengan pengalaman 3 tahun di bidang <span class="text-bold">Web Developer</span> dan <span class="text-highlight">Digital Creative</span>, serta terbiasa mengeksekusi proyek dari hulu ke hilir. Saya adalah sosok yang punya rasa ingin tahu tinggi, mudah beradaptasi di berbagai situasi, dan memiliki semangat belajar yang besar. Sangat terbuka untuk berkontribusi di bidang apa pun serta selalu antusias mengeksplorasi hal-hal baru untuk memberikan solusi terbaik yang efisien dan solutif.',
     ],
     'services' => [
         'counter' => '02 / 05',
