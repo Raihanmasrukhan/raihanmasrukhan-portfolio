@@ -36,7 +36,7 @@ class WorkProcessController extends Controller
         return redirect()->route('admin.processes.index')->with('success', 'Work process step berhasil ditambahkan!');
     }
 
-    public function update(Request $request, WorkProcess $workProcess)
+    public function update(Request $request, WorkProcess $process)
     {
         $validated = $request->validate([
             'step_number' => 'required|string|max:20',
@@ -46,7 +46,7 @@ class WorkProcessController extends Controller
             'sort_order' => 'nullable|integer',
         ]);
 
-        $workProcess->update([
+        $process->update([
             'step_number' => $validated['step_number'],
             'title' => $validated['title'],
             'description' => $validated['description'],
@@ -57,9 +57,9 @@ class WorkProcessController extends Controller
         return redirect()->route('admin.processes.index')->with('success', 'Work process step berhasil diperbarui!');
     }
 
-    public function destroy(WorkProcess $workProcess)
+    public function destroy(WorkProcess $process)
     {
-        $workProcess->delete();
+        $process->delete();
 
         return redirect()->route('admin.processes.index')->with('success', 'Work process step berhasil dihapus!');
     }

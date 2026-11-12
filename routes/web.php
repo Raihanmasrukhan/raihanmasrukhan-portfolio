@@ -43,13 +43,13 @@ Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
     Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
 
     // Projects CRUD
-    Route::resource('projects', ProjectController::class);
+    Route::resource('projects', ProjectController::class)->except(['show']);
 
     // Experience CRUD
-    Route::resource('experiences', ExperienceController::class);
+    Route::resource('experiences', ExperienceController::class)->except(['show']);
 
     // Education CRUD
-    Route::resource('educations', EducationController::class);
+    Route::resource('educations', EducationController::class)->except(['show']);
 
     // Skills
     Route::resource('skills', SkillController::class)->only(['index', 'store', 'update', 'destroy']);

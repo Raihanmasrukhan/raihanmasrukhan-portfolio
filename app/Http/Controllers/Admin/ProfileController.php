@@ -51,8 +51,8 @@ class ProfileController extends Controller
         ]);
 
         // Process Specialties pills list
-        if (! empty($validated['hero_specialties_text'])) {
-            $specialties = array_filter(array_map('trim', explode("\n", $validated['hero_specialties_text'])));
+        if ($request->has('hero_specialties_text')) {
+            $specialties = array_filter(array_map('trim', explode("\n", (string) ($validated['hero_specialties_text'] ?? ''))));
             $profile->hero_specialties = array_values($specialties);
         }
 

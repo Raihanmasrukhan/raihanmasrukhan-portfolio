@@ -16,7 +16,7 @@
       </div>
       <h1 class="text-3xl font-display tracking-wider text-white">SELAMAT DATANG, {{ strtoupper($profile->full_name) }}</h1>
       <p class="text-xs font-mono text-gray-400 mt-1">
-        Kelola profil, proyek portofolio, pengalaman kerja, skill stack, buku tamu, dan pesan kontak secara real-time.
+        Kelola profil, proyek portofolio, pengalaman kerja, skill stack, testimoni klien, dan pesan kontak secara real-time.
       </p>
     </div>
 
