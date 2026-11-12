@@ -1,0 +1,4 @@
+{$SERVER_NAME:localhost}
+root * /app/public
+php_server
+encode zstd gzip

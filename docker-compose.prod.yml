@@ -1,0 +1,23 @@
+services:
+  app:
+    image: raihan-portfolio:latest
+    container_name: raihan-portfolio-app
+    environment:
+      APP_URL: https://raihan.bantugrow.com
+      APP_KEY: ${APP_KEY:?set APP_KEY in .env}
+      ADMIN_EMAIL: ${ADMIN_EMAIL:?set ADMIN_EMAIL in .env}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:?set ADMIN_PASSWORD in .env}
+    volumes:
+      - app_data:/data
+      - storage_data:/app/storage
+    restart: unless-stopped
+    networks:
+      - proxy
+
+volumes:
+  app_data:
+  storage_data:
+
+networks:
+  proxy:
+    external: true

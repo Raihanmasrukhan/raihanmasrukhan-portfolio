@@ -70,7 +70,7 @@
             type="email" 
             name="email" 
             id="email" 
-            value="{{ old('email', 'admin@raihan.dev') }}" 
+            value="{{ old('email') }}" 
             required 
             autocomplete="email"
             class="w-full px-4 py-3 rounded-xl bg-[#0a0a0d] border border-gray-700/80 text-white placeholder-gray-600 focus:outline-none focus:border-[#ff5500] focus:ring-1 focus:ring-[#ff5500] text-sm font-mono transition-all"
@@ -86,7 +86,7 @@
             type="password" 
             name="password" 
             id="password" 
-            value="password123"
+            value=""
             required 
             autocomplete="current-password"
             class="w-full px-4 py-3 rounded-xl bg-[#0a0a0d] border border-gray-700/80 text-white placeholder-gray-600 focus:outline-none focus:border-[#ff5500] focus:ring-1 focus:ring-[#ff5500] text-sm font-mono transition-all"
@@ -110,14 +110,6 @@
         </button>
       </form>
 
-      <!-- Demo Credentials Notice -->
-      <div class="mt-6 pt-5 border-t border-gray-800/80 text-center">
-        <div class="inline-block p-3 rounded-xl bg-gray-900/90 border border-gray-800 text-[11px] font-mono text-gray-400">
-          <div class="text-[#ff5500] font-bold uppercase mb-1">Default Login Credentials:</div>
-          <div>Email: <span class="text-white select-all">admin@raihan.dev</span></div>
-          <div>Password: <span class="text-white select-all">password123</span></div>
-        </div>
-      </div>
     </div>
 
     <!-- Back to site link -->
