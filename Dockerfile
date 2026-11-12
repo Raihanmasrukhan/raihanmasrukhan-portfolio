@@ -11,7 +11,12 @@ COPY --from=assets /app /app
 RUN composer install --no-dev --no-interaction --no-scripts --prefer-dist --optimize-autoloader
 
 FROM php:8.4-cli-alpine
-RUN apk add --no-cache --virtual .build-deps $PHPIZE_DEPS sqlite-dev && docker-php-ext-install pdo_sqlite && apk del .build-deps && apk add --no-cache sqlite-libs
+RUN apk add --no-cache --virtual .build-deps $PHPIZE_DEPS sqlite-dev libpng-dev libjpeg-turbo-dev libwebp-dev freetype-dev \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp \
+    && docker-php-ext-install -j"$(nproc)" pdo_sqlite gd \
+    && apk del .build-deps \
+    && apk add --no-cache sqlite-libs libpng libjpeg-turbo libwebp freetype
+RUN printf "upload_max_filesize=32M\npost_max_size=40M\nmemory_limit=256M\n" > /usr/local/etc/php/conf.d/uploads.ini
 WORKDIR /app
 COPY --from=vendor /app /app
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh

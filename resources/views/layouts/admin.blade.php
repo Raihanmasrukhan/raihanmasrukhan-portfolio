@@ -206,6 +206,211 @@
         sidebar.classList.toggle('w-full');
       });
     }
+
+    // Auto-compress oversized images (> max MB) before form POST
+    (() => {
+      const formatMb = (bytes) => (bytes / (1024 * 1024)).toFixed(2) + ' MB';
+
+      const supportsWebp = (() => {
+        try {
+          const c = document.createElement('canvas');
+          return c.toDataURL('image/webp').startsWith('data:image/webp');
+        } catch {
+          return false;
+        }
+      })();
+
+      const loadBitmap = async (file) => {
+        if (typeof createImageBitmap === 'function') {
+          try {
+            return await createImageBitmap(file);
+          } catch {
+            // Fall through to HTMLImageElement decoder
+          }
+        }
+        const url = URL.createObjectURL(file);
+        try {
+          const img = new Image();
+          await new Promise((resolve, reject) => {
+            img.onload = resolve;
+            img.onerror = reject;
+            img.src = url;
+          });
+          return img;
+        } finally {
+          URL.revokeObjectURL(url);
+        }
+      };
+
+      const canvasToBlob = (canvas, mime, quality) =>
+        new Promise((resolve) => canvas.toBlob((blob) => resolve(blob), mime, quality));
+
+      const compressImageFile = async (file, maxBytes) => {
+        const bitmap = await loadBitmap(file);
+        const origWidth = bitmap.width || bitmap.naturalWidth || 1;
+        const origHeight = bitmap.height || bitmap.naturalHeight || 1;
+
+        const useWebp = file.type !== 'image/jpeg' && supportsWebp;
+        const outputMime = useWebp ? 'image/webp' : 'image/jpeg';
+        const outputExt = useWebp ? 'webp' : 'jpg';
+        const baseName = file.name.replace(/\.[^.]+$/, '') || 'image';
+
+        const scales = [1.0, 0.85, 0.7, 0.56, 0.44, 0.34, 0.25];
+        let bestBlob = null;
+
+        try {
+          for (const scale of scales) {
+            const width = Math.max(1, Math.round(origWidth * scale));
+            const height = Math.max(1, Math.round(origHeight * scale));
+
+            if (scale < 1.0 && Math.max(width, height) < 320 && Math.max(origWidth, origHeight) >= 320) {
+              continue;
+            }
+
+            const canvas = document.createElement('canvas');
+            canvas.width = width;
+            canvas.height = height;
+            const ctx = canvas.getContext('2d');
+            if (!ctx) break;
+
+            if (!useWebp) {
+              ctx.fillStyle = '#ffffff';
+              ctx.fillRect(0, 0, width, height);
+            }
+            ctx.drawImage(bitmap, 0, 0, width, height);
+
+            const qualities = scale === 1.0
+              ? [0.92, 0.85, 0.78, 0.70, 0.60, 0.50, 0.40]
+              : [0.82, 0.70, 0.56, 0.42, 0.32];
+
+            for (const q of qualities) {
+              const blob = await canvasToBlob(canvas, outputMime, q);
+              if (!blob) continue;
+
+              if (!bestBlob || blob.size < bestBlob.size) {
+                bestBlob = blob;
+              }
+
+              if (blob.size <= maxBytes) {
+                return new File([blob], `${baseName}.${outputExt}`, {
+                  type: outputMime,
+                  lastModified: Date.now(),
+                });
+              }
+            }
+          }
+        } finally {
+          if (typeof bitmap.close === 'function') {
+            bitmap.close();
+          }
+        }
+
+        if (bestBlob && bestBlob.size < file.size) {
+          return new File([bestBlob], `${baseName}.${outputExt}`, {
+            type: outputMime,
+            lastModified: Date.now(),
+          });
+        }
+
+        return file;
+      };
+
+      const setFormBusy = (form, busy) => {
+        if (!form) return;
+        form.dataset.compressing = busy ? '1' : '0';
+        form.querySelectorAll('button[type="submit"], input[type="submit"]').forEach((btn) => {
+          btn.disabled = busy;
+          btn.classList.toggle('opacity-60', busy);
+          btn.classList.toggle('cursor-wait', busy);
+        });
+      };
+
+      document.querySelectorAll('form').forEach((form) => {
+        form.addEventListener('submit', (e) => {
+          if (form.dataset.compressing === '1') {
+            e.preventDefault();
+          }
+        });
+      });
+
+      document.querySelectorAll('input[type="file"][data-auto-compress-mb]').forEach((input) => {
+        const wrapper = input.closest('[data-image-upload]') || input.parentElement;
+        const statusEl = wrapper ? wrapper.querySelector('[data-compress-status]') : null;
+        const nameEl = wrapper ? wrapper.querySelector('[data-file-name-target]') : null;
+        const defaultHint = statusEl ? statusEl.textContent : '';
+        const maxMb = parseFloat(input.dataset.autoCompressMb || '5') || 5;
+        const maxBytes = Math.round(maxMb * 1024 * 1024);
+
+        const updateStatus = (text, tone) => {
+          if (!statusEl) return;
+          statusEl.textContent = text;
+          statusEl.classList.remove('text-gray-500', 'text-emerald-400', 'text-amber-400', 'text-red-400');
+          statusEl.classList.add(
+            tone === 'success' ? 'text-emerald-400'
+              : tone === 'warning' ? 'text-amber-400'
+              : tone === 'error' ? 'text-red-400'
+              : 'text-gray-500'
+          );
+        };
+
+        input.addEventListener('change', async () => {
+          const file = input.files && input.files[0];
+          if (!file) {
+            updateStatus(defaultHint, 'muted');
+            return;
+          }
+
+          if (nameEl) {
+            nameEl.textContent = file.name;
+          }
+
+          if (!file.type.startsWith('image/')) {
+            return;
+          }
+
+          if (file.size <= maxBytes) {
+            updateStatus(`✓ Ukuran gambar ${formatMb(file.size)} (siap di-upload, ≤ ${maxMb} MB)`, 'success');
+            return;
+          }
+
+          const originalSize = file.size;
+          const form = input.form;
+          setFormBusy(form, true);
+          updateStatus(`⏳ Mengompres gambar ${formatMb(originalSize)} → maks ${maxMb} MB...`, 'warning');
+
+          try {
+            const compressed = await compressImageFile(file, maxBytes);
+            if (typeof DataTransfer !== 'undefined') {
+              const dt = new DataTransfer();
+              dt.items.add(compressed);
+              input.files = dt.files;
+            }
+            if (nameEl) {
+              nameEl.textContent = compressed.name;
+            }
+
+            if (compressed.size <= maxBytes) {
+              updateStatus(
+                `✓ Auto-compressed: ${formatMb(originalSize)} → ${formatMb(compressed.size)} (siap di-upload)`,
+                'success'
+              );
+            } else {
+              updateStatus(
+                `Ukuran setelah kompresi browser: ${formatMb(compressed.size)}. Server akan memproses kompresi lanjutan saat disimpan.`,
+                'warning'
+              );
+            }
+          } catch {
+            updateStatus(
+              `Gagal mengompres di browser (${formatMb(originalSize)}); server akan mencoba kompresi otomatis saat disimpan.`,
+              'warning'
+            );
+          } finally {
+            setFormBusy(form, false);
+          }
+        });
+      });
+    })();
   </script>
   @stack('scripts')
 </body>

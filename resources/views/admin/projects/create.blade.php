@@ -70,9 +70,10 @@
           <input type="text" name="tech_stack_text" value="{{ old('tech_stack_text') }}" class="w-full px-4 py-3 rounded-xl bg-[#0a0a0d] border border-gray-700/80 text-white focus:outline-none focus:border-[#ff5500] text-sm font-mono" placeholder="PHP Laravel, React.js, MySQL, PWA, Tailwind CSS">
         </div>
 
-        <div>
+        <div data-image-upload>
           <label class="block text-xs font-mono uppercase tracking-wider text-gray-400 mb-2">Gambar Mockup / Screenshot</label>
-          <input type="file" name="image_file" accept="image/*" class="w-full px-4 py-2.5 rounded-xl bg-[#0a0a0d] border border-gray-700/80 text-white text-xs font-mono">
+          <input type="file" name="image_file" accept="image/*" data-auto-compress-mb="5" class="w-full px-4 py-2.5 rounded-xl bg-[#0a0a0d] border border-gray-700/80 text-white text-xs font-mono">
+          <p class="text-[11px] font-mono text-gray-500 mt-1.5" data-compress-status>Maksimal 5 MB — gambar di atas 5 MB otomatis dikompres sebelum di-upload.</p>
         </div>
 
         <div>

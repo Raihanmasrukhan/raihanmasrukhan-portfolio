@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\ProfileSetting;
+use App\Services\ImageUploadService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -24,7 +25,7 @@ class ProfileController extends Controller
     /**
      * Update profile and site settings.
      */
-    public function update(Request $request)
+    public function update(Request $request, ImageUploadService $imageUploadService)
     {
         $profile = ProfileSetting::current();
 
@@ -48,7 +49,7 @@ class ProfileController extends Controller
             'instagram_url' => 'nullable|url|max:255',
             'cv_url' => 'nullable|string|max:500',
             'cv_file' => 'nullable|file|mimes:pdf,doc,docx|max:10240',
-            'avatar_file' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:5120',
+            'avatar_file' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:25600',
         ]);
 
         // Process Specialties pills list
@@ -57,12 +58,14 @@ class ProfileController extends Controller
             $profile->hero_specialties = array_values($specialties);
         }
 
-        // Process personal photo upload
+        // Process personal photo upload (auto-compressed to max 5MB if oversized)
         if ($request->hasFile('avatar_file')) {
-            $file = $request->file('avatar_file');
-            $fileName = 'hero_'.time().'.'.$file->getClientOriginalExtension();
-            $file->storeAs('images', $fileName, 'public');
-            $profile->avatar = 'storage/images/'.$fileName;
+            $profile->avatar = $imageUploadService->storeCompressedImage(
+                $request->file('avatar_file'),
+                'hero',
+                ImageUploadService::MAX_SIZE_BYTES,
+                'avatar_file'
+            );
         }
 
         $profile->full_name = $validated['full_name'];

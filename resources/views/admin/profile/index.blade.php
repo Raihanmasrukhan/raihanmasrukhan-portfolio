@@ -98,16 +98,16 @@
 
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-start">
         <!-- Photo Preview & Upload -->
-        <div class="p-4 rounded-xl bg-[#0a0a0d] border border-gray-800 text-center">
+        <div class="p-4 rounded-xl bg-[#0a0a0d] border border-gray-800 text-center" data-image-upload>
           <div class="text-xs font-mono text-gray-400 uppercase mb-3">Foto Saat Ini</div>
           <div class="w-40 h-40 mx-auto rounded-2xl overflow-hidden border-2 border-[#ff5500]/40 shadow-xl mb-4 bg-gray-900">
             <img src="{{ asset($profile->avatar) }}" alt="Preview" class="w-full h-full object-cover" onerror="this.onerror=null; this.src='{{ asset('images/hero.jpg') }}';">
           </div>
           <label class="block text-xs font-mono text-[#ff5500] hover:underline cursor-pointer">
-            <span>Pilih Foto Baru (JPG, PNG, WebP)</span>
-            <input type="file" name="avatar_file" accept="image/*" class="hidden" onchange="const f=this.files[0];if(f){this.parentElement.querySelector('span').textContent=f.name;}">
+            <span data-file-name-target>Pilih Foto Baru (JPG, PNG, WebP)</span>
+            <input type="file" name="avatar_file" accept="image/*" data-auto-compress-mb="5" class="hidden">
           </label>
-          <span class="text-[10px] font-mono text-gray-500 block mt-1">Maksimal 5MB. Disarankan rasio 1:1</span>
+          <span class="text-[10px] font-mono text-gray-500 block mt-1" data-compress-status>Maksimal 5MB — file lebih dari 5MB otomatis dikompres.</span>
         </div>
 
         <!-- Floating Specialties Tags -->

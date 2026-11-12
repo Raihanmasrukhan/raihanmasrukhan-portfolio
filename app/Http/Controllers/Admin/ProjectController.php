@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Project;
+use App\Services\ImageUploadService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
@@ -41,7 +42,7 @@ class ProjectController extends Controller
     /**
      * Store a newly created project in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request, ImageUploadService $imageUploadService)
     {
         $validated = $request->validate([
             'title' => 'required|string|max:200',
@@ -53,7 +54,7 @@ class ProjectController extends Controller
             'overview' => 'required|string',
             'highlights_text' => 'nullable|string',
             'tech_stack_text' => 'nullable|string',
-            'image_file' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:5120',
+            'image_file' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:25600',
             'live_url' => 'nullable|url|max:255',
             'github_url' => 'nullable|url|max:255',
             'sort_order' => 'nullable|integer',
@@ -80,13 +81,15 @@ class ProjectController extends Controller
             $techStack = array_values(array_filter(array_map('trim', $tags)));
         }
 
-        // Image upload
+        // Image upload (auto-compressed to max 5MB if oversized)
         $imagePath = 'images/project-saas.jpg';
         if ($request->hasFile('image_file')) {
-            $file = $request->file('image_file');
-            $fileName = 'project_'.time().'_'.Str::random(5).'.'.$file->getClientOriginalExtension();
-            $file->storeAs('images', $fileName, 'public');
-            $imagePath = 'storage/images/'.$fileName;
+            $imagePath = $imageUploadService->storeCompressedImage(
+                $request->file('image_file'),
+                'project',
+                ImageUploadService::MAX_SIZE_BYTES,
+                'image_file'
+            );
         }
 
         Project::create([
@@ -122,7 +125,7 @@ class ProjectController extends Controller
     /**
      * Update the specified project in storage.
      */
-    public function update(Request $request, Project $project)
+    public function update(Request $request, Project $project, ImageUploadService $imageUploadService)
     {
         $validated = $request->validate([
             'title' => 'required|string|max:200',
@@ -134,7 +137,7 @@ class ProjectController extends Controller
             'overview' => 'required|string',
             'highlights_text' => 'nullable|string',
             'tech_stack_text' => 'nullable|string',
-            'image_file' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:5120',
+            'image_file' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:25600',
             'live_url' => 'nullable|url|max:255',
             'github_url' => 'nullable|url|max:255',
             'sort_order' => 'nullable|integer',
@@ -152,12 +155,14 @@ class ProjectController extends Controller
             $project->tech_stack = array_values(array_filter(array_map('trim', $tags)));
         }
 
-        // Image upload
+        // Image upload (auto-compressed to max 5MB if oversized)
         if ($request->hasFile('image_file')) {
-            $file = $request->file('image_file');
-            $fileName = 'project_'.time().'_'.Str::random(5).'.'.$file->getClientOriginalExtension();
-            $file->storeAs('images', $fileName, 'public');
-            $project->image = 'storage/images/'.$fileName;
+            $project->image = $imageUploadService->storeCompressedImage(
+                $request->file('image_file'),
+                'project',
+                ImageUploadService::MAX_SIZE_BYTES,
+                'image_file'
+            );
         }
 
         $project->title = $validated['title'];

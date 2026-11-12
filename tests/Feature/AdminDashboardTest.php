@@ -289,6 +289,75 @@ class AdminDashboardTest extends TestCase
             ->assertSee('Company Profile Reel 2026');
     }
 
+    public function test_oversized_project_and_profile_images_are_auto_compressed_to_max_5mb(): void
+    {
+        Storage::fake('public');
+        $this->actingAs($this->createAdmin());
+
+        $this->get('/admin/projects/create')
+            ->assertStatus(200)
+            ->assertSee('data-auto-compress-mb="5"', false);
+
+        $this->get('/admin/profile')
+            ->assertStatus(200)
+            ->assertSee('data-auto-compress-mb="5"', false);
+
+        // Generate a valid >5MB (~7.7MB) uncompressed PNG using GD
+        $canvas = imagecreatetruecolor(1600, 1600);
+        $accent = imagecolorallocate($canvas, 255, 85, 0);
+        imagefilledrectangle($canvas, 200, 200, 1400, 1400, $accent);
+        ob_start();
+        imagepng($canvas, null, 0);
+        $oversizedPng = (string) ob_get_clean();
+        unset($canvas);
+
+        $this->assertGreaterThan(5 * 1024 * 1024, strlen($oversizedPng));
+
+        $oversizedUpload = UploadedFile::fake()->createWithContent('oversized-mockup.png', $oversizedPng);
+
+        $this->post('/admin/projects', [
+            'title' => 'Large Mockup Auto Compress',
+            'category' => 'saas',
+            'overview' => 'Testing auto compression above 5MB.',
+            'image_file' => $oversizedUpload,
+        ])->assertRedirect('/admin/projects');
+
+        $project = Project::where('slug', 'large-mockup-auto-compress')->firstOrFail();
+        $storedPath = str_replace('storage/', '', $project->image);
+
+        Storage::disk('public')->assertExists($storedPath);
+        $this->assertLessThanOrEqual(5 * 1024 * 1024, Storage::disk('public')->size($storedPath));
+
+        $this->get("/admin/projects/{$project->id}/edit")
+            ->assertStatus(200)
+            ->assertSee('data-auto-compress-mb="5"', false);
+
+        // Also verify oversized profile avatar upload (>5MB) auto-compresses <= 5MB
+        $profile = ProfileSetting::current();
+        $oversizedAvatar = UploadedFile::fake()->createWithContent('oversized-avatar.png', $oversizedPng);
+
+        $this->put('/admin/profile', [
+            'full_name' => $profile->full_name,
+            'hero_title_line1' => $profile->hero_title_line1,
+            'hero_title_prefix' => $profile->hero_title_prefix,
+            'hero_title_suffix' => $profile->hero_title_suffix,
+            'headline' => $profile->headline,
+            'sub_headline' => $profile->sub_headline,
+            'location' => $profile->location,
+            'availability_status' => $profile->availability_status,
+            'is_available' => $profile->is_available ? '1' : '0',
+            'about_statement' => $profile->about_statement,
+            'phone' => $profile->phone,
+            'whatsapp_number' => $profile->whatsapp_number,
+            'email' => $profile->email,
+            'avatar_file' => $oversizedAvatar,
+        ])->assertRedirect('/admin/profile');
+
+        $avatarPath = str_replace('storage/', '', $profile->fresh()->avatar);
+        Storage::disk('public')->assertExists($avatarPath);
+        $this->assertLessThanOrEqual(5 * 1024 * 1024, Storage::disk('public')->size($avatarPath));
+    }
+
     public function test_admin_experiences_and_educations_full_crud(): void
     {
         $this->actingAs($this->createAdmin());
