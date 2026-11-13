@@ -137,13 +137,17 @@ document.addEventListener('DOMContentLoaded', () => {
   const modalBackdrop = document.getElementById('project-modal');
   const modalCloseBtn = document.getElementById('modal-close');
   const modalImage = document.getElementById('modal-image');
+  const modalVideoWrap = document.getElementById('modal-video-wrap');
+  const modalVideoIframe = document.getElementById('modal-video-iframe');
   const modalTag = document.getElementById('modal-tag');
   const modalTitle = document.getElementById('modal-title');
   const modalClient = document.getElementById('modal-client');
   const modalRole = document.getElementById('modal-role');
   const modalTimeline = document.getElementById('modal-timeline');
   const modalDesc = document.getElementById('modal-desc');
+  const modalHighlightsWrap = document.getElementById('modal-highlights-wrap');
   const modalHighlights = document.getElementById('modal-highlights');
+  const modalStackTitle = document.getElementById('modal-stack-title');
   const modalStack = document.getElementById('modal-stack');
   const modalLinks = document.getElementById('modal-links');
 
@@ -165,7 +169,23 @@ document.addEventListener('DOMContentLoaded', () => {
     const activeDict = (window.I18N_DICTIONARY || {})[localStorage.getItem('portfolio_locale') || window.ACTIVE_LOCALE || 'id'] || {};
     const modalDict = activeDict.modal || {};
 
-    if (modalImage) modalImage.src = data.image;
+    const isVideo = data.category === 'video-editing';
+    const isDesign = data.category === 'design';
+
+    // Video Player vs Static Image
+    if (isVideo && data.embedUrl && modalVideoWrap && modalVideoIframe) {
+      modalVideoIframe.src = data.embedUrl;
+      modalVideoWrap.style.display = 'block';
+      if (modalImage) modalImage.style.display = 'none';
+    } else {
+      if (modalVideoWrap) modalVideoWrap.style.display = 'none';
+      if (modalVideoIframe) modalVideoIframe.src = '';
+      if (modalImage) {
+        modalImage.style.display = 'block';
+        modalImage.src = data.image;
+      }
+    }
+
     if (modalTag) modalTag.textContent = translateText(data.badge);
     if (modalTitle) modalTitle.textContent = translateText(data.title);
     if (modalClient) modalClient.textContent = translateText(data.client);
@@ -173,46 +193,80 @@ document.addEventListener('DOMContentLoaded', () => {
     if (modalTimeline) modalTimeline.textContent = translateText(data.timeline);
     if (modalDesc) modalDesc.textContent = translateText(data.overview);
 
+    // Dynamic Stack / Tools Header
+    if (modalStackTitle) {
+      modalStackTitle.textContent = (isVideo || isDesign)
+        ? (modalDict.software_tools || 'Software & Tools Used')
+        : (modalDict.technologies || 'Technologies Used');
+    }
+
+    // Highlights (hide section if empty)
+    const highlights = Array.isArray(data.highlights) ? data.highlights.filter(Boolean) : [];
+    if (modalHighlightsWrap) {
+      modalHighlightsWrap.style.display = highlights.length > 0 ? 'block' : 'none';
+    }
     if (modalHighlights) {
-      const highlights = Array.isArray(data.highlights) ? data.highlights : [];
       modalHighlights.innerHTML = highlights
         .map(h => `<li style="margin-bottom:0.5rem;position:relative;padding-left:1.2rem;"><span style="position:absolute;left:0;color:var(--accent-orange);">▹</span>${translateText(h)}</li>`)
         .join('');
     }
 
+    // Tech Stack / Software list
     if (modalStack) {
-      const stack = Array.isArray(data.stack) ? data.stack : [];
+      const stack = Array.isArray(data.stack) ? data.stack.filter(Boolean) : [];
       modalStack.innerHTML = stack
         .map(tech => `<span class="tech-tag" style="background:rgba(255,85,0,0.12);border-color:var(--border-accent);color:#fff;">${tech}</span>`)
         .join('');
     }
 
+    // Modal action buttons customized per category
     if (modalLinks) {
       modalLinks.innerHTML = '';
-      const hasLive = isSafeExternalUrl(data.liveUrl);
-      const hasGithub = isSafeExternalUrl(data.githubUrl);
 
-      if (hasLive) {
-        const liveAnchor = document.createElement('a');
-        liveAnchor.href = data.liveUrl;
-        liveAnchor.target = '_blank';
-        liveAnchor.rel = 'noopener noreferrer';
-        liveAnchor.className = 'modal-link-btn modal-link-live';
-        liveAnchor.innerHTML = `<span data-i18n="modal.visit_live">${modalDict.visit_live || 'Visit Live Demo'}</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>`;
-        modalLinks.appendChild(liveAnchor);
+      if (isVideo) {
+        const videoTarget = data.videoUrl || data.liveUrl;
+        if (isSafeExternalUrl(videoTarget)) {
+          const videoAnchor = document.createElement('a');
+          videoAnchor.href = videoTarget;
+          videoAnchor.target = '_blank';
+          videoAnchor.rel = 'noopener noreferrer';
+          videoAnchor.className = 'modal-link-btn modal-link-live';
+          videoAnchor.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg><span data-i18n="modal.watch_video">${modalDict.watch_video || 'Watch Video'}</span>`;
+          modalLinks.appendChild(videoAnchor);
+        }
+      } else if (isDesign) {
+        if (isSafeExternalUrl(data.liveUrl)) {
+          const designAnchor = document.createElement('a');
+          designAnchor.href = data.liveUrl;
+          designAnchor.target = '_blank';
+          designAnchor.rel = 'noopener noreferrer';
+          designAnchor.className = 'modal-link-btn modal-link-live';
+          designAnchor.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg><span data-i18n="modal.view_design">${modalDict.view_design || 'Open Design / Mockup'}</span>`;
+          modalLinks.appendChild(designAnchor);
+        }
+      } else {
+        if (isSafeExternalUrl(data.liveUrl)) {
+          const liveAnchor = document.createElement('a');
+          liveAnchor.href = data.liveUrl;
+          liveAnchor.target = '_blank';
+          liveAnchor.rel = 'noopener noreferrer';
+          liveAnchor.className = 'modal-link-btn modal-link-live';
+          liveAnchor.innerHTML = `<span data-i18n="modal.visit_live">${modalDict.visit_live || 'Visit Live Demo'}</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>`;
+          modalLinks.appendChild(liveAnchor);
+        }
+
+        if (isSafeExternalUrl(data.githubUrl)) {
+          const ghAnchor = document.createElement('a');
+          ghAnchor.href = data.githubUrl;
+          ghAnchor.target = '_blank';
+          ghAnchor.rel = 'noopener noreferrer';
+          ghAnchor.className = 'modal-link-btn modal-link-github';
+          ghAnchor.innerHTML = `<svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg><span data-i18n="modal.view_github">${modalDict.view_github || 'GitHub Repository'}</span>`;
+          modalLinks.appendChild(ghAnchor);
+        }
       }
 
-      if (hasGithub) {
-        const ghAnchor = document.createElement('a');
-        ghAnchor.href = data.githubUrl;
-        ghAnchor.target = '_blank';
-        ghAnchor.rel = 'noopener noreferrer';
-        ghAnchor.className = 'modal-link-btn modal-link-github';
-        ghAnchor.innerHTML = `<svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg><span data-i18n="modal.view_github">${modalDict.view_github || 'GitHub Repository'}</span>`;
-        modalLinks.appendChild(ghAnchor);
-      }
-
-      modalLinks.style.display = (hasLive || hasGithub) ? 'flex' : 'none';
+      modalLinks.style.display = modalLinks.children.length > 0 ? 'flex' : 'none';
     }
 
     modalBackdrop.classList.add('active');
@@ -220,6 +274,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function closeProjectModal() {
+    if (modalVideoIframe) modalVideoIframe.src = '';
     modalBackdrop?.classList.remove('active');
     document.body.style.overflow = '';
   }

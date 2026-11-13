@@ -57,6 +57,8 @@ class ProjectController extends Controller
             'image_file' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:25600',
             'live_url' => 'nullable|url|max:255',
             'github_url' => 'nullable|url|max:255',
+            'video_url' => 'nullable|url|max:255',
+            'video_duration' => 'nullable|string|max:50',
             'sort_order' => 'nullable|integer',
             'is_featured' => 'nullable|boolean',
         ]);
@@ -92,7 +94,7 @@ class ProjectController extends Controller
             );
         }
 
-        Project::create([
+        $payload = [
             'title' => $validated['title'],
             'slug' => $slug,
             'category' => $validated['category'],
@@ -106,9 +108,13 @@ class ProjectController extends Controller
             'image' => $imagePath,
             'live_url' => $validated['live_url'] ?? null,
             'github_url' => $validated['github_url'] ?? null,
+            'video_url' => $validated['video_url'] ?? null,
+            'video_duration' => $validated['video_duration'] ?? null,
             'sort_order' => $validated['sort_order'] ?? 0,
             'is_featured' => $request->has('is_featured'),
-        ]);
+        ];
+
+        Project::create($payload);
 
         return redirect()->route('admin.projects.index')
             ->with('success', 'Project portfolio berhasil ditambahkan!');
@@ -140,6 +146,8 @@ class ProjectController extends Controller
             'image_file' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:25600',
             'live_url' => 'nullable|url|max:255',
             'github_url' => 'nullable|url|max:255',
+            'video_url' => 'nullable|url|max:255',
+            'video_duration' => 'nullable|string|max:50',
             'sort_order' => 'nullable|integer',
             'is_featured' => 'nullable|boolean',
         ]);
@@ -174,6 +182,8 @@ class ProjectController extends Controller
         $project->overview = $validated['overview'];
         $project->live_url = $validated['live_url'] ?? null;
         $project->github_url = $validated['github_url'] ?? null;
+        $project->video_url = $validated['video_url'] ?? null;
+        $project->video_duration = $validated['video_duration'] ?? null;
         $project->sort_order = $validated['sort_order'] ?? 0;
         $project->is_featured = $request->has('is_featured');
         $project->save();

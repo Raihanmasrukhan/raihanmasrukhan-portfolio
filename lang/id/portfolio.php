@@ -54,6 +54,8 @@ return [
         'explore' => 'Lihat Studi Kasus',
         'live_demo' => 'Live Demo',
         'github_repo' => 'GitHub',
+        'watch_video' => 'Tonton Video',
+        'view_design' => 'Lihat Desain',
         'empty_category' => 'Belum ada karya pada kategori ini.',
     ],
     'milestones' => [
@@ -117,7 +119,10 @@ return [
         'timeline' => 'Waktu Pelaksanaan',
         'deliverables' => 'Capaian Utama & Dampak Sistem',
         'technologies' => 'Teknologi yang Digunakan',
+        'software_tools' => 'Software & Tools yang Digunakan',
         'visit_live' => 'Buka Live Demo',
         'view_github' => 'Repositori GitHub',
+        'watch_video' => 'Tonton Video',
+        'view_design' => 'Buka Desain / Mockup',
     ],
 ];

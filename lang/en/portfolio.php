@@ -54,6 +54,8 @@ return [
         'explore' => 'Explore Case Study',
         'live_demo' => 'Live Demo',
         'github_repo' => 'GitHub',
+        'watch_video' => 'Watch Video',
+        'view_design' => 'View Design',
         'empty_category' => 'No projects published in this category yet.',
     ],
     'milestones' => [
@@ -117,7 +119,10 @@ return [
         'timeline' => 'Timeline',
         'deliverables' => 'Key Deliverables & Impact',
         'technologies' => 'Technologies Used',
+        'software_tools' => 'Software & Tools Used',
         'visit_live' => 'Visit Live Demo',
         'view_github' => 'GitHub Repository',
+        'watch_video' => 'Watch Video',
+        'view_design' => 'Open Design / Mockup',
     ],
 ];

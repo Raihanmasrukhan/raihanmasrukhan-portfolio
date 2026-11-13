@@ -29,7 +29,7 @@
 
         <div>
           <label class="block text-xs font-mono uppercase tracking-wider text-gray-400 mb-2">Filter Kategori *</label>
-          <select name="category" required class="w-full px-4 py-3 rounded-xl bg-[#0a0a0d] border border-gray-700/80 text-white focus:outline-none focus:border-[#ff5500] text-sm font-mono">
+          <select id="project-category-select" name="category" required class="w-full px-4 py-3 rounded-xl bg-[#0a0a0d] border border-gray-700/80 text-white focus:outline-none focus:border-[#ff5500] text-sm font-mono">
             @foreach(\App\Models\Project::categoryOptions() as $catKey => $catLabel)
               <option value="{{ $catKey }}" {{ old('category', $project->category) == $catKey ? 'selected' : '' }}>{{ $catLabel }}</option>
             @endforeach
@@ -47,8 +47,8 @@
         </div>
 
         <div>
-          <label class="block text-xs font-mono uppercase tracking-wider text-gray-400 mb-2">Peran / Role Anda</label>
-          <input type="text" name="role" value="{{ old('role', $project->role) }}" class="w-full px-4 py-3 rounded-xl bg-[#0a0a0d] border border-gray-700/80 text-white focus:outline-none focus:border-[#ff5500] text-sm font-mono">
+          <label id="role-label" class="block text-xs font-mono uppercase tracking-wider text-gray-400 mb-2">Peran / Role Anda</label>
+          <input type="text" id="role-input" name="role" value="{{ old('role', $project->role) }}" class="w-full px-4 py-3 rounded-xl bg-[#0a0a0d] border border-gray-700/80 text-white focus:outline-none focus:border-[#ff5500] text-sm font-mono">
         </div>
 
         <div>
@@ -62,17 +62,34 @@
         </div>
 
         <div class="md:col-span-2">
-          <label class="block text-xs font-mono uppercase tracking-wider text-gray-400 mb-2">Key Deliverables & Highlights (1 baris per poin)</label>
-          <textarea name="highlights_text" rows="4" class="w-full px-4 py-3 rounded-xl bg-[#0a0a0d] border border-gray-700/80 text-white focus:outline-none focus:border-[#ff5500] text-sm font-mono leading-relaxed">{{ old('highlights_text', is_array($project->highlights) ? implode("\n", $project->highlights) : '') }}</textarea>
+          <label id="highlights-label" class="block text-xs font-mono uppercase tracking-wider text-gray-400 mb-2">Key Deliverables & Highlights (1 baris per poin)</label>
+          <textarea id="highlights-input" name="highlights_text" rows="4" class="w-full px-4 py-3 rounded-xl bg-[#0a0a0d] border border-gray-700/80 text-white focus:outline-none focus:border-[#ff5500] text-sm font-mono leading-relaxed">{{ old('highlights_text', is_array($project->highlights) ? implode("\n", $project->highlights) : '') }}</textarea>
         </div>
 
         <div class="md:col-span-2">
-          <label class="block text-xs font-mono uppercase tracking-wider text-gray-400 mb-2">Technologies Used (Pisahkan dengan koma)</label>
-          <input type="text" name="tech_stack_text" value="{{ old('tech_stack_text', is_array($project->tech_stack) ? implode(', ', $project->tech_stack) : '') }}" class="w-full px-4 py-3 rounded-xl bg-[#0a0a0d] border border-gray-700/80 text-white focus:outline-none focus:border-[#ff5500] text-sm font-mono">
+          <label id="tech-stack-label" class="block text-xs font-mono uppercase tracking-wider text-gray-400 mb-2">Technologies Used (Pisahkan dengan koma)</label>
+          <input type="text" id="tech-stack-input" name="tech_stack_text" value="{{ old('tech_stack_text', is_array($project->tech_stack) ? implode(', ', $project->tech_stack) : '') }}" class="w-full px-4 py-3 rounded-xl bg-[#0a0a0d] border border-gray-700/80 text-white focus:outline-none focus:border-[#ff5500] text-sm font-mono">
+        </div>
+
+        <!-- Dedicated Video Editing Fields -->
+        <div id="video-fields-wrap" class="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6 p-4 rounded-xl bg-[#0a0a0d]/80 border border-[#ff5500]/30" style="display:none;">
+          <div class="md:col-span-2 flex items-center gap-2 pb-2 border-b border-gray-800 text-[#ff5500] text-xs font-mono font-bold uppercase">
+            <span>🎬 Konfigurasi Media Video</span>
+          </div>
+          <div>
+            <label class="block text-xs font-mono uppercase tracking-wider text-gray-300 mb-2">Link Video URL *</label>
+            <input type="url" name="video_url" value="{{ old('video_url', $project->video_url) }}" class="w-full px-4 py-3 rounded-xl bg-[#121218] border border-gray-700/80 text-white focus:outline-none focus:border-[#ff5500] text-sm font-mono" placeholder="https://www.youtube.com/watch?v=... atau link TikTok / Drive">
+            <span class="text-[11px] font-mono text-gray-500 mt-1 block">Link YouTube otomatis disematkan sebagai pemutar video (player) di modal proyek.</span>
+          </div>
+          <div>
+            <label class="block text-xs font-mono uppercase tracking-wider text-gray-300 mb-2">Durasi Video (Opsional)</label>
+            <input type="text" name="video_duration" value="{{ old('video_duration', $project->video_duration) }}" class="w-full px-4 py-3 rounded-xl bg-[#121218] border border-gray-700/80 text-white focus:outline-none focus:border-[#ff5500] text-sm font-mono" placeholder="Contoh: 01:30 atau 60 Detik">
+            <span class="text-[11px] font-mono text-gray-500 mt-1 block">Tampil sebagai badge durasi di kartu proyek portfolio.</span>
+          </div>
         </div>
 
         <div data-image-upload>
-          <label class="block text-xs font-mono uppercase tracking-wider text-gray-400 mb-2">Ganti Gambar Mockup</label>
+          <label class="block text-xs font-mono uppercase tracking-wider text-gray-400 mb-2">Ganti Gambar Mockup / Thumbnail</label>
           <div class="flex items-center gap-3 mb-2">
             <img src="{{ asset($project->image) }}" class="w-16 h-12 rounded object-cover border border-gray-800" alt="Current">
             <span class="text-xs font-mono text-gray-400">Gambar saat ini</span>
@@ -86,14 +103,14 @@
           <input type="number" name="sort_order" value="{{ old('sort_order', $project->sort_order) }}" class="w-full px-4 py-3 rounded-xl bg-[#0a0a0d] border border-gray-700/80 text-white focus:outline-none focus:border-[#ff5500] text-sm font-mono">
         </div>
 
-        <div>
-          <label class="block text-xs font-mono uppercase tracking-wider text-gray-400 mb-2">Live Demo URL</label>
-          <input type="url" name="live_url" value="{{ old('live_url', $project->live_url) }}" class="w-full px-4 py-3 rounded-xl bg-[#0a0a0d] border border-gray-700/80 text-white focus:outline-none focus:border-[#ff5500] text-sm font-mono">
+        <div id="live-url-wrap">
+          <label id="live-url-label" class="block text-xs font-mono uppercase tracking-wider text-gray-400 mb-2">Live Demo URL</label>
+          <input type="url" id="live-url-input" name="live_url" value="{{ old('live_url', $project->live_url) }}" class="w-full px-4 py-3 rounded-xl bg-[#0a0a0d] border border-gray-700/80 text-white focus:outline-none focus:border-[#ff5500] text-sm font-mono">
         </div>
 
-        <div>
-          <label class="block text-xs font-mono uppercase tracking-wider text-gray-400 mb-2">GitHub Repository URL</label>
-          <input type="url" name="github_url" value="{{ old('github_url', $project->github_url) }}" class="w-full px-4 py-3 rounded-xl bg-[#0a0a0d] border border-gray-700/80 text-white focus:outline-none focus:border-[#ff5500] text-sm font-mono">
+        <div id="github-url-wrap">
+          <label id="github-url-label" class="block text-xs font-mono uppercase tracking-wider text-gray-400 mb-2">GitHub Repository URL</label>
+          <input type="url" id="github-url-input" name="github_url" value="{{ old('github_url', $project->github_url) }}" class="w-full px-4 py-3 rounded-xl bg-[#0a0a0d] border border-gray-700/80 text-white focus:outline-none focus:border-[#ff5500] text-sm font-mono">
         </div>
       </div>
 
@@ -112,5 +129,64 @@
   </form>
 
 </div>
-@endsection
 
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const categorySelect = document.getElementById('project-category-select');
+    const roleLabel = document.getElementById('role-label');
+    const roleInput = document.getElementById('role-input');
+    const highlightsLabel = document.getElementById('highlights-label');
+    const highlightsInput = document.getElementById('highlights-input');
+    const techStackLabel = document.getElementById('tech-stack-label');
+    const techStackInput = document.getElementById('tech-stack-input');
+    const liveUrlWrap = document.getElementById('live-url-wrap');
+    const liveUrlLabel = document.getElementById('live-url-label');
+    const liveUrlInput = document.getElementById('live-url-input');
+    const githubUrlWrap = document.getElementById('github-url-wrap');
+    const videoFieldsWrap = document.getElementById('video-fields-wrap');
+
+    function syncCategoryFields() {
+      const cat = categorySelect.value;
+      const isVideo = cat === 'video-editing';
+      const isDesign = cat === 'design';
+
+      // Video fields & GitHub visibility
+      videoFieldsWrap.style.display = isVideo ? 'grid' : 'none';
+      githubUrlWrap.style.display = (isVideo || isDesign) ? 'none' : 'block';
+
+      if (isVideo) {
+        roleLabel.textContent = 'Peran / Role Video *';
+        roleInput.placeholder = 'Video Editor, Motion Graphic Designer, Colorist';
+        techStackLabel.textContent = 'Software / Tools Video Editing (Pisahkan dengan koma)';
+        techStackInput.placeholder = 'Adobe Premiere Pro, After Effects, CapCut, DaVinci Resolve';
+        highlightsLabel.textContent = 'Key Deliverables & Scope Video Editing (Opsional, 1 baris per poin)';
+        highlightsInput.placeholder = 'Color Grading & Audio Mastering\nVertical 9:16 Reels Optimization\nDynamic Kinetic Typography & Sound Effects';
+        liveUrlWrap.style.display = 'none';
+      } else if (isDesign) {
+        roleLabel.textContent = 'Peran / Role Desain *';
+        roleInput.placeholder = 'UI/UX Designer, Graphic Designer, Brand Identity Designer';
+        techStackLabel.textContent = 'Software / Tools Desain (Pisahkan dengan koma)';
+        techStackInput.placeholder = 'Figma, Adobe Photoshop, Adobe Illustrator, Canva';
+        highlightsLabel.textContent = 'Key Deliverables & Scope Desain (Opsional, 1 baris per poin)';
+        highlightsInput.placeholder = 'Design System & Component Library\nInteractive High-Fidelity Prototype\nVisual Brand Identity & Assets Export';
+        liveUrlWrap.style.display = 'block';
+        liveUrlLabel.textContent = 'Link Desain / Mockup URL (Figma / Behance / Google Drive / Live Demo)';
+        liveUrlInput.placeholder = 'https://www.figma.com/file/... atau https://behance.net/...';
+      } else {
+        roleLabel.textContent = 'Peran / Role Anda';
+        roleInput.placeholder = 'Lead Full-Stack Developer';
+        techStackLabel.textContent = 'Technologies Used (Pisahkan dengan koma)';
+        techStackInput.placeholder = 'PHP Laravel, React.js, MySQL, PWA, Tailwind CSS';
+        highlightsLabel.textContent = 'Key Deliverables & Highlights (1 baris per poin)';
+        highlightsInput.placeholder = 'Real-time GPS geofencing radius validation\nOffline-first Progressive Web App (PWA)\nAutomated executive PDF reporting engine';
+        liveUrlWrap.style.display = 'block';
+        liveUrlLabel.textContent = 'Live Demo URL (Opsional)';
+        liveUrlInput.placeholder = 'https://example.com';
+      }
+    }
+
+    categorySelect.addEventListener('change', syncCategoryFields);
+    syncCategoryFields();
+  });
+</script>
+@endsection

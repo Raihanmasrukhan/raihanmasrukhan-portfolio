@@ -26,6 +26,8 @@ return new class extends Migration
             $table->string('image')->default('images/project-saas.jpg');
             $table->string('live_url')->nullable();
             $table->string('github_url')->nullable();
+            $table->string('video_url')->nullable();
+            $table->string('video_duration', 50)->nullable();
             $table->integer('sort_order')->default(0);
             $table->boolean('is_featured')->default(true);
             $table->timestamps();

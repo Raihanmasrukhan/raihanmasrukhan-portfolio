@@ -255,6 +255,7 @@ class AdminDashboardTest extends TestCase
             'title' => 'Brand Identity Poster Pack',
             'category' => 'design',
             'badge' => 'Graphic Design',
+            'role' => 'Lead UI Designer',
             'overview' => 'Visual identity dan desain konten promosi.',
             'tech_stack_text' => 'Figma, Canva',
             'live_url' => 'https://figma.com/file/brand-pack',
@@ -264,10 +265,17 @@ class AdminDashboardTest extends TestCase
             'title' => 'Company Profile Reel 2026',
             'category' => 'video-editing',
             'badge' => 'Video Editing',
+            'role' => 'Motion Designer',
             'overview' => 'Video highlight kampanye dan motion graphics.',
             'tech_stack_text' => 'CapCut, Premiere',
-            'live_url' => 'https://youtube.com/watch?v=demo123',
+            'video_url' => 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+            'video_duration' => '01:30',
         ])->assertRedirect('/admin/projects');
+
+        $videoProject = Project::where('slug', 'company-profile-reel-2026')->firstOrFail();
+        $this->assertSame('https://www.youtube.com/watch?v=dQw4w9WgXcQ', $videoProject->video_url);
+        $this->assertSame('01:30', $videoProject->video_duration);
+        $this->assertSame('https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ', $videoProject->youtubeEmbedUrl());
 
         $this->get('/admin/projects?category=design')
             ->assertStatus(200)
@@ -279,14 +287,34 @@ class AdminDashboardTest extends TestCase
             ->assertSee('Company Profile Reel 2026')
             ->assertDontSee('Brand Identity Poster Pack');
 
-        $this->get('/')
-            ->assertStatus(200)
-            ->assertSee('data-filter="design"', false)
-            ->assertSee('data-filter="video-editing"', false)
-            ->assertSee('data-category="design"', false)
-            ->assertSee('data-category="video-editing"', false)
-            ->assertSee('Brand Identity Poster Pack')
-            ->assertSee('Company Profile Reel 2026');
+        $home = $this->get('/');
+        $home->assertStatus(200);
+        $home->assertSee('data-filter="design"', false);
+        $home->assertSee('data-filter="video-editing"', false);
+        $home->assertSee('data-category="design"', false);
+        $home->assertSee('data-category="video-editing"', false);
+        $home->assertSee('Brand Identity Poster Pack');
+        $home->assertSee('Company Profile Reel 2026');
+        $home->assertSee('btn-project-design', false);
+        $home->assertSee('btn-project-video', false);
+        $home->assertSee('data-i18n="projects.view_design"', false);
+        $home->assertSee('data-i18n="projects.watch_video"', false);
+        $home->assertSee('⏱ 01:30');
+        $home->assertSee('modal-video-wrap', false);
+
+        // Edit video project and update duration & video URL
+        $this->put("/admin/projects/{$videoProject->id}", [
+            'title' => 'Company Profile Reel 2026 Remastered',
+            'category' => 'video-editing',
+            'badge' => 'Reel Promo',
+            'overview' => 'Updated video reel overview.',
+            'video_url' => 'https://youtu.be/dQw4w9WgXcQ',
+            'video_duration' => '02:00',
+        ])->assertRedirect('/admin/projects');
+
+        $videoProject->refresh();
+        $this->assertSame('02:00', $videoProject->video_duration);
+        $this->assertSame('https://youtu.be/dQw4w9WgXcQ', $videoProject->video_url);
     }
 
     public function test_oversized_project_and_profile_images_are_auto_compressed_to_max_5mb(): void
