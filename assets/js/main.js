@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
     requestAnimationFrame(animateFollower);
 
     // Interactive Hover States
-    const interactiveElements = document.querySelectorAll('a, button, input, textarea, select, .gallery-card, .project-card, .process-card, .testimonial-card');
+    const interactiveElements = document.querySelectorAll('a, button, input, textarea, select, .project-card, .process-card, .testimonial-card');
     interactiveElements.forEach((el) => {
       el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
       el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
@@ -234,7 +234,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Attach trigger to buttons and gallery items
+  // Attach trigger to buttons and project cards
   document.querySelectorAll('[data-project-trigger]').forEach((trigger) => {
     trigger.addEventListener('click', (e) => {
       e.preventDefault();

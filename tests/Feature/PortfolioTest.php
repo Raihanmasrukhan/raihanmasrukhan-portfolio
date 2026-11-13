@@ -37,6 +37,8 @@ class PortfolioTest extends TestCase
         $response->assertDontSee('nav-mobile-prefs');
         $response->assertDontSee('mobile-lang-switcher');
         $response->assertDontSee('mobile-theme-toggle');
+        $response->assertDontSee('gallery-strip');
+        $response->assertDontSee('gallery-card');
         $response->assertSee('id="lang-switcher"', false);
         $response->assertSee('id="theme-toggle"', false);
         $response->assertDontSee(route('login'), false);

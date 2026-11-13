@@ -23,7 +23,6 @@ return [
     ],
     'about' => [
         'tag' => '[ ABOUT ME ]',
-        'view_btn' => 'VIEW ➔',
         'statement' => 'Technology and digital practitioner with 3 years of experience in <span class="text-bold">Web Development</span> and <span class="text-highlight">Digital Creative</span>, accustomed to executing projects end-to-end. Driven by high curiosity, strong adaptability across diverse situations, and a passion for continuous learning to deliver efficient and impactful solutions.',
     ],
     'services' => [

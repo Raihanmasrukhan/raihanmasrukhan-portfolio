@@ -23,7 +23,6 @@ return [
     ],
     'about' => [
         'tag' => '[ TENTANG SAYA ]',
-        'view_btn' => 'LIHAT ➔',
         'statement' => 'Praktisi teknologi dan digital dengan pengalaman 3 tahun di bidang <span class="text-bold">Web Developer</span> dan <span class="text-highlight">Digital Creative</span>, serta terbiasa mengeksekusi proyek dari hulu ke hilir. Saya adalah sosok yang punya rasa ingin tahu tinggi, mudah beradaptasi di berbagai situasi, dan memiliki semangat belajar yang besar. Sangat terbuka untuk berkontribusi di bidang apa pun serta selalu antusias mengeksplorasi hal-hal baru untuk memberikan solusi terbaik yang efisien dan solutif.',
     ],
     'services' => [

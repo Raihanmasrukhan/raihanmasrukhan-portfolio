@@ -372,19 +372,6 @@
             </div>
           </div>
         </div>
-
-        <!-- Interactive Mini Gallery Preview Strip -->
-        <div class="gallery-strip reveal">
-          @foreach($projects->take(4) as $miniProject)
-            <div class="gallery-card" data-project-trigger="{{ $miniProject->slug }}">
-              <img src="{{ asset($miniProject->image) }}" alt="{{ $miniProject->title }} Preview" loading="lazy">
-                <div class="gallery-card-badge">
-                  <span data-i18n-db="text">{{ $miniProject->badge ?? $miniProject->category }}</span>
-                  <span class="pill" data-i18n="about.view_btn">VIEW ➔</span>
-                </div>
-            </div>
-          @endforeach
-        </div>
       </div>
     </section>
 
