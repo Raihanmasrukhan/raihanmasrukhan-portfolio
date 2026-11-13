@@ -296,11 +296,16 @@ class AdminDashboardTest extends TestCase
         $home->assertSee('Brand Identity Poster Pack');
         $home->assertSee('Company Profile Reel 2026');
         $home->assertSee('btn-project-design', false);
+        $home->assertSee('btn-project-view-full', false);
+        $home->assertSee('data-lightbox-src', false);
         $home->assertSee('btn-project-video', false);
         $home->assertSee('data-i18n="projects.view_design"', false);
         $home->assertSee('data-i18n="projects.watch_video"', false);
+        $home->assertSee('data-i18n="projects.view_full"', false);
         $home->assertSee('⏱ 01:30');
         $home->assertSee('modal-video-wrap', false);
+        $home->assertSee('modal-image-view-full-btn', false);
+        $home->assertSee('id="design-lightbox"', false);
 
         // Edit video project and update duration & video URL
         $this->put("/admin/projects/{$videoProject->id}", [

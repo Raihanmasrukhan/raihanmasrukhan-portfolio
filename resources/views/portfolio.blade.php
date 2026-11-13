@@ -544,14 +544,18 @@
                       </div>
                     @endif
                   @elseif($project->isDesign())
-                    @if(!empty($project->live_url))
-                      <div class="project-external-links">
+                    <div class="project-external-links">
+                      <button type="button" class="btn-project-link btn-project-view-full" data-lightbox-src="{{ asset($project->image) }}" data-lightbox-title="{{ $project->title }}" aria-label="{{ $project->title }} Lihat Versi Asli">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg>
+                        <span data-i18n="projects.view_full">Lihat Full</span>
+                      </button>
+                      @if(!empty($project->live_url))
                         <a href="{{ $project->live_url }}" target="_blank" rel="noopener noreferrer" class="btn-project-link btn-project-design" aria-label="{{ $project->title }} Lihat Desain">
                           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
-                          <span data-i18n="projects.view_design">Lihat Desain</span>
+                          <span data-i18n="projects.view_design">Figma / Live</span>
                         </a>
-                      </div>
-                    @endif
+                      @endif
+                    </div>
                   @else
                     @if(!empty($project->live_url) || !empty($project->github_url))
                       <div class="project-external-links">
@@ -899,6 +903,15 @@
         <div id="modal-video-wrap" class="modal-video-wrap" style="display:none;">
           <iframe id="modal-video-iframe" src="" title="Video Player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
         </div>
+        <button type="button" class="modal-image-view-full-btn" id="modal-image-view-full-btn" style="display:none;" aria-label="Lihat Desain Versi Asli">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="15 3 21 3 21 9"></polyline>
+            <polyline points="9 21 3 21 3 15"></polyline>
+            <line x1="21" y1="3" x2="14" y2="10"></line>
+            <line x1="3" y1="21" x2="10" y2="14"></line>
+          </svg>
+          <span data-i18n="modal.view_full">Lihat Versi Asli</span>
+        </button>
       </div>
 
       <div class="modal-body">
@@ -935,6 +948,28 @@
         </div>
 
         <div id="modal-links" class="modal-project-links" style="display:none;"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Fullscreen Design Image Lightbox -->
+  <div class="design-lightbox-backdrop" id="design-lightbox" role="dialog" aria-modal="true" aria-label="Full Design Preview" style="display:none;">
+    <div class="design-lightbox-header">
+      <div class="design-lightbox-info">
+        <span class="design-lightbox-tag" data-i18n="modal.design_preview">DESAIN ASLI / ORIGINAL RESOLUTION</span>
+        <h4 class="design-lightbox-title" id="design-lightbox-title">Judul Desain</h4>
+      </div>
+      <div class="design-lightbox-actions">
+        <a href="#" id="design-lightbox-tab-link" target="_blank" rel="noopener noreferrer" class="design-lightbox-btn" title="Buka di tab baru">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+          <span data-i18n="modal.open_tab">Buka Tab Baru ↗</span>
+        </a>
+        <button type="button" class="design-lightbox-close" id="design-lightbox-close" aria-label="Tutup preview full screen">✕</button>
+      </div>
+    </div>
+    <div class="design-lightbox-body" id="design-lightbox-body">
+      <div class="design-lightbox-img-wrap">
+        <img src="" id="design-lightbox-img" alt="Desain Fullscreen Preview" class="design-lightbox-img">
       </div>
     </div>
   </div>

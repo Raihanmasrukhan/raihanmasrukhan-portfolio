@@ -56,6 +56,7 @@ return [
         'github_repo' => 'GitHub',
         'watch_video' => 'Tonton Video',
         'view_design' => 'Lihat Desain',
+        'view_full' => 'Lihat Versi Asli',
         'empty_category' => 'Belum ada karya pada kategori ini.',
     ],
     'milestones' => [
@@ -124,5 +125,8 @@ return [
         'view_github' => 'Repositori GitHub',
         'watch_video' => 'Tonton Video',
         'view_design' => 'Buka Desain / Mockup',
+        'view_full' => 'Lihat Versi Asli',
+        'design_preview' => 'DESAIN ASLI / ORIGINAL RESOLUTION',
+        'open_tab' => 'Buka Tab Baru ↗',
     ],
 ];

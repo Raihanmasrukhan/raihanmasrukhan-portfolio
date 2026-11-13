@@ -150,6 +150,58 @@ document.addEventListener('DOMContentLoaded', () => {
   const modalStackTitle = document.getElementById('modal-stack-title');
   const modalStack = document.getElementById('modal-stack');
   const modalLinks = document.getElementById('modal-links');
+  const modalImageViewFullBtn = document.getElementById('modal-image-view-full-btn');
+  const designLightbox = document.getElementById('design-lightbox');
+  const designLightboxImg = document.getElementById('design-lightbox-img');
+  const designLightboxTitle = document.getElementById('design-lightbox-title');
+  const designLightboxTabLink = document.getElementById('design-lightbox-tab-link');
+  const designLightboxClose = document.getElementById('design-lightbox-close');
+
+  function openDesignLightbox(imgSrc, title) {
+    if (!designLightbox || !designLightboxImg || !imgSrc) return;
+    designLightboxImg.src = imgSrc;
+    if (designLightboxTitle) {
+      designLightboxTitle.textContent = title || 'Original Design';
+    }
+    if (designLightboxTabLink) {
+      designLightboxTabLink.href = imgSrc;
+    }
+    designLightbox.style.display = 'flex';
+    requestAnimationFrame(() => {
+      designLightbox.classList.add('active');
+    });
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeDesignLightbox() {
+    if (!designLightbox) return;
+    designLightbox.classList.remove('active');
+    setTimeout(() => {
+      designLightbox.style.display = 'none';
+      if (designLightboxImg) designLightboxImg.src = '';
+    }, 200);
+    if (!modalBackdrop?.classList.contains('active')) {
+      document.body.style.overflow = '';
+    }
+  }
+
+  designLightboxClose?.addEventListener('click', closeDesignLightbox);
+  designLightbox?.addEventListener('click', (e) => {
+    if (e.target === designLightbox || e.target.classList.contains('design-lightbox-body') || e.target.id === 'design-lightbox-body') {
+      closeDesignLightbox();
+    }
+  });
+
+  // Attach lightbox trigger to project card buttons
+  document.querySelectorAll('[data-lightbox-src]').forEach((btn) => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      const src = btn.getAttribute('data-lightbox-src');
+      const title = btn.getAttribute('data-lightbox-title');
+      if (src) openDesignLightbox(src, title);
+    });
+  });
 
   function isSafeExternalUrl(rawUrl) {
     if (!rawUrl) return false;
@@ -172,17 +224,37 @@ document.addEventListener('DOMContentLoaded', () => {
     const isVideo = data.category === 'video-editing';
     const isDesign = data.category === 'design';
 
-    // Video Player vs Static Image
+    // Video Player vs Static Image vs Design View
     if (isVideo && data.embedUrl && modalVideoWrap && modalVideoIframe) {
       modalVideoIframe.src = data.embedUrl;
       modalVideoWrap.style.display = 'block';
       if (modalImage) modalImage.style.display = 'none';
+      if (modalImageViewFullBtn) modalImageViewFullBtn.style.display = 'none';
     } else {
       if (modalVideoWrap) modalVideoWrap.style.display = 'none';
       if (modalVideoIframe) modalVideoIframe.src = '';
       if (modalImage) {
         modalImage.style.display = 'block';
         modalImage.src = data.image;
+        if (isDesign) {
+          modalImage.style.cursor = 'zoom-in';
+          modalImage.onclick = () => openDesignLightbox(data.image, data.title);
+        } else {
+          modalImage.style.cursor = '';
+          modalImage.onclick = null;
+        }
+      }
+      if (modalImageViewFullBtn) {
+        if (isDesign && data.image) {
+          modalImageViewFullBtn.style.display = 'inline-flex';
+          modalImageViewFullBtn.onclick = (e) => {
+            e.stopPropagation();
+            openDesignLightbox(data.image, data.title);
+          };
+        } else {
+          modalImageViewFullBtn.style.display = 'none';
+          modalImageViewFullBtn.onclick = null;
+        }
       }
     }
 
@@ -235,6 +307,18 @@ document.addEventListener('DOMContentLoaded', () => {
           modalLinks.appendChild(videoAnchor);
         }
       } else if (isDesign) {
+        if (data.image) {
+          const fullImgBtn = document.createElement('button');
+          fullImgBtn.type = 'button';
+          fullImgBtn.className = 'modal-link-btn modal-link-view-full';
+          fullImgBtn.innerHTML = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg><span data-i18n="modal.view_full">${modalDict.view_full || 'Lihat Versi Asli'}</span>`;
+          fullImgBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            openDesignLightbox(data.image, data.title);
+          });
+          modalLinks.appendChild(fullImgBtn);
+        }
+
         if (isSafeExternalUrl(data.liveUrl)) {
           const designAnchor = document.createElement('a');
           designAnchor.href = data.liveUrl;
@@ -275,6 +359,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function closeProjectModal() {
     if (modalVideoIframe) modalVideoIframe.src = '';
+    if (modalImageViewFullBtn) modalImageViewFullBtn.style.display = 'none';
+    if (modalImage) {
+      modalImage.style.cursor = '';
+      modalImage.onclick = null;
+    }
     modalBackdrop?.classList.remove('active');
     document.body.style.overflow = '';
   }
@@ -284,8 +373,14 @@ document.addEventListener('DOMContentLoaded', () => {
     if (e.target === modalBackdrop) closeProjectModal();
   });
   window.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && modalBackdrop?.classList.contains('active')) {
-      closeProjectModal();
+    if (e.key === 'Escape') {
+      if (designLightbox?.classList.contains('active')) {
+        closeDesignLightbox();
+        return;
+      }
+      if (modalBackdrop?.classList.contains('active')) {
+        closeProjectModal();
+      }
     }
   });
 

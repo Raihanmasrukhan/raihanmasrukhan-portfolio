@@ -56,6 +56,7 @@ return [
         'github_repo' => 'GitHub',
         'watch_video' => 'Watch Video',
         'view_design' => 'View Design',
+        'view_full' => 'View Full Design',
         'empty_category' => 'No projects published in this category yet.',
     ],
     'milestones' => [
@@ -124,5 +125,8 @@ return [
         'view_github' => 'GitHub Repository',
         'watch_video' => 'Watch Video',
         'view_design' => 'Open Design / Mockup',
+        'view_full' => 'View Full Design',
+        'design_preview' => 'ORIGINAL DESIGN / FULL RESOLUTION',
+        'open_tab' => 'Open in New Tab ↗',
     ],
 ];
